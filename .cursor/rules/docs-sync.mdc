@@ -1,0 +1,50 @@
+---
+description: Documentation synchronization rules — enforced when "update docs" runs
+alwaysApply: false
+globs:
+  - .cursor/docs/**/*.md
+  - package.json
+  - TRUTH.md
+  - CHANGELOG.md
+---
+
+# Docs Sync Rules — JonBeatz
+
+## Path standards
+
+- **START-HERE.md** is the primary entry point
+- Profile root: `D:\Hermes\projects\JonBeatz` — never MSC deploy paths unless Jon opens MSC repo
+- Use relative links or `${workspace}` — avoid hardcoding sibling repo paths in daily docs
+
+## Version tracking
+
+- Sync version across `package.json`, `TRUTH.md`, `MASTER-COMMANDS.md`, `CHANGELOG.md`
+- Use **`npm run version:sync`** (Python UTF-8) — never rewrite README badges from raw PowerShell
+- Run **`npm run encoding:check`** before doc commits; **`npm run docs:sync`** runs it automatically
+- **`.gitattributes`** enforces UTF-8 + LF on markdown and scripts
+- **ReCall.md** captures significant session outcomes
+- **Restore-Points.md** updated at meaningful milestones (backup, release, incident recovery)
+
+## Issue management
+
+- Every bug fix → append **`.cursor/docs/ISSUES-RESOLVED.md`** or run `npm run log:fix`
+- Include root cause and shortest verified recovery path
+- Reference related files changed
+
+## Rules management
+
+- No contradictory rules across `.mdc` files
+- When removing a feature, document in ISSUES-RESOLVED with reason
+- Flag duplicate or conflicting rules during `npm run docs:sync`
+
+## Commit discipline
+
+- Doc-only changes: `docs:` prefix when Jon requests commit
+- Update docs when behavior changes (scripts, rituals, MCP setup)
+- Do **not** auto-commit unless Jon asks
+
+## MCP + skills
+
+- Project MCP secrets live in `.env.local` — sync with `npm run sync:mcp-env`
+- Never commit real API keys in `.cursor/mcp.json`
+- UI skills read order: NovaMira-Design → MSC-UI-Taste → Premium-UI

@@ -1,0 +1,29 @@
+---
+description: Core operating rules for {PROFILE_NAME}
+alwaysApply: true
+---
+
+# {PROFILE_NAME} — Core Rules
+
+## Environment
+
+- **OS/Shell:** Windows 10/11 PowerShell. No bash heredocs (`<<`). Use native PowerShell strings or temp files for multi-line git messages.
+- **Profile boundary:** This is `{PROFILE_SLUG}` — keep it isolated from other profiles.
+
+## Secrets
+
+- **Never commit** `.env*`, OAuth tokens, or API keys.
+- All secrets live in `.env.local` (gitignored).
+
+## UTF-8 / Docs
+
+- Never bulk-rewrite `.md` from PowerShell without `-Encoding UTF8`.
+- Run encoding checks before doc commits.
+
+## Source of Truth
+
+When docs differ, `TRUTH.md` wins over everything.
+
+## Skills (read before relevant work)
+
+See SKILL-INDEX.md for the full catalog of available domain skills.

@@ -1,0 +1,39 @@
+/* VaderLabz — Vader Red palette (#ff2a36) */
+/* See .cursor/docs/3D-WEBSITE-TASTE-CATALOG.md for variants */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --accent: #ff2a36;
+  --accent-dim: #cc1f28;
+  --accent-glow: rgba(255, 42, 54, 0.3);
+  --bg-deep: #0a0a0b;
+  --bg-card: rgba(15, 15, 18, 0.7);
+  --text-primary: #f0f0f0;
+  --text-muted: #888899;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: var(--font-sans);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+}
+
+/* Prevent FOUC on Three.js canvas */
+canvas {
+  display: block;
+}

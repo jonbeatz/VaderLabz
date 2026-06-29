@@ -1,0 +1,25 @@
+# global.mdc - Global shortcuts — JonBeatz personal profile
+
+| Jon says | Agent action |
+|----------|--------------|
+| **Start Project**, **Start Session**, **Cold Start** | `npm run session:start -- -Full` + [Start-Project.md](../prompts/Start-Project.md) |
+| **End Project**, **End Session** | [End-Project.md](../prompts/End-Project.md) + `npm run session:stop` |
+| **update docs** | [Update-Docs.md](../prompts/Update-Docs.md) + `npm run docs:sync` |
+| **update docs and mem0** | Update-Docs Phase 5b + Mem0 add |
+| **backup profile**, **backup**, **backup quick** | `npm run backup:quick` |
+| **backup project** | `npm run backup:project` |
+| **backup full** | `npm run backup:quick:full` |
+| **hostinger reference** | Read `HOSTINGER-REFERENCE.md` + `Hostinger-Ops` skill |
+| **push it live** / **deploy msc** | `Hostinger-MSC.md` → switch to MSC repo |
+| **sync hostinger mcp** | `npm run sync:mcp-env` |
+| **Update Project** / **Sync Project** | [Update-Project.md](../prompts/Update-Project.md) |
+| **dev recover** / **fix playground** | `npm run dev:recover` |
+| **sync mcp** | `npm run sync:mcp-env` |
+| **log session** | `npm run log:session -- "summary"` |
+| **log fix** | `npm run log:fix` |
+| **google doctor** | `npm run google:doctor` |
+| **postflight personal** | `npm run doctor` |
+
+**Local commands** always run from `D:\Hermes\projects\JonBeatz`.
+
+See [Custom-Prompts.md](../docs/Custom-Prompts.md) for full phrase list.

@@ -1,0 +1,32 @@
+---
+description: Mem0 and LM Studio rules for JonBeatz personal memory
+alwaysApply: true
+---
+
+# Mem0 + LM Studio — Agent Rules
+
+## Before search or infer-add
+
+1. Run **`npm run mem0:preflight`** from `D:\Hermes\projects\JonBeatz` (or confirm LM Studio :1234 + any LLM loaded — default **qwen3-4b-instruct-2507**, shared with Hermes).
+2. Use **`jonbeatz_personal`** scope only — never MSC memory IDs.
+
+**Note:** `mem0:add` (default), `list`, and `delete` skip preflight — no LLM required.
+
+## Commands (Local — JonBeatz root)
+
+```powershell
+npm run mem0:search -- "query"
+npm run mem0:add -- "text"
+npm run mem0:list
+```
+
+## On failure
+
+- Report LM Studio status once; fall back to `ReCall.md`.
+- Do not only tell Jon to run preflight — **run it yourself**.
+
+## Bulk seed
+
+Use `infer=False` via `scripts/seed-profile-jedi-memories.py` for large doc seeds.
+
+See **`.cursor/docs/MEM0-LMSTUDIO.md`** for full reference.

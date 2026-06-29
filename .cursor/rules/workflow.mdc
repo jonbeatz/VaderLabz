@@ -1,0 +1,58 @@
+---
+description: Session workflow triggers for JonBeatz personal profile
+alwaysApply: true
+---
+
+# Workflow Session Rules — JonBeatz
+
+## Start Project
+
+When user says **Start Project**, **Begin Project**, **Start Session**, **Cold Start**, or **Personal Start**:
+
+- Execute [`.cursor/prompts/Start-Project.md`](../prompts/Start-Project.md)
+- Run **`npm run session:start -- -Full`** from `D:\Hermes\projects\JonBeatz`
+- Read `TRUTH.md`, `START-HERE.md`, `ReCall.md`
+- Do **not** auto-start MSC Next.js dev or Hostinger deploy flows
+
+## End Project
+
+When user says **End Project**, **End Session**, **Close Session**, or **Session Closeout**:
+
+- Execute [`.cursor/prompts/End-Project.md`](../prompts/End-Project.md)
+- Update `ReCall.md` and `project-log.md`
+- Run **`npm run session:stop`**
+
+## Update Docs
+
+When user says **update docs** or **update docs and mem0**:
+
+- Execute [`.cursor/prompts/Update-Docs.md`](../prompts/Update-Docs.md)
+- Run **`npm run docs:sync`**
+- Run **`npm run version:sync`** when version changed
+- Align version across `TRUTH.md`, `package.json`, `MASTER-COMMANDS.md`, `CHANGELOG.md`
+
+## Release Version
+
+When user says **release version**, **publish release**, or after a version bump on a milestone branch:
+
+- Execute [`.cursor/prompts/Release-Version.md`](../prompts/Release-Version.md)
+- Run **`npm run version:sync`** then **`npm run release`**
+
+## Branch Cut
+
+When user says **branch cut**, **cut JonBeatz-Project-vN**, **cut new development branch**, or **Lets Cut New Branch**:
+
+- Execute [`.cursor/prompts/Branch-Cut.md`](../prompts/Branch-Cut.md)
+- Full ritual: backup → freeze previous branch @ SHA → create `JonBeatz-Project-v{N}` → bump **`N.0.0`** → update Checkpoint + Restore-Points → **`npm run release`**
+- Do **not** stop at `git checkout -b` alone
+- Leave **`main`** untouched unless Jon explicitly requests a merge
+
+## Backup
+
+When user says **backup profile** or **backup**:
+
+- Run **`npm run backup:profile`** from profile root (non-interactive)
+
+## Context switch
+
+If Jon asks about **website**, **Payload**, **deploy**, or **MyStudioChannel** — confirm whether to open `D:\Cursor_Projectz\MyStudioChannel` instead of this profile.

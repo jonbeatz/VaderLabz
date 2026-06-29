@@ -1,0 +1,41 @@
+---
+description: Hostinger deploy knowledge — reference MSC repo; do not run MSC deploy from JonBeatz package.json
+alwaysApply: false
+globs:
+  - .cursor/docs/HOSTINGER*.md
+  - .cursor/docs/PITFALLS-HOSTINGER.md
+  - .env.local.example
+---
+
+# Hostinger reference (JonBeatz)
+
+## Default boundary
+
+JonBeatz is **personal** — do not auto-run MSC `pushit:live`, `msc:hostinger:*`, or Payload deploy unless Jon explicitly requests website deploy **and** MSC workspace is active.
+
+## When Jon mentions Hostinger
+
+1. Read `.cursor/docs/HOSTINGER-REFERENCE.md`
+2. Read `.cursor/skills/Hostinger-Ops/SKILL.md`
+3. For deploy: execute `.cursor/prompts/Hostinger-MSC.md` (workspace switch + AskQuestion)
+
+## Deploy safety (from MSC production)
+
+1. **Local PC:** build + upload (`pushitup`, `pushit:live*`)
+2. **hPanel:** Node.js Restart only
+3. **Two-folder model:** FTPS staging → `sync-app` → live root
+4. **Avoid MCP zip** on shared Node (`better-sqlite3` compile fails)
+5. **Fast deploy:** DB not included by default — use `-WithDb` when CMS data must go live
+6. **Partial `.next` uploads** cause vendor-chunks errors — upload full build folder
+
+Full tier reference: `D:\Cursor_Projectz\MyStudioChannel\.cursor\docs\HOSTINGER-DEPLOY.md`
+
+## MCP
+
+`HOSTINGER_API_TOKEN` in JonBeatz `.env.local` → `npm run sync:mcp-env` → global `hostinger-*` servers.
+
+Use scoped launcher `scripts/jonbeatz-hostinger-mcp.mjs` — not default 129-tool `hostinger-api-mcp` binary.
+
+## Pitfalls
+
+See `.cursor/docs/PITFALLS-HOSTINGER.md` before troubleshooting live issues.

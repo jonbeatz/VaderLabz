@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react'
 
 const NAV_ITEMS = [
+  { label: 'STORY', href: '#story' },
+  { label: 'PHILOSOPHY', href: '#philosophy' },
   { label: 'PROJECTS', href: '#projects' },
-  { label: 'LAB', href: '#lab' },
-  { label: 'STACK', href: '#stack' },
-  { label: 'CONNECT', href: '#contact' },
+  { label: 'PROOF', href: '#proof' },
+  { label: 'CONNECT', href: '#connect' },
 ]
 
 export function StudioRails() {

@@ -1,4 +1,4 @@
-# Agent Instructions — {PROFILE_NAME} Profile
+# Agent Instructions — VaderLabz Profile
 
 ## First time here?
 
@@ -43,7 +43,7 @@ npm run backup:quick    # Standard backup, auto folder name, no prompts
 npm run backup:full     # Full mirror — includes everything
 ```
 
-Backups go to `G:\Hermes_Project_BackUpz\{PROJECT_NAME}\` with sequential naming.
+Backups go to `G:\Hermes_Project_BackUpz\VaderLabz\` with sequential naming.
 
 ## Skills Index
 
@@ -59,11 +59,11 @@ Available domain skills (see `SKILL-INDEX.md` for full list with tags):
 
 - **Environment:** Windows 10/11 PowerShell. No bash heredocs.
 - **UTF-8:** Never rewrite .md from PowerShell without -Encoding UTF8.
-- **Mem0:** Use `{PROFILE_SLUG}_memories` collection only — never other profiles.
+- **Mem0:** Use `vaderlabz_memories` collection only — never other profiles.
 - **Boundaries:** Stay within this profile. Do not mix other profiles' context.
 - **Recovery:** Run recovery commands yourself — don't only tell the operator.
-- **Backup root:** `G:\Hermes_Project_BackUpz\{PROJECT_NAME}\`
+- **Backup root:** `G:\Hermes_Project_BackUpz\VaderLabz\`
 
 ---
 
-*Created: {DATE}*
+*Created: 2026-06-28*

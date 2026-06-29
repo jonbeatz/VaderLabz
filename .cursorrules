@@ -1,14 +1,14 @@
 ---
-description: Core operating rules for {PROFILE_NAME}
+description: Core operating rules for VaderLabz
 alwaysApply: true
 ---
 
-# {PROFILE_NAME} — Core Rules
+# VaderLabz — Core Rules
 
 ## Environment
 
 - **OS/Shell:** Windows 10/11 PowerShell. No bash heredocs (`<<`). Use native PowerShell strings or temp files for multi-line git messages.
-- **Profile boundary:** This is `{PROFILE_SLUG}` — keep it isolated from other profiles.
+- **Profile boundary:** This is `vaderlabz` — keep it isolated from other profiles.
 
 ## Secrets
 

@@ -1,18 +1,18 @@
-# START HERE — {PROFILE_NAME} Daily Ops
+# START HERE — VaderLabz Daily Ops
 
 If an agent is new to this profile, read this file first.
 
-**Profile root:** {WORKSPACE}
-**Hermes slug:** {PROFILE_SLUG}
+**Profile root:** D:\Hermes\projects\VaderLabz
+**Hermes slug:** vaderlabz
 
 ---
 
 ## Operator Profile
 
-- **Operator:** {OPERATOR_NAME}
+- **Operator:** Operator
 - **Handshake (required):**
-  - Startup: **"Ok {OPERATOR_NAME} — {PROFILE_NAME} profile loaded, ready."**
-  - Closeout: **"Great work {OPERATOR_NAME} — session saved."**
+  - Startup: **"Ok Operator — VaderLabz profile loaded, ready."**
+  - Closeout: **"Great work Operator — session saved."**
 
 ---
 
@@ -72,8 +72,8 @@ npm run mem0:add -- "text to remember"
 npm run mem0:list
 ```
 
-Default model: **{MEM0_MODEL}** @ LM Studio `:1234`
-Collection: `{PROFILE_SLUG}_memories`
+Default model: **qwen3-4b-instruct-2507** @ LM Studio `:1234`
+Collection: `vaderlabz_memories`
 
 ---
 
@@ -96,4 +96,4 @@ Never bulk-rewrite markdown from PowerShell without `-Encoding UTF8`.
 
 ---
 
-*Created: {DATE}*
+*Created: 2026-06-28*

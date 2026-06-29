@@ -21,14 +21,14 @@ import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-const REPO_ROOT = "{WORKSPACE}";
-const DEFAULT_BACKUP_ROOT = "G:\\Hermes_Project_BackUpz\\{PROJECT_NAME}";
-const BACKUP_FOLDER_BASE = "{PROJECT_SLUG}" + "-project";
+const REPO_ROOT = "D:\Hermes\projects\VaderLabz";
+const DEFAULT_BACKUP_ROOT = "G:\\Hermes_Project_BackUpz\\VaderLabz";
+const BACKUP_FOLDER_BASE = "vaderlabz" + "-project";
 const BACKUP_FOLDER_PATTERN = new RegExp("^" + BACKUP_FOLDER_BASE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "-v(\\d+)-([a-z])$", "i");
 const DEFAULT_START_VERSION = 1;
 const STANDARD_DIRS = ["node_modules", ".next", "out", "output", "logs", "test-results", "__pycache__", ".venv", "venv"];
 const NOTES_REL_PATH = path.join(".cursor", "BackUp-Notez.md");
-const NOTES_FOOTER = "\n*Backup created — {PROJECT_NAME} project.*\n";
+const NOTES_FOOTER = "\n*Backup created — VaderLabz project.*\n";
 
 // ---- args -------------------------------------------------------------------
 const rawArgs = process.argv.slice(2);
@@ -179,7 +179,7 @@ async function resolveBackupPlan(rl) {
 
   console.log(`
 +--------------------------------------------------------------+
-|  Backup System — {PROJECT_NAME}                                |
+|  Backup System — VaderLabz                                |
 +--------------------------------------------------------------+
 
 Source: ${REPO_ROOT}

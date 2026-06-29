@@ -1,21 +1,21 @@
-# TRUTH.md — {PROFILE_NAME} Profile
+# TRUTH.md — VaderLabz Profile
 
 **Version:** 1.0.0
-**Profile root:** {WORKSPACE}
+**Profile root:** D:\Hermes\projects\VaderLabz
 
 ## Identity & Governance
 
-- **Name:** {PROFILE_NAME}
-- **Slug:** {PROFILE_SLUG}
+- **Name:** VaderLabz
+- **Slug:** vaderlabz
 - **Type:** Self-contained Hermes AI profile
 - **OS/Shell:** Windows 10/11 + PowerShell
-- **Purpose:** {PROFILE_DESCRIPTION}
+- **Purpose:** VaderLabz Dev Lab & AI Playground
 
 ## Core Connections
 
 - **Paid AI Backend:** LiteLLM proxy at `http://127.0.0.1:4000/v1` (DeepSeek V4)
 - **Free Local Brain:** LM Studio at `http://127.0.0.1:1234` (qwen3-4b-instruct or similar)
-- **Memory Store:** Mem0 — collection `{PROFILE_SLUG}_memories`
+- **Memory Store:** Mem0 — collection `vaderlabz_memories`
 - **Telegram Gateway:** Hermes profile gateway for iPhone two-way chat
 
 ## Core Rules
@@ -44,10 +44,10 @@
 
 ## Isolation Rules
 
-- This profile is self-contained in {WORKSPACE}.
-- Keep memories in the `{PROFILE_SLUG}_memories` collection only.
+- This profile is self-contained in D:\Hermes\projects\VaderLabz.
+- Keep memories in the `vaderlabz_memories` collection only.
 - All changes stay within this workspace.
 
 ---
 
-*Created: {DATE}*
+*Created: 2026-06-28*

@@ -24,6 +24,13 @@ alwaysApply: true
 
 When docs differ, `TRUTH.md` wins over everything.
 
+## Draven memory (AI assistant cross-session)
+
+Draven (the AI assistant) has his own isolated Mem0 at `draven_memories` / `qdrant_draven`:
+- Search before sessions: `npm run draven:search -- "query"`
+- Store context after tasks: `npm run draven:add -- "summary"`
+- This is separate from VaderLabz's own `mem0:add/search`
+
 ## Skills (read before relevant work)
 
 See SKILL-INDEX.md for the full catalog of available domain skills.

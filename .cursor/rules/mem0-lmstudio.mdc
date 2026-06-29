@@ -37,6 +37,14 @@ npm run mem0:list
 - VaderLabz memories stay in `vaderlabz_memories` (qdrant_vaderlabz) — separate from JonBeatz, MSC, and other profiles.
 - **Never** change `MEM0_USER_ID` or `MEM0_COLLECTION` in `.env.local` casually.
 
+## Draven memory (AI assistant — shared across all projects)
+
+Draven has his **own** isolated Mem0 collection at `draven_memories` / `%USERPROFILE%\.mem0\qdrant_draven`:
+- **Search:** `npm run draven:search -- "query"` (needs LM Studio)
+- **Add:** `npm run draven:add -- "text"` (no LM Studio needed — direct storage)
+- **List:** `npm run draven:list`
+- This stores cross-session context for the AI assistant — preferences, project locations, key decisions.
+
 ## Bulk seed
 
 Use `infer=False` via `scripts/seed-profile-jedi-memories.py` for large doc seeds.

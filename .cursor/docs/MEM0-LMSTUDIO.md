@@ -104,13 +104,28 @@ npm run mem0:seed:profile-jedi
 
 ---
 
+## Draven memory — AI assistant cross-session memory
+
+Draven (the AI assistant) has his own isolated Mem0 collection, shared across **all** projects:
+
+| Key | Value |
+|-----|-------|
+| **user_id** | `draven` |
+| **collection** | `draven_memories` |
+| **qdrant path** | `%USERPROFILE%\.mem0\qdrant_draven` |
+| **In VaderLabz** | `npm run draven:add -- "text"` / `npm run draven:search -- "query"` |
+
+This uses the same `mem0_integration.py` infrastructure. It's **project-independent** — Draven remembers context from all projects he works on.
+
+---
+
 ## Troubleshooting
 
 | Symptom | Fix |
 |---------|-----|
 | "LM Studio endpoint not online" | Start local server on 1234; run preflight |
 | "No models loaded" | `npm run mem0:preflight` |
-| Empty search after add | Wait 2–3s; verify `user_id` is `jonbeatz_personal` |
+| Empty search after add | Wait 2–3s; verify `user_id` is the project's own value |
 | "Memory recorded" but nothing stored | Fixed in v1.3.1 — `mem0:add` now uses `infer=False` by default |
 | Context length error on add | Use `mem0:add` (infer=False) or `mem0:add:infer` only for short notes |
 
@@ -119,5 +134,7 @@ npm run mem0:seed:profile-jedi
 ## Agent checklist (memory tasks)
 
 1. `npm run mem0:preflight`
-2. `npm run mem0:search -- "<topic>"` before planning
-3. `npm run mem0:add -- "<takeaway>"` at end of significant work
+2. `npm run mem0:search -- "<topic>"` before planning (VaderLabz memory)
+3. `npm run draven:search -- "<topic>"` — check Draven's cross-session memory (shared across all projects)
+4. `npm run mem0:add -- "<takeaway>"` at end of significant work
+5. `npm run draven:add -- "<takeaway>"` — also store in Draven's memory so he recalls next session

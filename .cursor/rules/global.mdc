@@ -20,6 +20,6 @@
 | **google doctor** | `npm run google:doctor` |
 | **postflight personal** | `npm run doctor` |
 
-**Local commands** always run from `D:\Hermes\projects\JonBeatz`.
+**Local commands** always run from the project root.
 
-See [Custom-Prompts.md](../docs/Custom-Prompts.md) for full phrase list.
+For a full phrase list, check `.cursor/docs/Custom-Prompts.md` if it exists (project-specific), or see the prompts in `.cursor/prompts/`.

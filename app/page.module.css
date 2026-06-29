@@ -1,21 +1,44 @@
-/* VaderLabz — Home Page Styles */
+/* ===========================================================================
+   VaderLabz — Home Page Styles
+   =========================================================================== */
 
+/* ---- Easing ---- */
+:root {
+  --ease-vader: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Main ---- */
 .main {
   position: relative;
   z-index: 10;
   min-height: 100vh;
+  padding: 0 4rem; /* account for studio rails */
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 0 1.5rem;
+  }
 }
 
 /* ---- Nav ---- */
 .header {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 4rem;
+  right: 4rem;
   z-index: 100;
   padding: 1.2rem 2.5rem;
-  background: linear-gradient(180deg, rgba(10,10,11,0.9) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
   backdrop-filter: blur(8px);
+}
+
+@media (max-width: 768px) {
+  .header {
+    left: 0;
+    right: 0;
+    padding: 1rem 1.5rem;
+  }
 }
 
 .nav {
@@ -27,6 +50,7 @@
 }
 
 .logo {
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.25em;
@@ -39,12 +63,13 @@
 }
 
 .navLinks a {
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.15em;
   color: var(--text-muted);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.3s var(--ease-vader);
 }
 
 .navLinks a:hover {
@@ -60,6 +85,8 @@
   justify-content: center;
   text-align: center;
   padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .heroTitle {
@@ -70,35 +97,46 @@
 }
 
 .heroTag {
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 400;
   letter-spacing: 0.2em;
   color: var(--accent);
   opacity: 0.7;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.heroLetter {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 .heroName {
-  font-size: 4.5rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  background: linear-gradient(135deg, var(--accent) 0%, #ff6b6b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
   line-height: 1;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .heroSub {
-  font-size: 1.1rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
   font-weight: 300;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   color: var(--text-muted);
 }
 
 .heroDesc {
-  max-width: 550px;
-  font-size: 0.9rem;
-  line-height: 1.7;
+  max-width: 520px;
+  font-size: 0.85rem;
+  line-height: 1.8;
   color: var(--text-muted);
   margin-bottom: 2rem;
 }
@@ -108,39 +146,42 @@
   gap: 1rem;
 }
 
+/* ---- Buttons ---- */
 .btnPrimary {
   display: inline-block;
   padding: 0.75rem 2rem;
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   color: #fff;
   background: var(--accent);
   border-radius: 4px;
   text-decoration: none;
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.3s var(--ease-vader), transform 0.3s var(--ease-vader);
 }
 
 .btnPrimary:hover {
-  opacity: 0.9;
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 
 .btnSecondary {
   display: inline-block;
   padding: 0.75rem 2rem;
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   color: var(--accent);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--border-accent);
   border-radius: 4px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.3s var(--ease-vader), transform 0.3s var(--ease-vader);
 }
 
 .btnSecondary:hover {
-  background: rgba(255, 42, 54, 0.1);
+  background: var(--accent-subtle);
   transform: translateY(-1px);
 }
 
@@ -148,24 +189,20 @@
 .section {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 6rem 2rem;
+  padding: 8rem 2rem;
 }
 
 .sectionNumber {
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 400;
-  letter-spacing: 0.15em;
-  color: var(--accent);
-  opacity: 0.5;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.25em;
+  color: var(--text-dim);
+  margin-bottom: 3rem;
 }
 
-.sectionTitle {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--text-primary);
-  margin-bottom: 3rem;
+.sectionNumberAccent {
+  color: var(--accent);
 }
 
 /* ---- Project Cards ---- */
@@ -177,17 +214,18 @@
 
 .projectCard {
   background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.3s var(--ease-vader), transform 0.3s var(--ease-vader), background 0.3s var(--ease-vader);
 }
 
 .projectCard:hover {
   border-color: var(--accent);
+  background: var(--bg-card-hover);
   transform: translateY(-2px);
 }
 
@@ -204,6 +242,7 @@
 }
 
 .projectStatus {
+  font-family: var(--font-mono);
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -237,25 +276,28 @@
 }
 
 .tag {
-  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
   padding: 0.2rem 0.5rem;
-  background: rgba(255, 42, 54, 0.08);
-  border: 1px solid rgba(255, 42, 54, 0.15);
+  background: var(--accent-subtle);
+  border: 1px solid var(--border-accent);
   color: var(--accent);
   border-radius: 3px;
 }
 
 .projectLink {
-  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
   color: var(--accent);
   text-decoration: none;
   letter-spacing: 0.08em;
   margin-top: 0.5rem;
   display: inline-block;
+  transition: opacity 0.3s var(--ease-vader);
 }
 
 .projectLink:hover {
-  text-decoration: underline;
+  opacity: 0.7;
 }
 
 /* ---- Experiment Cards ---- */
@@ -272,9 +314,14 @@
   gap: 0.75rem;
   padding: 2rem 1.5rem;
   background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   text-align: center;
+  transition: border-color 0.3s var(--ease-vader);
+}
+
+.experimentCard:hover {
+  border-color: var(--accent);
 }
 
 .experimentIcon {
@@ -289,9 +336,10 @@
 }
 
 .experimentStatus {
-  font-size: 0.6rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
 }
 
 /* ---- Stack Grid ---- */
@@ -302,12 +350,19 @@
 }
 
 .stackItem {
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
   color: var(--text-muted);
   letter-spacing: 0.08em;
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
+  transition: border-color 0.3s var(--ease-vader), color 0.3s var(--ease-vader);
+}
+
+.stackItem:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---- Contact ---- */
@@ -322,8 +377,9 @@
 .footer {
   text-align: center;
   padding: 2rem;
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  border-top: 1px solid var(--border-subtle);
 }

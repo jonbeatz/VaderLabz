@@ -3,34 +3,14 @@
 import React, { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
 // ============================================================================
-// ThreeBackground.tsx — Canonical 3D Website Background Component
+// ThreeBackground.tsx — Premium 3D Background with Bloom
 // ============================================================================
 //
-// Drop this component into any Next.js App Router page to get:
-//   - Immersive particle starfield (fly-through on scroll)
-//   - Crystalline wireframe core + orbiting ring (mouse parallax)
-//   - Scroll-driven color-shift (accent → secondary)
-//   - Dynamic accent-colored lighting
-//
-// Usage:
-//   import { ThreeBackground } from '@/components/ThreeBackground'
-//   export default function Page() {
-//     return (
-//       <>
-//         <ThreeBackground accent="#F5B841" />
-//         <main className="relative z-10">{/* your content */}</main>
-//       </>
-//     )
-//   }
-//
-// Variants:
-//   <ThreeBackground accent="#F5B841" />   ← Studio Gold (JonBeatz default)
-//   <ThreeBackground accent="#ff2a36" />   ← VaderLabz Red (dev site)
-//   <ThreeBackground accent="#3b82f6" />   ← Blue (custom)
-//   <ThreeBackground accent="#a855f7" />   ← Purple (custom)
+// Upgrades: bloom post-processing for accent glow, DPR management.
 // ============================================================================
 
 // ---- Scroll progress: called from useFrame (no React re-render) ------------
@@ -46,12 +26,12 @@ function ParticleFlyThrough({ accentColor }: { accentColor: string }) {
   const accent = new THREE.Color(accentColor)
 
   const positions = useMemo(() => {
-    const count = 1600
+    const count = 2000
     const coords = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
-      coords[i * 3]     = (Math.random() - 0.5) * 35
-      coords[i * 3 + 1] = (Math.random() - 0.5) * 35
-      coords[i * 3 + 2] = (Math.random() - 0.5) * 45
+      coords[i * 3] = (Math.random() - 0.5) * 40
+      coords[i * 3 + 1] = (Math.random() - 0.5) * 40
+      coords[i * 3 + 2] = (Math.random() - 0.5) * 50
     }
     return coords
   }, [])
@@ -61,11 +41,11 @@ function ParticleFlyThrough({ accentColor }: { accentColor: string }) {
     const progress = getScrollProgress()
     pointsRef.current.position.z = THREE.MathUtils.lerp(
       pointsRef.current.position.z,
-      progress * 35,
-      0.08
+      progress * 40,
+      0.08,
     )
-    pointsRef.current.rotation.y += delta * 0.02
-    pointsRef.current.rotation.x += delta * 0.01
+    pointsRef.current.rotation.y += delta * 0.015
+    pointsRef.current.rotation.x += delta * 0.008
     ;(pointsRef.current.material as THREE.PointsMaterial).color.lerp(accent, 0.02)
   })
 
@@ -74,10 +54,10 @@ function ParticleFlyThrough({ accentColor }: { accentColor: string }) {
       <PointMaterial
         transparent
         color={accentColor}
-        size={0.18}
+        size={0.15}
         sizeAttenuation
         depthWrite={false}
-        opacity={0.45}
+        opacity={0.35}
       />
     </Points>
   )
@@ -101,29 +81,32 @@ function HeroCore({
 
     const coreMesh = new THREE.Mesh(
       new THREE.OctahedronGeometry(5.2, 1),
-      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: 0.16 })
+      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: 0.16 }),
     )
     grp.add(coreMesh)
 
     const glowMesh = new THREE.Mesh(
       new THREE.OctahedronGeometry(5.4, 1),
       new THREE.MeshBasicMaterial({
-        color: c, wireframe: true, transparent: true, opacity: 0.25,
+        color: c,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.25,
         blending: THREE.AdditiveBlending,
-      })
+      }),
     )
     grp.add(glowMesh)
 
     const shellMesh = new THREE.Mesh(
       new THREE.BoxGeometry(7.8, 7.8, 7.8),
-      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: 0.06 })
+      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: 0.06 }),
     )
     shellMesh.rotation.set(Math.PI / 4, Math.PI / 4, 0)
     grp.add(shellMesh)
 
     const ringMesh = new THREE.Mesh(
       new THREE.TorusGeometry(9.2, 0.18, 16, 100),
-      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: 0.22 })
+      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: 0.22 }),
     )
     ringMesh.rotation.set(Math.PI / 3, Math.PI / 6, 0)
     grp.add(ringMesh)
@@ -134,8 +117,8 @@ function HeroCore({
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       mouse.current = {
-        x: (e.clientX / window.innerWidth) - 0.5,
-        y: (e.clientY / window.innerHeight) - 0.5,
+        x: e.clientX / window.innerWidth - 0.5,
+        y: e.clientY / window.innerHeight - 0.5,
       }
     }
     window.addEventListener('mousemove', handler)
@@ -146,21 +129,22 @@ function HeroCore({
     const { grp, coreMesh, glowMesh, shellMesh, ringMesh, color } = result
     const progress = getScrollProgress()
 
-    // Scroll: sink + shrink
     grp.position.y = THREE.MathUtils.lerp(grp.position.y, -1.2 + progress * -25, 0.08)
-    grp.scale.setScalar(THREE.MathUtils.lerp(grp.scale.x, Math.max(0.2, 1.2 - progress * 2.0), 0.08))
+    grp.scale.setScalar(
+      THREE.MathUtils.lerp(grp.scale.x, Math.max(0.2, 1.2 - progress * 2.0), 0.08),
+    )
 
-    // Mouse parallax
     grp.position.x = THREE.MathUtils.lerp(grp.position.x, mouse.current.x * 2.2, 0.06)
     grp.position.z = THREE.MathUtils.lerp(grp.position.z, -mouse.current.y * 2.2, 0.06)
 
-    // Spin (opposite directions)
-    coreMesh.rotation.y += delta * 0.35; coreMesh.rotation.x += delta * 0.15
-    glowMesh.rotation.y += delta * 0.35; glowMesh.rotation.x += delta * 0.15
-    shellMesh.rotation.y -= delta * 0.25; shellMesh.rotation.z += delta * 0.15
+    coreMesh.rotation.y += delta * 0.35
+    coreMesh.rotation.x += delta * 0.15
+    glowMesh.rotation.y += delta * 0.35
+    glowMesh.rotation.x += delta * 0.15
+    shellMesh.rotation.y -= delta * 0.25
+    shellMesh.rotation.z += delta * 0.15
     ringMesh.rotation.z += delta * 0.45
 
-    // Color-shift on scroll past 50%
     if (progress > 0.5) {
       const factor = (progress - 0.5) / 0.5
       grp.traverse((child) => {
@@ -208,25 +192,26 @@ function DynamicLights({ accentColor }: { accentColor: string }) {
 
 // ---- Main Component -------------------------------------------------------
 export interface ThreeBackgroundProps {
-  /** Primary accent color (CSS hex). Default: '#F5B841' (Studio Gold) */
   accent?: string
-  /** Secondary color for scroll transition. Default: '#ff0033' (Vader Red) */
   secondary?: string
-  /** Background color. Default: '#040405' */
   bgColor?: string
-  /** Enable/disable mouse parallax. Default: true */
-  mouseParallax?: boolean
-  /** Reduce visual intensity. Default: false */
-  calm?: boolean
+  bloom?: boolean
   children?: React.ReactNode
 }
 
 export function ThreeBackground({
   accent = '#F5B841',
   secondary = '#ff0033',
-  bgColor = '#040405',
+  bgColor = '#000000',
+  bloom = false,
   children,
 }: ThreeBackgroundProps) {
+  // Disable bloom on touch/mobile for perf
+  const isMobile =
+    typeof window !== 'undefined' &&
+    ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  const enableBloom = bloom && !isMobile
+
   return (
     <div
       className="fixed inset-0 w-full h-full"
@@ -244,11 +229,23 @@ export function ThreeBackground({
       <Canvas
         camera={{ position: [0, 0, 5], fov: 60 }}
         style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
-        dpr={[1, 1.5]} // Cap DPR for performance
+        dpr={[1, 1.5]}
+        gl={{ antialias: false }}
       >
         <DynamicLights accentColor={accent} />
         <ParticleFlyThrough accentColor={accent} />
         <HeroCore accentColor={accent} secondaryColor={secondary} />
+
+        {enableBloom && (
+          <EffectComposer>
+            <Bloom
+              intensity={0.3}
+              luminanceThreshold={0.2}
+              luminanceSmoothing={0.9}
+              mipmapBlur
+            />
+          </EffectComposer>
+        )}
       </Canvas>
     </div>
   )

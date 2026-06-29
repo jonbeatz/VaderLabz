@@ -1,27 +1,27 @@
-# project-backup-template.mjs
-# Template for a project-specific backup script.
-# The bootstrap-new-project.ps1 script copies this to the new project as
-# scripts/project-backup.mjs with placeholders replaced.
-#
-# Folder naming: <project-slug>-v{N}-{letter} (v1-a, v1-b, ... v1-z, v2-a).
-# Backups go to: G:\Hermes_Project_BackUpz\<ProjectName>\
-#
-# Usage:
-#   node scripts/project-backup.mjs [name] [--standard|--full] [--yes] [--dry-run] [--note "..."]
-#
-# npm:
-#   backup / backup:project   -> interactive standard
-#   backup:standard           -> standard (skips heavy/regenerable dirs)
-#   backup:full               -> full mirror (everything)
-#   backup:quick              -> standard + --yes
-#   backup:quick:full         -> full + --yes
+// project-backup-template.mjs
+// Template for a project-specific backup script.
+// The bootstrap-new-project.ps1 script copies this to the new project as
+// scripts/project-backup.mjs with placeholders replaced.
+//
+// Folder naming: <project-slug>-v{N}-{letter} (v1-a, v1-b, ... v1-z, v2-a).
+// Backups go to: G:\Hermes_Project_BackUpz\<ProjectName>\
+//
+// Usage:
+//   node scripts/project-backup.mjs [name] [--standard|--full] [--yes] [--dry-run] [--note "..."]
+//
+// npm:
+//   backup / backup:project   -> interactive standard
+//   backup:standard           -> standard (skips heavy/regenerable dirs)
+//   backup:full               -> full mirror (everything)
+//   backup:quick              -> standard + --yes
+//   backup:quick:full         -> full + --yes
 
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
-const REPO_ROOT = "D:\Hermes\projects\VaderLabz";
+const REPO_ROOT = "D:\\Hermes\\projects\\VaderLabz";
 const DEFAULT_BACKUP_ROOT = "G:\\Hermes_Project_BackUpz\\VaderLabz";
 const BACKUP_FOLDER_BASE = "vaderlabz" + "-project";
 const BACKUP_FOLDER_PATTERN = new RegExp("^" + BACKUP_FOLDER_BASE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "-v(\\d+)-([a-z])$", "i");

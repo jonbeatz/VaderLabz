@@ -59,7 +59,7 @@ Available domain skills (see `SKILL-INDEX.md` for full list with tags):
 
 - **Environment:** Windows 10/11 PowerShell. No bash heredocs.
 - **UTF-8:** Never rewrite .md from PowerShell without -Encoding UTF8.
-- **Mem0:** Use `vaderlabz_memories` collection only — never other profiles.
+- **Mem0:** Uses `vaderlabz_memories` collection in `%USERPROFILE%\.mem0\qdrant_vaderlabz` — **isolated** from JonBeatz, MSC, and all other profiles. Configured in `.env.local`. Never switch or share collections.
 - **Boundaries:** Stay within this profile. Do not mix other profiles' context.
 - **Recovery:** Run recovery commands yourself — don't only tell the operator.
 - **Backup root:** `G:\Hermes_Project_BackUpz\VaderLabz\`

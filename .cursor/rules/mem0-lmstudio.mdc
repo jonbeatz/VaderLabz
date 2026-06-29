@@ -1,18 +1,24 @@
 ---
-description: Mem0 and LM Studio rules for JonBeatz personal memory
+description: Mem0 and LM Studio agent rules — per-project isolated memory
 alwaysApply: true
 ---
 
 # Mem0 + LM Studio — Agent Rules
 
+## Architecture
+
+Each project has its **own isolated Mem0 collection** defined in `.env.local`.
+
+VaderLabz uses: `MEM0_USER_ID=vaderlabz`, `MEM0_COLLECTION=vaderlabz_memories`, Qdrant at `%USERPROFILE%\.mem0\qdrant_vaderlabz`.
+
 ## Before search or infer-add
 
-1. Run **`npm run mem0:preflight`** from `D:\Hermes\projects\JonBeatz` (or confirm LM Studio :1234 + any LLM loaded — default **qwen3-4b-instruct-2507**, shared with Hermes).
-2. Use **`jonbeatz_personal`** scope only — never MSC memory IDs.
+1. Run **`npm run mem0:preflight`** from project root (confirms LM Studio :1234 + any LLM loaded).
+2. The script uses the project's own `MEM0_USER_ID` / `MEM0_COLLECTION` from `.env.local` — no cross-profile mixing.
 
 **Note:** `mem0:add` (default), `list`, and `delete` skip preflight — no LLM required.
 
-## Commands (Local — JonBeatz root)
+## Commands (from project root)
 
 ```powershell
 npm run mem0:search -- "query"
@@ -23,7 +29,13 @@ npm run mem0:list
 ## On failure
 
 - Report LM Studio status once; fall back to `ReCall.md`.
-- Do not only tell Jon to run preflight — **run it yourself**.
+- Do not only tell the operator to run preflight — **run it yourself**.
+
+## Per-project isolation
+
+- Memories are scoped to the project's `.env.local` config.
+- VaderLabz memories stay in `vaderlabz_memories` (qdrant_vaderlabz) — separate from JonBeatz, MSC, and other profiles.
+- **Never** change `MEM0_USER_ID` or `MEM0_COLLECTION` in `.env.local` casually.
 
 ## Bulk seed
 

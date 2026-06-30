@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useCursor } from '@/lib/cursor-context'
 
 interface CursorState {
   x: number
@@ -10,6 +11,7 @@ interface CursorState {
 }
 
 export function CustomCursor() {
+  const { cursorEnabled } = useCursor()
   const [state, setState] = useState<CursorState>({
     x: 0,
     y: 0,
@@ -18,6 +20,7 @@ export function CustomCursor() {
   })
 
   useEffect(() => {
+    if (!cursorEnabled) return
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
@@ -56,9 +59,9 @@ export function CustomCursor() {
       document.removeEventListener('mouseover', onOver)
       document.removeEventListener('mouseout', onOut)
     }
-  }, [])
+  }, [cursorEnabled])
 
-  if (!state.isVisible) return null
+  if (!state.isVisible || !cursorEnabled) return null
 
   return (
     <div

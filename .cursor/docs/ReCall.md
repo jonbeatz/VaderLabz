@@ -79,6 +79,23 @@
 
 ### 2026-06-30 (Late) — Route restructuring + README reboot + screenshot cleanup
 
+*(existing content above)*
+
+### 2026-06-30 (Session 2 — Start Project refactor + v3 cleanup + skeleton backport)
+
+- **Start Project ritual overhaul:**
+  - `session-start.ps1` now **auto-launches LM Studio** if offline (finds at Program Files, waits 30s for API)
+  - Step 2 added to `Start-Project.md`: `mem0:preflight` + `mem0:search -- "test"` smoke test to confirm model loaded
+  - `START-HERE.md` checklist updated to include LM Studio check + smoke test
+  - Backported to shared-profile-content skeleton as **v1.11.0**
+- **V3 folder cleanup:** Removed 3 fossil subdirectories (`vader-experience/`, `vader-experience-v2/`, `archive/`) from `app/vader-experience-v3/` — contained Bloom crash code + callback ref bugs
+- **v2 page fix:** Removed `EffectComposer`/`Bloom` import + usage from `app/vader-experience-v2/page.tsx` (would crash build)
+- **v2 callback ref fix:** Replaced `ref={el => dotRefs.current[i] = el}` with className-based `.progress-dot` selectors in v2 page
+- **Build verified:** `npm run web:build` passes clean — 6 routes, 0 errors
+- **Telegram morning conversation notes saved** to both `vaderlabz_memories` and `draven_memories`
+- **Voice greeting spoken:** Draven welcome on first Start Project of session
+- **Mem0:** Session context added to both collections
+
 - **Route restructure:**
   - `/vader-experience` promoted to new default `/` route (main site)
   - Original homepage moved to `/archive` for reference
@@ -97,4 +114,36 @@
 
 ---
 
-*Last Entry: 2026-06-30*
+*Last Entry: 2026-06-30 (Session 3)*
+
+### 2026-06-30 (Session 3 — Main page saber + Bloom + HDR picker)
+
+- **Main `/` page overhaul:**
+  - Model swapped from `DamagedHelmet.glb` → `darth_vader_lightsaber.glb` (Vader's lightsaber)
+  - Component renamed from `HelmetModel` → `SaberModel`
+  - Added `EffectComposer` + `Bloom` with tunable intensity
+  - Blade emissive boosted for red glow pickup in Bloom
+  - Chapter detail text updated from "DamagedHelmet" to accurate model names across all pages
+- **Bloom tuning session:**
+  - Settled on: `luminanceThreshold: 0.1, luminanceSmoothing: 0.02, intensity: 0.3, mipmapBlur, kernelSize: 1`
+  - Blade emissive set to `(0.6, 0.02, 0.0) @ intensity 2` — subtle enough to avoid white halos
+- **HDR Environment Picker:**
+  - Downloaded 3 new free CC0 HDR environments from Poly Haven: `colorful_studio`, `photo_studio_01`, `poly_haven_studio`
+  - Added collapsible bottom-left HDR picker UI (✦ icon → click to reveal presets → click ✕ to collapse)
+  - Picker supports instant environment swapping for A/B testing
+- **Updated docs + Mem0/Draven memories**
+
+---
+
+*Last Entry: 2026-06-30 (Session 4)*
+
+### 2026-06-30 (Session 4 — Accordion controls panel + glow fix + full interaction tools)
+
+- **Accordion restructure:** Replaced flat HDR+Bloom buttons with collapsible accordion sections: Scene, Bloom, Saber, Camera, Mouse
+- **New controls added:**
+  - **Saber rotation:** Off, Slow, Norm, Fast — changes `delta * speed` in useFrame
+  - **Blade color:** Red, Blue, Green, Purple — updates emissive color on blade mesh
+  - **Camera orbit:** Static, Slow, Full — toggles scroll-driven camera orbit
+  - **Mouse parallax:** On/Off — toggles saber tilt following cursor
+- **Glass card glow fix:** Removed separate `blur-xl` glow divs creating stretched ellipse artifacts on right of cards. Replaced with `boxShadow` containing glow within card bounds. Removed `ContactShadows` from 3D scene (was visible through glass).
+- **UI polish:** Larger text, brighter colors, subtle borders on inactive buttons for readability

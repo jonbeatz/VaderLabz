@@ -61,7 +61,7 @@
     "stripe": {
       "type": "stripe",
       "description": "Stripe payment processing — create products, prices, checkout sessions, manage subscriptions, and query payment data.",
-      "enabled": true,
+      "enabled": false,
       "env": {
         "STRIPE_API_KEY": "sk if using server mode; pk if using client mode"
       }
@@ -69,7 +69,7 @@
     "firebase": {
       "type": "firebase",
       "description": "Firebase project management — authentication, Firestore, storage, hosting, and analytics configuration.",
-      "enabled": true
+      "enabled": false
     },
     "fetch": {
       "type": "fetch",

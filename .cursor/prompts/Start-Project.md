@@ -38,7 +38,29 @@ OmniVoice lazy-starts the daemon on first speak (~15s first load). **Do NOT** sp
 
 ---
 
-## Step 2: Mandatory Knowledge Sync (INTERNAL ONLY - do not report unless asked)
+## Step 2: LM Studio Check + Mem0 Smoke Test (mandatory after script)
+
+After `session:start -- -Full` completes, **probe LM Studio**:
+
+```powershell
+npm run mem0:preflight
+```
+
+The `session:start` script now attempts to **auto-launch** LM Studio if it's not running (finds it at `C:\Program Files\LM Studio\LM Studio.exe`).
+
+- If **offline** (exit code 1): **Alert the operator** that LM Studio couldn't start. Prompt them to launch it manually from the Start Menu or `C:\Program Files\LM Studio\LM Studio.exe` and load `qwen3-4b-instruct-2507`.
+- If **online** (exit code 0): Run a **Mem0 smoke test** to confirm the model is actually loaded and responding to inference:
+
+```powershell
+npm run mem0:search -- "test"
+```
+
+- Returns results → Mem0 is fully operational, model is active
+- Fails/times out → model is registered in the API but not the active loaded model. Alert the operator to select `qwen3-4b-instruct-2507` in the LM Studio GUI's model dropdown, then retry.
+
+---
+
+## Step 3: Mandatory Knowledge Sync (INTERNAL ONLY - do not report unless asked)
 
 Read with the editor before running shells or claiming repo state:
 
@@ -50,18 +72,17 @@ Read with the editor before running shells or claiming repo state:
 
 ---
 
-## Step 3: Mem0 & Context Recall
+## Step 4: Mem0 & Context Recall
 
 ```powershell
-npm run mem0:preflight
 npm run mem0:search -- "current priorities"
 ```
 
-If Mem0 returns no results, fall back to **`ReCall.md`** as the source of truth.
+If LM Studio was offline in Step 2, Mem0 search will fail — fall back to **`ReCall.md`** as the source of truth.
 
 ---
 
-## Step 4: Environment Handshake (print in chat)
+## Step 5: Environment Handshake (print in chat)
 
 ```
 Ok Jon - VaderLabz Command Center is ONLINE.
@@ -79,9 +100,11 @@ RECALL FOCUS
 What's the mission for today, Operator?
 ```
 
+**Silent pitfall rule:** If the status card shows LM Studio `[offline]`, the agent must inform the operator before proceeding, and either prompt them to start it or skip Mem0 operations. Do not silently proceed without Mem0.
+
 ---
 
-## Step 5: Paid cloud decision
+## Step 6: Paid cloud decision
 
 | Operator needs | Agent action |
 |----------------|--------------|

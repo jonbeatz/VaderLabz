@@ -34,10 +34,12 @@ When docs differ, use this priority:
 Say **Start Project**, **Start Session**, or **Cold Start**.
 
 **Agent must:**
-1. Run session startup from profile root
-2. Read `TRUTH.md`, this file, and `ReCall.md`
-3. Optionally search Mem0 for "current priorities"
-4. Print session status card (ports, services, Mem0)
+1. Run `npm run session:start -- -Full` from profile root (auto-launches LM Studio if offline, starts DeepSeek + ngrok)
+2. Run `npm run mem0:preflight` → if offline, alert operator to start LM Studio manually
+3. Run `npm run mem0:search -- "test"` as smoke test → if fails, ask operator to load qwen3-4b in LM Studio GUI
+4. Read `TRUTH.md`, this file, and `ReCall.md`
+5. Search Mem0 for "current priorities"
+6. Print session status card (ports, services, Mem0)
 
 ---
 

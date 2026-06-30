@@ -1,5 +1,50 @@
 # Changelog — VaderLabz
 
+## 2.2.0 - 2026-06-30
+
+### Added
+- **Accordion controls panel** — Collapsible bottom-left widget with 5 sections: Scene, Bloom, Saber, Camera, Mouse
+- **Saber rotation control** — Off, Slow, Norm, Fast rotation speed via `useFrame`
+- **Blade color picker** — Red, Blue, Green, Purple — live updates emissive on blade mesh
+- **Camera orbit modes** — Static, Slow, Full (scroll-driven orbit)
+- **Mouse parallax toggle** — On/Off control for saber tilt following cursor
+
+### Fixed
+- **Glass card glow artifact** — Removed separate `blur-xl` glow divs that created stretched ellipse shadows to the right of chapter cards. Replaced with `boxShadow` contained within card bounds.
+- **ContactShadows removed** — Was visible through semi-transparent glass panels causing visual artifacts
+
+### Changed
+- **UI polish** — Larger text (`0.6rem` buttons, `0.65rem` headers), brighter colors, subtle borders on inactive buttons
+
+## 2.1.0 - 2026-06-30
+
+### Added
+- **Main `/` page Vader saber** — Switched from `DamagedHelmet.glb` to `darth_vader_lightsaber.glb` with Bloom glow
+- **HDR Environment Picker** — Collapsible bottom-left UI (✦ icon) for testing 4 HDR environments: Neon Studio, Colorful, Photo Studio, Office
+- **3 new HDR maps** — Downloaded from Poly Haven: `colorful_studio_1k.exr`, `photo_studio_01_1k.exr`, `poly_haven_studio_1k.exr` (all CC0)
+
+### Changed
+- **Bloom settings** — Tuned to `intensity: 0.3, kernelSize: 1, mipmapBlur` for subtle blade glow without white halos
+- **Model references** — All chapter `detail` texts updated to reference actual model names across all pages
+
+## 2.0.2 - 2026-06-30
+
+### Fixed
+- **Bloom/EffectComposer crash** — Removed `@react-three/postprocessing` imports from `vader-experience-v2/page.tsx` (crashed build with `three@0.185.0`)
+- **Callback ref hydration bug** — Replaced `ref={el => ...}` with className-based selectors in `vader-experience-v2/page.tsx`
+- **V3 fossil files** — Cleaned 3 leftover subdirectories from `app/vader-experience-v3/` (contained crash-causing code)
+- **Build verified** — `npm run web:build` passes clean, 0 errors
+
+### Added
+- **LM Studio auto-launch** — `session-start.ps1` now launches LM Studio if offline (waits up to 30s for API)
+- **Mem0 smoke test** — `Start-Project.md` now runs `mem0:search -- "test"` to confirm model is loaded
+- **Skeleton v1.11.0** — All Start Project improvements backported to shared-profile-content
+
+## 2.0.1 - 2026-06-30
+
+### Fixed
+- **Recursive nesting crash** (`app/vader-experience-v3`) — 285 levels of self-nesting detected and eliminated. Caused Next.js file watcher to exhaust 32GB RAM during dev. Root cause: test-version iteration created `vader-experience-v3` inside itself during a copy operation. Lesson: when creating versioned test directories, verify no recursive nesting before running dev server.
+
 ## 2.0.0 - 2026-06-30
 
 ### Added

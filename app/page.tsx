@@ -2,13 +2,54 @@
 
 import { useEffect, useRef, useState, useCallback, Suspense, useMemo } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF, Environment, ContactShadows } from '@react-three/drei'
+import { useGLTF, Environment } from '@react-three/drei'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
-// Preload the helmet model so it's cached before the Canvas mounts
-useGLTF.preload('/media/DamagedHelmet.glb')
+// Preload the saber model so it's cached before the Canvas mounts
+useGLTF.preload('/media/darth_vader_lightsaber.glb')
+
+// ─── HDR Environment Presets ───────────────────────────────────────────────
+const HDR_PRESETS: { label: string; file: string }[] = [
+  { label: 'Neon Studio', file: '/media/neon_photostudio_1k.exr' },
+  { label: 'Colorful',    file: '/media/colorful_studio_1k.exr' },
+  { label: 'Photo Studio', file: '/media/photo_studio_01_1k.exr' },
+  { label: 'Office',      file: '/media/poly_haven_studio_1k.exr' },
+]
+
+// ─── Bloom Intensity Presets ────────────────────────────────────────────────
+const BLOOM_PRESETS: { label: string; intensity: number }[] = [
+  { label: 'Off',   intensity: 0 },
+  { label: 'Low',   intensity: 0.15 },
+  { label: 'Med',   intensity: 0.3 },
+  { label: 'High',  intensity: 0.6 },
+]
+
+// ─── Saber Rotation Speed Presets ───────────────────────────────────────────
+const ROTATION_PRESETS: { label: string; speed: number }[] = [
+  { label: 'Off',  speed: 0 },
+  { label: 'Slow', speed: 0.1 },
+  { label: 'Norm', speed: 0.25 },
+  { label: 'Fast', speed: 0.5 },
+]
+
+// ─── Camera Orbit Modes ─────────────────────────────────────────────────────
+const CAMERA_PRESETS: { label: string; mode: 'static' | 'slow' | 'full' }[] = [
+  { label: 'Static', mode: 'static' },
+  { label: 'Slow',   mode: 'slow' },
+  { label: 'Full',   mode: 'full' },
+]
+
+// ─── Saber Blade Colors ─────────────────────────────────────────────────────
+const SABER_COLORS: { label: string; color: [number, number, number] }[] = [
+  { label: 'Red',    color: [0.6, 0.0, 0.0] },
+  { label: 'Blue',   color: [0.0, 0.2, 0.8] },
+  { label: 'Green',  color: [0.0, 0.6, 0.1] },
+  { label: 'Purple', color: [0.5, 0.0, 0.6] },
+]
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useCursor } from '@/lib/cursor-context'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -68,7 +109,7 @@ const CHAPTERS = [
     title: 'The <i>Design</i> System',
     subtitle: 'From Gold to Red — A Visual Language',
     summary: 'VaderLabz Red (#ff2a36) is the signature accent — aggressive, confident, unmistakable across every surface.',
-    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the DamagedHelmet GLB model bathed in neon_photostudio HDR.',
+    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the Darth Vader lightsaber GLB model bathed in neon_photostudio HDR.',
     camera: { x: -1.2, y: 0, z: 3.8 },
     target: { x: 0, y: 0, z: 0 },
   },
@@ -89,9 +130,15 @@ function getScrollProgress(): number {
 }
 
 // ─── 3D Scene ───────────────────────────────────────────────────────────────
-function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<number> }) {
+function SaberModel({ progressRef, rotationSpeed, saberColor, cameraMode, mouseEnabled }: {
+  progressRef: React.MutableRefObject<number>;
+  rotationSpeed: number;
+  saberColor: [number, number, number];
+  cameraMode: 'static' | 'slow' | 'full';
+  mouseEnabled: boolean;
+}) {
   const groupRef = useRef<THREE.Group>(null!)
-  const { scene } = useGLTF('/media/DamagedHelmet.glb')
+  const { scene } = useGLTF('/media/darth_vader_lightsaber.glb')
   const { camera } = useThree()
   const mouseRef = useRef({ x: 0, y: 0 })
   const [error, setError] = useState(false)
@@ -111,15 +158,23 @@ function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<numb
               child.material.needsUpdate = true
             }
           }
+          // Blade material gets emissive boost matching saberColor
+          if (child.name && (child.name.toLowerCase().includes('blade') || child.name.toLowerCase().includes('saber'))) {
+            const mat = child.material
+            if (mat && !Array.isArray(mat) && mat instanceof THREE.MeshStandardMaterial) {
+              mat.emissive = new THREE.Color(saberColor[0], saberColor[1], saberColor[2])
+              mat.emissiveIntensity = 2
+            }
+          }
         }
       })
       return s
     } catch (e) {
-      console.error('Helmet model clone error:', e)
+      console.error('Model clone error:', e)
       setError(true)
       return null
     }
-  }, [scene])
+  }, [scene, saberColor])
 
   // Mouse parallax
   useEffect(() => {
@@ -136,25 +191,41 @@ function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<numb
     if (!g) return
     const p = progressRef.current
 
-    // Slow rotation — saber spins like a display
-    g.rotation.y += delta * 0.2
+    // Rotation — uses speed from picker
+    g.rotation.y += delta * rotationSpeed
     g.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.03 + p * 0.08
 
-    // Mouse-follow parallax
-    g.rotation.z += (mouseRef.current.x * 0.03 - g.rotation.z) * 0.03
+    // Mouse-follow parallax (toggleable)
+    if (mouseEnabled) {
+      g.rotation.z += (mouseRef.current.x * 0.03 - g.rotation.z) * 0.03
+    }
 
     // Scale — prominent and visible, grows with scroll
-    g.scale.setScalar(2.5 + p * 0.8)
+    g.scale.setScalar(2.1 + p * 0.6)
 
     // Position — peeking above blur bar, lowers as user scrolls down
-    g.position.y = 0.6 + p * -1.8
+    g.position.y = 0.8 + p * -1.8
 
-    // Camera orbit — zooms out slightly on scroll
-    const orbitAngle = p * Math.PI * 2
-    camera.position.x = Math.sin(orbitAngle) * 5
-    camera.position.z = Math.cos(orbitAngle) * 5
-    camera.position.y = 1.0 - p * 0.5
-    camera.lookAt(0, 0, 0)
+    // Camera orbit
+    if (cameraMode === 'full') {
+      const orbitAngle = p * Math.PI * 2
+      camera.position.x = Math.sin(orbitAngle) * 5
+      camera.position.z = Math.cos(orbitAngle) * 5
+      camera.position.y = 1.0 - p * 0.5
+      camera.lookAt(0, 0, 0)
+    } else if (cameraMode === 'slow') {
+      const orbitAngle = p * Math.PI
+      camera.position.x = Math.sin(orbitAngle) * 4
+      camera.position.z = Math.cos(orbitAngle) * 4
+      camera.position.y = 0.8
+      camera.lookAt(0, 0, 0)
+    } else {
+      // Static camera — default position
+      camera.position.x = 0
+      camera.position.z = 5
+      camera.position.y = 0.5
+      camera.lookAt(0, 0, 0)
+    }
   })
 
   if (error || !sceneClone) return null
@@ -162,7 +233,15 @@ function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<numb
   return <primitive ref={groupRef} object={sceneClone} />
 }
 
-function Scene3D({ progressRef }: { progressRef: React.MutableRefObject<number> }) {
+function Scene3D({ progressRef, hdrFile, bloomIntensity, rotationSpeed, saberColor, cameraMode, mouseEnabled }: {
+  progressRef: React.MutableRefObject<number>;
+  hdrFile: string;
+  bloomIntensity: number;
+  rotationSpeed: number;
+  saberColor: [number, number, number];
+  cameraMode: 'static' | 'slow' | 'full';
+  mouseEnabled: boolean;
+}) {
   return (
     <>
       <ambientLight intensity={0.5} />
@@ -171,10 +250,15 @@ function Scene3D({ progressRef }: { progressRef: React.MutableRefObject<number> 
       <directionalLight position={[0, 5, 3]} intensity={1} color="#ff6600" />
 
       <Suspense fallback={null}>
-        <HelmetModel progressRef={progressRef} />
-        <Environment files="/media/neon_photostudio_1k.exr" blur={0.2} />
-        <ContactShadows position={[0, -1.5, 0]} opacity={0.6} scale={8} blur={2.5} far={4} />
+        <SaberModel progressRef={progressRef} rotationSpeed={rotationSpeed} saberColor={saberColor} cameraMode={cameraMode} mouseEnabled={mouseEnabled} />
+        <Environment files={hdrFile} blur={0.2} />
       </Suspense>
+
+      {bloomIntensity > 0 && (
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.1} luminanceSmoothing={0.02} intensity={bloomIntensity} mipmapBlur kernelSize={1} />
+        </EffectComposer>
+      )}
     </>
   )
 }
@@ -296,20 +380,15 @@ function ChapterSection({ chapter, onReadMore }: { chapter: (typeof CHAPTERS)[0]
     <section id={chapter.id} ref={sectionRef} className="relative min-h-screen flex items-center py-16 md:py-24">
       <div className="w-full">
         {/* Content panel with glass effect */}
-        <div className="relative">
-          {/* Soft glow behind glass */}
-          <div className="absolute -inset-4 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
-          <div
-            ref={panelRef}
-            className="relative max-w-[440px] ml-[6%] md:ml-[15%] p-6 md:p-8 rounded-xl md:rounded-2xl will-change-[backdrop-filter]"
-            style={{
-              background: 'rgba(0,0,0,0.55)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255,255,255,0.04)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-              opacity: 0.99,
-            }}
+        <div className="relative max-w-[440px] ml-[6%] md:ml-[15%] p-6 md:p-8 rounded-xl md:rounded-2xl will-change-[backdrop-filter]"
+          style={{
+            background: 'rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.04)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 60px rgba(255,42,54,0.06)',
+            opacity: 0.99,
+          }}
           >
           {/* Marker */}
           <div className="flex items-center gap-2 mb-4">
@@ -344,7 +423,6 @@ function ChapterSection({ chapter, onReadMore }: { chapter: (typeof CHAPTERS)[0]
             </svg>
           </button>
         </div>
-      </div>
       </div>
     </section>
   )
@@ -409,16 +487,14 @@ function ClosingQuote() {
     <section ref={ref} className="min-h-[60vh] flex items-center justify-center py-24">
       <div className="text-center max-w-[650px] px-6">
         {/* Glass backdrop with glow */}
-        <div className="relative">
-          <div className="absolute -inset-6 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
-          <div
-            className="relative p-8 md:p-12 rounded-2xl will-change-[backdrop-filter]"
+        <div
+          className="relative p-8 md:p-12 rounded-2xl will-change-[backdrop-filter]"
           style={{
             background: 'rgba(0,0,0,0.55)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
             border: '1px solid rgba(255,255,255,0.04)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 60px rgba(255,42,54,0.06)',
             opacity: 0.99,
           }}
         >
@@ -440,7 +516,6 @@ function ClosingQuote() {
           <div className="mt-2 font-mono text-[0.55rem] tracking-[0.3em] uppercase" style={{ color: TEXT_DIM }}>
             Experience Made With VaderLabz
           </div>
-        </div>
         </div>
       </div>
     </section>
@@ -679,12 +754,296 @@ function HeroAnimation({ children }: { children: React.ReactNode }) {
   return <div ref={ref}>{children}</div>
 }
 
+// ─── HDR + Scene Controls Picker (collapsible accordion, bottom-left) ────────
+function HdrPicker({ hdrIndex, setHdrIndex, bloomIndex, setBloomIndex, rotationIndex, setRotationIndex, cameraIndex, setCameraIndex, saberColorIndex, setSaberColorIndex, mouseEnabled, setMouseEnabled, cursorEnabled, setCursorEnabled }: {
+  hdrIndex: number; setHdrIndex: (i: number) => void;
+  bloomIndex: number; setBloomIndex: (i: number) => void;
+  rotationIndex: number; setRotationIndex: (i: number) => void;
+  cameraIndex: number; setCameraIndex: (i: number) => void;
+  saberColorIndex: number; setSaberColorIndex: (i: number) => void;
+  mouseEnabled: boolean; setMouseEnabled: (v: boolean) => void;
+  cursorEnabled: boolean; setCursorEnabled: (v: boolean) => void;
+}) {
+  const [open, setOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
+
+  const toggleSection = (id: string) => {
+    setActiveSection(activeSection === id ? null : id)
+  }
+
+  return (
+    <>
+      {/* Collapsed: just the diamond button */}
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          className="fixed bottom-6 left-6 z-50 font-mono transition-all duration-300 hover:text-white flex items-center justify-center rounded-full"
+          style={{
+            color: '#ff2a36',
+            fontSize: '0.7rem',
+            width: '22px',
+            height: '22px',
+            background: 'rgba(0,0,0,0.3)',
+            border: '1px solid rgba(255,42,54,0.25)',
+          }}
+          title="Toggle scene controls"
+        >
+          ✦
+        </button>
+      )}
+
+      {/* Expanded panel */}
+      {open && (
+        <div className="fixed bottom-6 left-6 z-50"
+          style={{
+            background: 'rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: '12px',
+            padding: '10px 14px',
+            maxWidth: '320px',
+          }}
+        >
+          <div className="flex flex-col gap-0.5">
+
+            {/* === Accordion: Scene (HDR) === */}
+            <AccordionSection
+              id="scene"
+              label="Scene"
+              activeSection={activeSection}
+              onToggle={toggleSection}
+            >
+              <div className="flex flex-wrap gap-1.5">
+                {HDR_PRESETS.map((preset, i) => (
+                  <button key={preset.label} onClick={() => setHdrIndex(i)}
+                    className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                    style={{
+                      color: i === hdrIndex ? '#fff' : '#7788aa',
+                      background: i === hdrIndex ? 'rgba(255,42,54,0.3)' : 'transparent',
+                      border: i === hdrIndex ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    }}
+                  >{preset.label}</button>
+                ))}
+              </div>
+            </AccordionSection>
+
+            {/* === Accordion: Bloom === */}
+            <AccordionSection
+              id="bloom"
+              label="Bloom"
+              activeSection={activeSection}
+              onToggle={toggleSection}
+            >
+              <div className="flex flex-wrap gap-1.5">
+                {BLOOM_PRESETS.map((preset, i) => (
+                  <button key={preset.label} onClick={() => setBloomIndex(i)}
+                    className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                    style={{
+                      color: i === bloomIndex ? '#fff' : '#7788aa',
+                      background: i === bloomIndex ? 'rgba(255,42,54,0.3)' : 'transparent',
+                      border: i === bloomIndex ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    }}
+                  >{preset.label}</button>
+                ))}
+              </div>
+            </AccordionSection>
+
+            {/* === Accordion: Saber === */}
+            <AccordionSection
+              id="saber"
+              label="Saber"
+              activeSection={activeSection}
+              onToggle={toggleSection}
+            >
+              <div className="flex flex-col gap-2">
+                <div>
+                  <div className="font-mono text-[0.55rem] tracking-[0.12em] mb-1" style={{ color: '#8899bb' }}>ROTATION</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {ROTATION_PRESETS.map((preset, i) => (
+                      <button key={preset.label} onClick={() => setRotationIndex(i)}
+                        className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                        style={{
+                          color: i === rotationIndex ? '#fff' : '#7788aa',
+                          background: i === rotationIndex ? 'rgba(255,42,54,0.3)' : 'transparent',
+                          border: i === rotationIndex ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                        }}
+                      >{preset.label}</button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="font-mono text-[0.55rem] tracking-[0.12em] mb-1" style={{ color: '#8899bb' }}>BLADE COLOR</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {SABER_COLORS.map((preset, i) => (
+                      <button key={preset.label} onClick={() => setSaberColorIndex(i)}
+                        className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                        style={{
+                          color: i === saberColorIndex ? '#fff' : '#7788aa',
+                          background: i === saberColorIndex ? 'rgba(255,42,54,0.3)' : 'transparent',
+                          border: i === saberColorIndex ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                        }}
+                      >{preset.label}</button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </AccordionSection>
+
+            {/* === Accordion: Camera === */}
+            <AccordionSection
+              id="camera"
+              label="Camera"
+              activeSection={activeSection}
+              onToggle={toggleSection}
+            >
+              <div className="flex flex-wrap gap-1.5">
+                {CAMERA_PRESETS.map((preset, i) => (
+                  <button key={preset.label} onClick={() => setCameraIndex(i)}
+                    className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                    style={{
+                      color: i === cameraIndex ? '#fff' : '#7788aa',
+                      background: i === cameraIndex ? 'rgba(255,42,54,0.3)' : 'transparent',
+                      border: i === cameraIndex ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    }}
+                  >{preset.label}</button>
+                ))}
+              </div>
+            </AccordionSection>
+
+            {/* === Accordion: Mouse === */}
+            <AccordionSection
+              id="mouse"
+              label="Mouse"
+              activeSection={activeSection}
+              onToggle={toggleSection}
+            >
+              {/* Saber parallax sub-section */}
+              <div className="font-mono text-[0.6rem] tracking-[0.1em] mb-2 mt-1 flex items-center gap-2"
+                style={{ color: '#667' }}
+              ><span style={{ width: 4, height: 4, borderRadius: '50%', background: '#ff2a36', display: 'inline-block' }} />
+                Saber Move</div>
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                <button onClick={() => setMouseEnabled(true)}
+                  className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                  style={{
+                    color: mouseEnabled ? '#fff' : '#7788aa',
+                    background: mouseEnabled ? 'rgba(255,42,54,0.3)' : 'transparent',
+                    border: mouseEnabled ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >On</button>
+                <button onClick={() => setMouseEnabled(false)}
+                  className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                  style={{
+                    color: !mouseEnabled ? '#fff' : '#7788aa',
+                    background: !mouseEnabled ? 'rgba(255,42,54,0.3)' : 'transparent',
+                    border: !mouseEnabled ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >Off</button>
+              </div>
+
+              {/* Cursor dot sub-section */}
+              <div className="font-mono text-[0.6rem] tracking-[0.1em] mb-2 mt-1 flex items-center gap-2"
+                style={{ color: '#667' }}
+              ><span style={{ width: 4, height: 4, borderRadius: '50%', background: '#ff2a36', display: 'inline-block' }} />
+                Cursor Dot</div>
+              <div className="flex flex-wrap gap-1.5">
+                <button onClick={() => setCursorEnabled(true)}
+                  className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                  style={{
+                    color: cursorEnabled ? '#fff' : '#7788aa',
+                    background: cursorEnabled ? 'rgba(255,42,54,0.3)' : 'transparent',
+                    border: cursorEnabled ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >On</button>
+                <button onClick={() => setCursorEnabled(false)}
+                  className="font-mono text-[0.6rem] tracking-[0.1em] px-3 py-1 rounded-full transition-all duration-300"
+                  style={{
+                    color: !cursorEnabled ? '#fff' : '#7788aa',
+                    background: !cursorEnabled ? 'rgba(255,42,54,0.3)' : 'transparent',
+                    border: !cursorEnabled ? '1px solid rgba(255,42,54,0.4)' : '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >Off</button>
+              </div>
+            </AccordionSection>
+
+            {/* Close button */}
+            <div className="flex items-center justify-start pt-1 mt-0.5"
+              style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+            >
+              <button
+                onClick={() => setOpen(false)}
+                className="font-mono transition-all duration-300 hover:text-white flex items-center justify-center rounded-full"
+                style={{
+                  color: '#ff2a36',
+                  fontSize: '0.7rem',
+                  width: '22px',
+                  height: '22px',
+                  background: 'rgba(255,42,54,0.15)',
+                  border: '1px solid rgba(255,42,54,0.25)',
+                }}
+                title="Close controls"
+              >✕</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+// ─── Accordion Section Sub-component ────────────────────────────────────────
+function AccordionSection({ id, label, activeSection, onToggle, children }: {
+  id: string;
+  label: string;
+  activeSection: string | null;
+  onToggle: (id: string) => void;
+  children: React.ReactNode;
+}) {
+  const isOpen = activeSection === id
+  return (
+    <div>
+      <button
+        onClick={() => onToggle(id)}
+        className="w-full flex items-center justify-between font-mono text-[0.65rem] tracking-[0.12em] py-1.5 px-1.5 rounded transition-all duration-200 hover:bg-white/5"
+        style={{ color: '#99aabb' }}
+      >
+        <span>{label}</span>
+        <span style={{
+          display: 'inline-block',
+          transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+          transition: 'transform 0.2s ease',
+          fontSize: '0.55rem',
+        }}>▸</span>
+      </button>
+      <div style={{
+        maxHeight: isOpen ? '200px' : '0px',
+        opacity: isOpen ? 1 : 0,
+        overflow: 'hidden',
+        transition: 'all 0.25s ease',
+        paddingLeft: '4px',
+      }}>
+        <div className="pt-1 pb-1.5">
+          {children}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ============================================================================
 // PAGE
 // ============================================================================
 export default function VaderExperiencePage() {
   const [loading, setLoading] = useState(true)
   const [activeArticle, setActiveArticle] = useState<number | null>(null)
+  const [hdrIndex, setHdrIndex] = useState(0)
+  const [bloomIndex, setBloomIndex] = useState(2)
+  const [rotationIndex, setRotationIndex] = useState(1)
+  const [cameraIndex, setCameraIndex] = useState(2)
+  const [saberColorIndex, setSaberColorIndex] = useState(0)
+  const [mouseEnabled, setMouseEnabled] = useState(true)
+  const { cursorEnabled, setCursorEnabled } = useCursor()
   const progressRef = useRef(0)
 
   // Track scroll progress for 3D scene
@@ -704,6 +1063,12 @@ export default function VaderExperiencePage() {
     }
   }, [])
 
+  const currentHdr = HDR_PRESETS[hdrIndex].file
+  const currentBloom = BLOOM_PRESETS[bloomIndex].intensity
+  const currentRotation = ROTATION_PRESETS[rotationIndex].speed
+  const currentCamera = CAMERA_PRESETS[cameraIndex].mode
+  const currentSaberColor = SABER_COLORS[saberColorIndex].color
+
   return (
     <>
       {loading && <LoadingScreen onComplete={handleComplete} />}
@@ -715,9 +1080,22 @@ export default function VaderExperiencePage() {
           dpr={[1, 1.5]}
           gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.2 }}
         >
-          <Scene3D progressRef={progressRef} />
+          <Scene3D progressRef={progressRef} hdrFile={currentHdr} bloomIntensity={currentBloom} rotationSpeed={currentRotation} saberColor={currentSaberColor} cameraMode={currentCamera} mouseEnabled={mouseEnabled} />
         </Canvas>
       </div>
+
+      {/* HDR Environment Picker — collapsible icon */}
+      {!loading && (
+        <HdrPicker
+          hdrIndex={hdrIndex} setHdrIndex={setHdrIndex}
+          bloomIndex={bloomIndex} setBloomIndex={setBloomIndex}
+          rotationIndex={rotationIndex} setRotationIndex={setRotationIndex}
+          cameraIndex={cameraIndex} setCameraIndex={setCameraIndex}
+          saberColorIndex={saberColorIndex} setSaberColorIndex={setSaberColorIndex}
+          mouseEnabled={mouseEnabled} setMouseEnabled={setMouseEnabled}
+          cursorEnabled={cursorEnabled} setCursorEnabled={setCursorEnabled}
+        />
+      )}
 
       {/* Content */}
       <BgOverlay>
@@ -729,16 +1107,14 @@ export default function VaderExperiencePage() {
           <section className="relative min-h-screen flex items-center justify-center">
             <div className="w-full px-6 pt-20">
               {/* Full-width glass strip so text isn't squeezed */}
-              <div className="relative">
-                <div className="absolute -inset-6 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
-                <div
-                  className="relative w-full py-10 md:py-14 text-center will-change-[backdrop-filter]"
+              <div className="relative w-full py-10 md:py-14 text-center will-change-[backdrop-filter] rounded-2xl"
                 style={{
                   background: 'linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%)',
                   backdropFilter: 'blur(16px)',
                   WebkitBackdropFilter: 'blur(16px)',
                   borderTop: '1px solid rgba(255,255,255,0.04)',
                   borderBottom: '1px solid rgba(255,255,255,0.04)',
+                  boxShadow: '0 0 60px rgba(255,42,54,0.06)',
                   opacity: 0.99,
                 }}
               >
@@ -788,7 +1164,6 @@ export default function VaderExperiencePage() {
                     onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >GITHUB ↗</a>
                 </div>
-              </div>
               </div>
             </div>
           </section>

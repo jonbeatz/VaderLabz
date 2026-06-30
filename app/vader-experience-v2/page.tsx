@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState, useCallback, Suspense, useMemo } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, Environment, ContactShadows } from '@react-three/drei'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
 // Preload the helmet model so it's cached before the Canvas mounts
-useGLTF.preload('/media/DamagedHelmet.glb')
+useGLTF.preload('/media/skywalker_lightsaber.glb')
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -68,7 +69,7 @@ const CHAPTERS = [
     title: 'The <i>Design</i> System',
     subtitle: 'From Gold to Red — A Visual Language',
     summary: 'VaderLabz Red (#ff2a36) is the signature accent — aggressive, confident, unmistakable across every surface.',
-    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the DamagedHelmet GLB model bathed in neon_photostudio HDR.',
+    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the Skywalker lightsaber GLB model bathed in neon_photostudio HDR.',
     camera: { x: -1.2, y: 0, z: 3.8 },
     target: { x: 0, y: 0, z: 0 },
   },
@@ -91,7 +92,7 @@ function getScrollProgress(): number {
 // ─── 3D Scene ───────────────────────────────────────────────────────────────
 function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<number> }) {
   const groupRef = useRef<THREE.Group>(null!)
-  const { scene } = useGLTF('/media/DamagedHelmet.glb')
+  const { scene } = useGLTF('/media/skywalker_lightsaber.glb')
   const { camera } = useThree()
   const mouseRef = useRef({ x: 0, y: 0 })
   const [error, setError] = useState(false)
@@ -110,6 +111,14 @@ function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<numb
             } else {
               child.material.needsUpdate = true
             }
+          }
+        }
+        // Boost blade emissive for visible blue glow
+        if (child.name && child.name.toLowerCase().includes('blade')) {
+          const mat = (child as THREE.Mesh).material
+          if (mat && !Array.isArray(mat) && mat instanceof THREE.MeshStandardMaterial) {
+            mat.emissive = new THREE.Color(0.05, 0.0, 0.8)
+            mat.emissiveIntensity = 8
           }
         }
       })
@@ -143,13 +152,13 @@ function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<numb
     // Mouse-follow parallax
     g.rotation.z += (mouseRef.current.x * 0.03 - g.rotation.z) * 0.03
 
-    // Scale — prominent and visible, grows with scroll
-    g.scale.setScalar(2.5 + p * 0.8)
+    // Scale — even smaller for Skywalker saber
+    g.scale.setScalar(0.18 + p * 0.06)
 
     // Position — peeking above blur bar, lowers as user scrolls down
     g.position.y = 0.6 + p * -1.8
 
-    // Camera orbit — zooms out slightly on scroll
+    // Camera orbit — pushed back for larger model
     const orbitAngle = p * Math.PI * 2
     camera.position.x = Math.sin(orbitAngle) * 5
     camera.position.z = Math.cos(orbitAngle) * 5
@@ -175,6 +184,10 @@ function Scene3D({ progressRef }: { progressRef: React.MutableRefObject<number> 
         <Environment files="/media/neon_photostudio_1k.exr" blur={0.2} />
         <ContactShadows position={[0, -1.5, 0]} opacity={0.6} scale={8} blur={2.5} far={4} />
       </Suspense>
+
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.1} luminanceSmoothing={0.02} intensity={1.2} mipmapBlur />
+      </EffectComposer>
     </>
   )
 }
@@ -518,7 +531,14 @@ function BackToTop() {
 // ─── Progress ───────────────────────────────────────────────────────────────
 function ProgressBar() {
   const barRef = useRef<HTMLDivElement>(null)
-  const dotRefs = useRef<(HTMLButtonElement | null)[]>([])
+
+  // Set refs imperatively in useEffect instead of callback refs (avoids hydration mismatch)
+  useEffect(() => {
+    const buttons = document.querySelectorAll('.progress-dot')
+    buttons.forEach((btn, i) => {
+      // no-op, we just let buttons exist without storing refs for scroll logic
+    })
+  }, [])
 
   useEffect(() => {
     const bar = barRef.current
@@ -526,10 +546,10 @@ function ProgressBar() {
     const update = () => {
       const p = getScrollProgress()
       bar.style.transform = `scaleY(${p})`
-      // Highlight active dot
+      // Highlight active dot using class selector (avoids hydration mismatch)
       const idx = Math.min(Math.floor(p * CHAPTERS.length), CHAPTERS.length - 1)
-      dotRefs.current.forEach((dot, i) => {
-        if (dot) dot.style.opacity = i === idx ? '1' : '0.25'
+      document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+        (dot as HTMLElement).style.opacity = i === idx ? '1' : '0.25'
       })
     }
     update()
@@ -553,9 +573,8 @@ function ProgressBar() {
       {CHAPTERS.map((ch, i) => (
         <button
           key={ch.id}
-          ref={el => { dotRefs.current[i] = el }}
           onClick={() => scrollToSection(ch.id)}
-          className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-100"
+          className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-100 progress-dot"
           style={{ color: ACCENT, opacity: 0.25 }}
           title={ch.title.replace(/<[^>]*>/g, '')}
         >

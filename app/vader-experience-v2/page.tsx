@@ -76,10 +76,10 @@ const CHAPTERS = [
 ]
 
 const STATS = [
-  { num: '47', label: 'Active Projects' },
-  { num: '1.8k+', label: 'GitHub Commits' },
-  { num: '6', label: 'MCP Servers' },
-  { num: '100%', label: 'Open Source' },
+  { num: '28', label: 'Repos Forged' },
+  { num: '130+', label: 'GitHub Commits' },
+  { num: '5', label: 'MCP Servers' },
+  { num: '20', label: 'Public Projects' },
 ]
 
 // ─── Scroll Progress ────────────────────────────────────────────────────────

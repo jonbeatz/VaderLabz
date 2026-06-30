@@ -2,93 +2,139 @@
 
 **Building, breaking, and learning. Full-stack AI experiments, personal projects, and new ideas forged in the dark.**
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)]()
-[![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)]()
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org)
-[![Three.js](https://img.shields.io/badge/Three.js-R3F-gold?style=flat-square)](https://docs.pmnd.rs/react-three-fiber)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Cursor](https://img.shields.io/badge/Cursor-Agent%20Ready-6C31C9?style=flat-square)](https://cursor.sh)
+[![Platform](https://img.shields.io/badge/Platform-Web-745B9E?logo=google-chrome)](https://github.com/jonbeatz/VaderLabz)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/jonbeatz/VaderLabz/releases)
+[![Release](https://img.shields.io/github/v/release/jonbeatz/VaderLabz?label=release&sort=semver)](https://github.com/jonbeatz/VaderLabz/releases)
+[![Repo](https://img.shields.io/badge/GitHub-jonbeatz%2FVaderLabz-181717?logo=github)](https://github.com/jonbeatz/VaderLabz)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
+[![Three.js](https://img.shields.io/badge/Three.js-R3F-gold)](https://docs.pmnd.rs/react-three-fiber)
+[![Cursor](https://img.shields.io/badge/Cursor-Agent_Ready-6C31C9?logo=cursor)](https://cursor.sh)
+
+![VaderLabz Hero](public/media/vaderlabz-screenshot.png)
 
 ---
 
-> **Live site:** [vaderlabz.com](https://vaderlabz.com/) — placeholder page until first deploy
-
-> **Source of Truth:** Read **TRUTH.md** for our master project identity, core commands, and architectural blueprint.
-
----
+> **Single source of truth:** Read **[`TRUTH.md`](TRUTH.md)** first, then **[`.cursor/docs/START-HERE.md`](.cursor/docs/START-HERE.md)**.
 
 ## 📊 Current Status
 
 | Metric | Value |
-|--------|-------|
-| **Version** | v2.0.0 ([Latest release](https://github.com/jonbeatz/VaderLabz/releases/latest)) |
-| **Stack** | Next.js 16 (App Router) + Three.js / R3F |
-| **3D Engine** | React-Three-Fiber + Drei + GSAP ScrollTrigger |
-| **Styling** | CSS Modules + Tailwind CSS v3 |
-| **Design** | Vader Red (#ff2a36) — dark cinematic palette |
-| **AI Backend** | LiteLLM proxy (DeepSeek V4) + LM Studio (local) |
-| **Memory** | Mem0 vector store (Qdrant) |
-| **Deploy** | Static export → Hostinger hPanel |
-| **Status** | 🟢 Active Development |
+| :--- | :--- |
+| **Version** | `v2.0.0` · [Latest release](https://github.com/jonbeatz/VaderLabz/releases/tag/v2.0.0) |
+| **Stack** | Next.js 16 (App Router) + Three.js / React-Three-Fiber / Drei |
+| **3D Engine** | 🗡️ Darth Vader Lightsaber model — scroll-driven camera orbit + glassmorphism panels |
+| **Live Site** | 🌐 [vaderlabz.com](https://vaderlabz.com) — placeholder page until first deploy |
+| **Memory** | 🧠 Mem0 + Qdrant (VaderLabz collection) — cross-session AI agent memory |
+| **AI Backend** | 🤖 LiteLLM (DeepSeek V4 proxy) + LM Studio (local) |
+| **Verified** | 🟢 `npm run web:build` (Clean build + Static generation) |
+| **Status** | ⚡ ACTIVE DEVELOPMENT — v2 branch |
 
-## 🖼️ Screenshots
+---
 
-![VaderLabz Homepage](public/media/vaderlabz-screenshot.png)
+## Screenshots
 
-_The immersive 3D narrative homepage — lightsaber model, glassmorphism panels, and scroll-driven camera orbit._
+### Immersive 3D Narrative Homepage
 
-## 🚀 Why VaderLabz?
+![VaderLabz Experience](public/media/vaderlabz-screenshot.png)
+*The new main site — lightsaber 3D model, scroll-driven camera, glassmorphism panels, 5 chapters of the VaderLabz story.*
 
-Most portfolios show what you made. **VaderLabz shows how you build.**
+### Original Homepage (Archived)
 
-| Capability | VaderLabz | Typical Portfolio |
-|------------|-----------|-------------------|
-| 3D Interactive Narrative | ✅ | ❌ |
-| Scroll-Driven Camera System | ✅ | ❌ |
-| Glassmorphism Design System | ✅ | ❌ |
-| Clickable Progress Navigation | ✅ | ❌ |
-| AI Co-Pilot (Draven) Integration | ✅ | ❌ |
-| Cross-Session Memory (Mem0) | ✅ | ❌ |
-| Dark Cinematic Palette | ✅ | ❌ |
-| Agent-Ready Documentation | ✅ | ❌ |
+![VaderLabz Archive](public/media/vaderlabz-screenshot.png)
+*The original portfolio homepage preserved at `/archive` for reference.*
 
-## 🗺️ Pages
+---
+
+## 1. Project Overview
+
+VaderLabz is a **personal dev playground and portfolio site** showcasing full-stack AI experiments, open-source projects, and tools built across the VaderLabz ecosystem. It powers:
+
+- A dark cinematic 3D UI with Vader Red (#ff2a36) design palette
+- Immersive scroll-driven narrative with 5 chapters (Genesis, Skeleton System, Draven, Command Center, Design System)
+- A custom lightsaber 3D model with scroll-driven camera orbit and mouse parallax
+- Glassmorphism content panels with soft red glow effects
+- Clickable smooth-scroll navigation (top nav + right side progress bar)
+- Draven persistent AI co-pilot integration with cross-session Mem0 memory
+- Safe experimental sandbox at `/vader-experience-v2` for testing alternate versions
+
+**Profile root:** `D:\Hermes\projects\VaderLabz`
+
+---
+
+## 2. Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Framework** | Next.js 16 (App Router, React 19) | Frontend + routing |
+| **3D Engine** | Three.js / React-Three-Fiber / Drei | Lightsaber model, camera orbit, environment |
+| **Animation** | GSAP + ScrollTrigger | Scroll-driven transitions and reveal effects |
+| **Styling** | CSS Modules + Tailwind CSS v3 | Component-level + utility-first styles |
+| **Design** | Vader Red (#ff2a36) — dark cinematic palette | Signature accent color system |
+| **AI Agent** | Draven (Hermes-based co-pilot) | Persistent cross-session AI assistant |
+| **Memory** | Mem0 + Qdrant (local) | Persistent semantic memory across sessions |
+| **Deploy** | Static export → Hostinger hPanel | Production hosting |
+
+---
+
+## 3. Pages & Routes
 
 | Route | Description |
 |-------|-------------|
-| **/** | **Main site** — immersive scroll-driven 3D narrative with lightsaber model, 5 chapters, glassmorphism panels |
-| **/vader-experience** | Redirects to `/` (legacy route) |
-| **/vader-experience-v2** | Safe fallback copy of the experience page for experimentation |
-| **/archive** | Original homepage (kept for reference) |
+| **`/`** | **Main site** — immersive 3D narrative with lightsaber, glass panels, 5 chapters |
+| **`/vader-experience`** | Redirects to `/` (legacy route preserved for old links) |
+| **`/vader-experience-v2`** | Safe fallback — exact copy for experimentation and alternate versions |
+| **`/archive`** | Original homepage preserved for reference |
 
-## 🛠️ Tech Stack
+---
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | Next.js 16 (App Router) — React 19 |
-| **Language** | TypeScript 5 |
-| **3D Engine** | Three.js / React-Three-Fiber / Drei |
-| **Animation** | GSAP / ScrollTrigger |
-| **Styling** | CSS Modules + Tailwind CSS v3 |
-| **Design** | Vader Red (#ff2a36) — dark cinematic palette |
-| **AI Backend** | LiteLLM proxy (DeepSeek V4) + LM Studio (local) |
-| **Memory** | Mem0 vector store (Qdrant) |
-| **Deploy** | Static export → Hostinger hPanel |
-
-## 🚀 Quick Start
+## 4. Quick Start
 
 ```bash
 git clone https://github.com/jonbeatz/VaderLabz.git
 cd VaderLabz
 npm install
 npm run web:dev      # Development server on http://localhost:3000
-npm run web:build    # Production build
-npm run web:start    # Start production server
 ```
 
-### Available Commands
+**Open `http://localhost:3000`** — The VaderLabz immersive experience.
+
+Verify the baseline gate:
+
+```bash
+npm run web:build    # Clean build + integrity check
+```
+
+> **Requirements:** Node 18+ · npm ≥ 10  
+> **Secrets:** Live keys belong in `.env.local` only — never commit secrets.  
+> **Agent ritual:** Say `Begin project` in Cursor chat for full cold-start — see START-HERE.md.
+
+---
+
+## 5. Architecture
+
+```
+VaderLabz
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx            # Main immersive 3D narrative page (/)
+│   ├── archive/            # Original homepage (archived)
+│   ├── vader-experience/   # Legacy route → redirects to /
+│   └── vader-experience-v2/ # Safe fallback copy for experiments
+├── components/             # Shared React components
+│   ├── ThreeBackground     # 3D particle/starfield background
+│   ├── ArtefactScene       # 3D artefact display
+│   ├── CustomCursor        # Custom cursor component
+│   └── StudioRails         # Vignette + grain overlays
+├── lib/                    # Utility libraries & hooks
+├── public/media/           # 3D models, HDR maps, images, screenshots
+├── scripts/                # Backup & utility scripts
+├── .cursor/                # Agent brain: rules, prompts, skills, docs
+└── TRUTH.md                # Project constitution & core rules
+```
+
+---
+
+## 6. Available Commands
 
 | Command | Description |
 |---------|-------------|
@@ -102,30 +148,9 @@ npm run web:start    # Start production server
 | `npm run session:start` | Start project session ritual |
 | `npm run session:stop` | Stop project session ritual |
 
-## 🏗️ Architecture
+---
 
-```
-VaderLabz
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx            # Main immersive 3D narrative page
-│   ├── archive/            # Original homepage (archived)
-│   ├── vader-experience/   # Legacy route → redirects to /
-│   └── vader-experience-v2/ # Safe fallback copy for experiments
-├── components/             # Shared React components
-│   ├── ThreeBackground     # 3D particle/starfield background
-│   ├── ArtefactScene       # 3D artefact display
-│   ├── CustomCursor        # Custom cursor component
-│   └── StudioRails         # Vignette + grain overlays
-├── lib/                    # Utility libraries & hooks
-│   ├── lenis-provider      # Lenis smooth scroll provider
-│   └── useGsapScroll       # GSAP ScrollTrigger hooks
-├── public/media/           # 3D models, HDR maps, images, screenshots
-├── scripts/                # Backup & utility scripts
-├── .cursor/                # Agent brain: rules, prompts, skills, docs
-└── TRUTH.md                # Project constitution & core rules
-```
-
-## 📚 Documentation
+## 7. Documentation
 
 | Document | Purpose |
 |----------|---------|
@@ -140,7 +165,9 @@ VaderLabz
 | `.cursor/docs/ReCall.md` | Session memory log |
 | `.cursor/docs/project-log.md` | Session history |
 
-## 🎨 Design System
+---
+
+## 8. Design System
 
 - **Primary Accent:** `#ff2a36` (Vader Red)
 - **Background:** `#000000` (Deep Black)
@@ -149,7 +176,9 @@ VaderLabz
 - **Typography:** Inter (sans-serif) + JetBrains Mono (code/monospace)
 - **3D Scene:** Lightsaber model with scroll-driven camera orbit & mouse parallax
 
-## 📄 License
+---
+
+## 9. License
 
 MIT © VaderLabz
 

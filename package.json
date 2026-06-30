@@ -40,6 +40,7 @@
     "docs:sync": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\docs-update.ps1",
     "env:setup": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\env-setup.ps1",
     "web:dev": "next dev",
+    "build": "next build",
     "web:build": "next build",
     "web:start": "next start",
     "web:lint": "next lint",

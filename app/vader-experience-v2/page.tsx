@@ -607,10 +607,6 @@ function TopNav() {
             className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#ff2a36]"
             style={{ color: TEXT_DIM }}
           >06</button>
-          <a href="/archive"
-            className="font-mono text-[0.5rem] tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#ff2a36] ml-2"
-            style={{ color: '#444466' }}
-          title="Original home (archive)">°</a>
         </div>
       </nav>
     </header>

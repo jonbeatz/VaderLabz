@@ -50,6 +50,7 @@ Searchable catalog of all portable skills available in `shared-profile-content/s
 | Git-Commit | git, commit, conventional, format | Conventional commits format (`type(scope): subject`) skill | Node-Launcher-v2 |
 | imported/CURATED-INDEX | reference, index, whitelist | Curated whitelist of 15 approved external skill categories for manual sourcing | MSC |
 | Nextjs-Tailwind-Bootstrap | nextjs, tailwind, bootstrap, setup, postcss, css | Tailwind CSS setup checklist for skeleton-bootstrapped projects — install, config, verification, troubleshooting | VaderLabz |
+| Background-Removal | image, background, transparency, rembg, python, ai | Remove image backgrounds using rembg + U^2-Net AI model — local, free, offline-capable | VaderLabz |
 
 ## Automation & Integration
 

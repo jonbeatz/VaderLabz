@@ -4,6 +4,18 @@
 - Adding 3D models (avatars, objects, scenes) to the Playground
 - Optimizing models for web delivery
 - Animating models
+- Compressing and converting GLB/GLTF files for production
+
+## Available GLB Optimization Tools
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| [glTF-Transform](https://github.com/donmccurdy/glTF-Transform) | Optimize, compress (Draco), texture-compress, convert GLTF/GLB — single pipeline command | `npm install -g @gltf-transform/cli` |
+| [glb-compressor](https://github.com/kjanat/glb-compressor) | Fast binary GLB compression — strips unnecessary data, smaller files | `pip install glb-compressor` |
+| [meshoptimizer](https://github.com/zeux/meshoptimizer) | Mesh geometry simplification + vertex optimization for GLTF/GLB | `npm install -g meshoptimizer` |
+| [gltf-pipeline](https://github.com/CesiumGS/gltf-pipeline) | Cesium's official GLTF pipeline — Draco compression, quantize, optimize | `npm install -g gltf-pipeline` |
+
+## Core Workflow
 
 ## Core Workflow
 

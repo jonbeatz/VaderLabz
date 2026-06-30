@@ -1,6 +1,6 @@
 # TRUTH.md — VaderLabz Profile
 
-**Version:** 2.2.0
+**Version:** 2.3.0
 **Profile root:** D:\Hermes\projects\VaderLabz
 
 ## Identity & Governance

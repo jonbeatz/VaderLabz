@@ -147,3 +147,16 @@
   - **Mouse parallax:** On/Off — toggles saber tilt following cursor
 - **Glass card glow fix:** Removed separate `blur-xl` glow divs creating stretched ellipse artifacts on right of cards. Replaced with `boxShadow` containing glow within card bounds. Removed `ContactShadows` from 3D scene (was visible through glass).
 - **UI polish:** Larger text, brighter colors, subtle borders on inactive buttons for readability
+
+---
+
+*Last Entry: 2026-06-30 (Session 5)*
+
+### 2026-06-30 (Session 5 — v3 revamp + blade color fix + GLB tools)
+- **Rebuilt `/vader-experience-v3`** — exact copy of main `/` page with `skywalker_lightsaber.glb` model (matching v2 scale: `0.18 + p * 0.06`, position: `0.6 + p * -1.8`)
+- **Blade-only emissive fix:** Split scene clone from blade color update — `useMemo` for cloning, `useEffect` + `bladeMatRef` to patch emissive directly. Removed `includes('saber')` match that was colorizing handle meshes. Colors boosted (Red `0.6→1.0`, Blue `0.8→1.0`, etc.) with intensity `8→15` for vivid glow
+- **GLB optimization tools documented:**
+  - Added 4 tools to `3D-Modeling` skill: glTF-Transform, glb-compressor, meshoptimizer, gltf-pipeline
+  - Added same toolchain to `GLB-Asset-Sourcing` skill
+  - Updated `SKILL-INDEX.md` tags
+- **Updated docs + Mem0/Draven memories**

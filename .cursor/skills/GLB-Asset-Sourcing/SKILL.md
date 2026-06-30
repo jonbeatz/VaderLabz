@@ -114,6 +114,17 @@ function Scene() {
 }
 ```
 
+## GLB Optimization Toolchain
+
+After sourcing a GLB, optimize it for production:
+
+| Tool | Install | Purpose |
+|------|---------|---------|
+| [glTF-Transform](https://github.com/donmccurdy/glTF-Transform) | `npm install -g @gltf-transform/cli` | Optimize, Draco compress, texture-compress — single pipeline |
+| [glb-compressor](https://github.com/kjanat/glb-compressor) | `pip install glb-compressor` | Fast binary GLB compression — strips unnecessary data |
+| [meshoptimizer](https://github.com/zeux/meshoptimizer) | `npm install -g meshoptimizer` | Mesh simplification + vertex optimization |
+| [gltf-pipeline](https://github.com/CesiumGS/gltf-pipeline) | `npm install -g gltf-pipeline` | Cesium's GLTF pipeline — Draco, quantize, optimize |
+
 ## Anti-Slop
 - **No 3D assets without license check** — always verify CC0 / CC-BY before committing
 - **No missing preload** — always `useGLTF.preload()` for models >500KB to prevent loading jank

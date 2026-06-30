@@ -19,7 +19,7 @@ Searchable catalog of all portable skills available in `shared-profile-content/s
 | 3D-Website-Fusion | 3d, website, fusion, production, scroll, color-shift, particles | **Master fusion skill** — combines Three.js + scroll + particles + wireframe core + color-shift + glassmorphism CSS portal into one production 3D website | JonBeatz |
 | Three.js-Ops | 3d, threejs, r3f, webgl, scene, lighting | Three.js/R3F scene setup, lighting, GLTF/GLB loading, animation | JonBeatz |
 | WebGL-UI | 3d, webgl, shader, effects, post-processing | Shader effects, post-processing, interactive 3D UI components | JonBeatz |
-| 3D-Modeling | 3d, gltf, glb, optimization, animation | GLTF/GLB loading, optimization, animation for web | JonBeatz |
+| 3D-Modeling | 3d, gltf, glb, optimization, animation, compression, pipeline | GLTF/GLB loading, optimization, Draco/compress, meshoptimizer, gltf-pipeline — full toolchain for web delivery | JonBeatz |
 | 3D-Scroll | 3d, scroll, parallax, gsap, transitions | Scroll-triggered 3D transitions, parallax effects, GSAP-style motion | JonBeatz |
 | GLB-Asset-Sourcing | 3d, assets, sourcing, licensing, glb, hdr, environment | Finding, downloading, validating free GLB models + HDR environment maps — sources, licenses, file validation | VaderLabz |
 | R3F-Gotchas | 3d, r3f, troubleshooting, bugs, workarounds, threejs | Known React Three Fiber issues — EffectComposer crash, Float deadlock, GLB rendering, Canvas positioning | VaderLabz |

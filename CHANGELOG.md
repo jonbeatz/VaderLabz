@@ -1,5 +1,19 @@
 # Changelog — VaderLabz
 
+## 2.3.0 - 2026-06-30
+
+### Added
+- **Rebuilt `/vader-experience-v3`** — Exact copy of main `/` page with `skywalker_lightsaber.glb` model (Skywalker saber from v2). Full accordion controls, Bloom, HDR picker, saber rotation, blade color, camera orbit, mouse parallax.
+- **Blade-only emissive fix** — Split scene clone from color update. Blade material cached via `bladeMatRef` and patched directly with `useEffect`. No more colorizing the handle mesh.
+- **GLB optimization tools** — Documented 4 tools in `3D-Modeling` & `GLB-Asset-Sourcing` skills: glTF-Transform, glb-compressor, meshoptimizer, gltf-pipeline
+
+### Fixed
+- **Blade color was colorizing entire handle** — Removed `includes('saber')` match, only matches `'blade'` now. Colors boosted for vivid glow (intensity `8→15`).
+- **Saber was too large on v3** — Scale changed from `2.1 + p * 0.6` to `0.18 + p * 0.06` matching v2 defaults
+
+### Changed
+- **SKILL-INDEX.md** — 3D-Modeling tags updated with `compression, pipeline`
+
 ## 2.2.0 - 2026-06-30
 
 ### Added

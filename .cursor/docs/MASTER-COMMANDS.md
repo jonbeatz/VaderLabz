@@ -1,7 +1,7 @@
 # VaderLabz — Master Command Reference
 
 **Profile root:** `D:\Hermes\projects\VaderLabz`
-**Last updated:** 2026-06-30 · **Version:** 2.2.0
+**Last updated:** 2026-06-30 · **Version:** 2.3.0
 
 ---
 

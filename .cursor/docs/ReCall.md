@@ -150,7 +150,15 @@
 
 ---
 
-*Last Entry: 2026-06-30 (Session 5)*
+*Last Entry: 2026-06-30 (Session 6)*
+
+### 2026-06-30 (Session 6 — CVE fix + redeploy)
+
+- **CVE-2026-41305 fixed:** `postcss@8.4.31` dev dependency upgraded to `8.5.10` — Hostinger security scan flagged moderate XSS via unescaped `</style>` in CSS stringify.
+- **Redeployed:** Archive rebuilt and deployed to vaderlabz.com. Build passed clean, site responding HTTP 200.
+- **Next.js bundled postcss:** `postcss@8.4.31` remains vendored inside next@16.2.9. Cannot be patched externally — VaderLabz uses PostCSS only at build time (static CSS), so zero runtime attack surface. Awaiting Vercel upstream fix.
+- **Version bumped to 2.3.1**
+- **npm audit:** Only 1 unique vuln (CVE-2026-41305) — appears twice in audit because it's in both dev deps (now fixed) and Next.js bundled deps (unpatchable).
 
 ### 2026-06-30 (Session 5 — v3 revamp + blade color fix + GLB tools)
 - **Rebuilt `/vader-experience-v3`** — exact copy of main `/` page with `skywalker_lightsaber.glb` model (matching v2 scale: `0.18 + p * 0.06`, position: `0.6 + p * -1.8`)

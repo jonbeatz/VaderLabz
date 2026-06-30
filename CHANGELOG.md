@@ -1,5 +1,16 @@
 # Changelog — VaderLabz
 
+## 2.3.1 - 2026-06-30
+
+### Fixed
+- **CVE-2026-41305 (moderate)** — Upgraded `postcss` from `8.4.31` to `8.5.10` to fix XSS via unescaped `</style>` in CSS stringify output. Flagged by Hostinger security scan.
+
+### Changed
+- **Redeployed** to vaderlabz.com with patched dependency. Build clean, site HTTP 200.
+
+### Remaining
+- `postcss@8.4.31` still bundled inside `next@16.2.9` (vendored by Vercel). Patched separately when Next.js ships an update. Zero runtime impact — PostCSS only runs at build time for static CSS.
+
 ## 2.3.0 - 2026-06-30
 
 ### Added

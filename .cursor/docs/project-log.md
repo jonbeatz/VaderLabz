@@ -13,4 +13,6 @@
 | 2026-06-30 | Accordion controls + glow fix | Major UI overhaul: accordion sections (Scene, Bloom, Saber, Camera, Mouse), saber rotation/blade color/camera orbit/mouse parallax controls. Fixed stretched glow artifact on glass cards. Removed ContactShadows. v2.1.0. |
 | 2026-06-30 | v3 revamped + blade color fix + GLB tools | Rebuilt /vader-experience-v3 as exact copy of main / page with Skywalker saber. Fixed blade-only emissive. Added 4 GLB optimization tools to skills. v2.2.0. |
 
+|| 2026-06-30 | CVE-2026-41305 fix + redeploy | postcss@8.4.31 → 8.5.10 for moderate XSS vulnerability. Archive redeployed to vaderlabz.com. Build clean, site 200. v2.3.1. |
+
 *Created: 2026-06-28*

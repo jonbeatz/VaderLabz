@@ -36,13 +36,13 @@
 
 ### Immersive 3D Narrative Homepage
 
-![VaderLabz Experience](public/media/vaderlabz-screenshot.png)
-*The new main site — lightsaber 3D model, scroll-driven camera, glassmorphism panels, 5 chapters of the VaderLabz story.*
+![VaderLabz Hero](public/media/vaderlabz-screenshot.png)
+*The full-page immersive 3D narrative — lightsaber model, glassmorphism panels, and scroll-driven camera orbit.*
 
-### Original Homepage (Archived)
+### Design System & Chapters
 
-![VaderLabz Archive](public/media/vaderlabz-screenshot.png)
-*The original portfolio homepage preserved at `/archive` for reference.*
+![VaderLabz Sections](public/media/vaderlabz-section-screenshot.png)
+*Chapter sections with glassmorphism panels, Vader Red accent, and soft glow effects.*
 
 ---
 

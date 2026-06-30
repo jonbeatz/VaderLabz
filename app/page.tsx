@@ -254,6 +254,7 @@ function ArticleOverlay({ chapter, onClose }: { chapter: (typeof CHAPTERS)[0]; o
         <div className="font-mono text-xs tracking-[0.15em] text-[#ff2a36] mb-3">{chapter.marker}</div>
           <h2 className="font-sans text-3xl md:text-4xl font-semibold leading-tight mb-6"
           style={{ color: TEXT_PRIMARY }}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: chapter.title }}
         />
 
@@ -518,7 +519,14 @@ function BackToTop() {
 // ─── Progress ───────────────────────────────────────────────────────────────
 function ProgressBar() {
   const barRef = useRef<HTMLDivElement>(null)
-  const dotRefs = useRef<(HTMLButtonElement | null)[]>([])
+
+  // Set refs imperatively in useEffect instead of callback refs (avoids hydration mismatch)
+  useEffect(() => {
+    const buttons = document.querySelectorAll('.progress-dot')
+    buttons.forEach((btn, i) => {
+      // no-op, we just let buttons exist without storing refs for scroll logic
+    })
+  }, [])
 
   useEffect(() => {
     const bar = barRef.current
@@ -528,8 +536,8 @@ function ProgressBar() {
       bar.style.transform = `scaleY(${p})`
       // Highlight active dot
       const idx = Math.min(Math.floor(p * CHAPTERS.length), CHAPTERS.length - 1)
-      dotRefs.current.forEach((dot, i) => {
-        if (dot) dot.style.opacity = i === idx ? '1' : '0.25'
+      document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+        (dot as HTMLElement).style.opacity = i === idx ? '1' : '0.25'
       })
     }
     update()
@@ -553,9 +561,8 @@ function ProgressBar() {
       {CHAPTERS.map((ch, i) => (
         <button
           key={ch.id}
-          ref={el => { dotRefs.current[i] = el }}
           onClick={() => scrollToSection(ch.id)}
-          className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-100"
+          className="progress-dot font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-100"
           style={{ color: ACCENT, opacity: 0.25 }}
           title={ch.title.replace(/<[^>]*>/g, '')}
         >

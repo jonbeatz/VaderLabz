@@ -6,8 +6,8 @@ import { useGLTF, Environment } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
-// Preload the saber model so it's cached before the Canvas mounts
-useGLTF.preload('/media/darth_vader_lightsaber.glb')
+// Preload the Skywalker lightsaber model (matched to v2) so it's cached before the Canvas mounts
+useGLTF.preload('/media/skywalker_lightsaber.glb')
 
 // ─── HDR Environment Presets ───────────────────────────────────────────────
 const HDR_PRESETS: { label: string; file: string }[] = [
@@ -42,10 +42,10 @@ const CAMERA_PRESETS: { label: string; mode: 'static' | 'slow' | 'full' }[] = [
 
 // ─── Saber Blade Colors ─────────────────────────────────────────────────────
 const SABER_COLORS: { label: string; color: [number, number, number] }[] = [
-  { label: 'Red',    color: [0.6, 0.0, 0.0] },
-  { label: 'Blue',   color: [0.0, 0.2, 0.8] },
-  { label: 'Green',  color: [0.0, 0.6, 0.1] },
-  { label: 'Purple', color: [0.5, 0.0, 0.6] },
+  { label: 'Red',    color: [1.0, 0.0, 0.0] },
+  { label: 'Blue',   color: [0.0, 0.3, 1.0] },
+  { label: 'Green',  color: [0.0, 0.8, 0.2] },
+  { label: 'Purple', color: [0.7, 0.0, 0.8] },
 ]
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -109,7 +109,7 @@ const CHAPTERS = [
     title: 'The <i>Design</i> System',
     subtitle: 'From Gold to Red — A Visual Language',
     summary: 'VaderLabz Red (#ff2a36) is the signature accent — aggressive, confident, unmistakable across every surface.',
-    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the Darth Vader lightsaber GLB model bathed in neon_photostudio HDR.',
+    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the Skywalker lightsaber GLB model bathed in neon_photostudio HDR.',
     camera: { x: -1.2, y: 0, z: 3.8 },
     target: { x: 0, y: 0, z: 0 },
   },
@@ -138,43 +138,56 @@ function SaberModel({ progressRef, rotationSpeed, saberColor, cameraMode, mouseE
   mouseEnabled: boolean;
 }) {
   const groupRef = useRef<THREE.Group>(null!)
-  const { scene } = useGLTF('/media/darth_vader_lightsaber.glb')
+  const { scene } = useGLTF('/media/skywalker_lightsaber.glb')
   const { camera } = useThree()
   const mouseRef = useRef({ x: 0, y: 0 })
   const [error, setError] = useState(false)
 
-  // Clone scene and fix materials on mount
+  // Clone scene once on mount
   const sceneClone = useMemo(() => {
     try {
-      const s = scene.clone()
-      s.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.castShadow = true
-          child.receiveShadow = true
-          if (child.material) {
-            if (Array.isArray(child.material)) {
-              child.material.forEach(m => { m.needsUpdate = true })
-            } else {
-              child.material.needsUpdate = true
-            }
-          }
-          // Blade material gets emissive boost matching saberColor
-          if (child.name && (child.name.toLowerCase().includes('blade') || child.name.toLowerCase().includes('saber'))) {
-            const mat = child.material
-            if (mat && !Array.isArray(mat) && mat instanceof THREE.MeshStandardMaterial) {
-              mat.emissive = new THREE.Color(saberColor[0], saberColor[1], saberColor[2])
-              mat.emissiveIntensity = 2
-            }
-          }
-        }
-      })
-      return s
+      return scene.clone()
     } catch (e) {
       console.error('Model clone error:', e)
       setError(true)
       return null
     }
-  }, [scene, saberColor])
+  }, [scene])
+
+  // Blade material reference — cached from the cloned scene
+  const bladeMatRef = useRef<THREE.MeshStandardMaterial | null>(null)
+
+  // On mount or scene change, find the blade material from the clone
+  useEffect(() => {
+    if (!sceneClone) return
+    sceneClone.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true
+        child.receiveShadow = true
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach(m => { m.needsUpdate = true })
+          } else {
+            child.material.needsUpdate = true
+          }
+        }
+        if (child.name && child.name.toLowerCase().includes('blade')) {
+          const mat = child.material
+          if (mat && !Array.isArray(mat)) {
+            bladeMatRef.current = mat as THREE.MeshStandardMaterial
+          }
+        }
+      }
+    })
+  }, [sceneClone])
+
+  // When saberColor changes, update just the emissive on the cached blade material
+  useEffect(() => {
+    if (bladeMatRef.current) {
+      bladeMatRef.current.emissive = new THREE.Color(saberColor[0], saberColor[1], saberColor[2])
+      bladeMatRef.current.emissiveIntensity = 15
+    }
+  }, [saberColor])
 
   // Mouse parallax
   useEffect(() => {
@@ -200,11 +213,11 @@ function SaberModel({ progressRef, rotationSpeed, saberColor, cameraMode, mouseE
       g.rotation.z += (mouseRef.current.x * 0.03 - g.rotation.z) * 0.03
     }
 
-    // Scale — prominent and visible, grows with scroll
-    g.scale.setScalar(2.1 + p * 0.6)
+    // Scale — Skywalker saber is small, grows slightly with scroll
+    g.scale.setScalar(0.18 + p * 0.06)
 
     // Position — peeking above blur bar, lowers as user scrolls down
-    g.position.y = 0.8 + p * -1.8
+    g.position.y = 0.6 + p * -1.8
 
     // Camera orbit
     if (cameraMode === 'full') {
@@ -689,10 +702,10 @@ function TopNav() {
             className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#ff2a36]"
             style={{ color: TEXT_DIM }}
           >06</button>
-          <a href="/archive"
+          <a href="/"
             className="font-mono text-[0.5rem] tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#ff2a36] ml-2"
             style={{ color: '#444466' }}
-          title="Original home (archive)">°</a>
+          title="Go to main experience">°</a>
         </div>
       </nav>
     </header>

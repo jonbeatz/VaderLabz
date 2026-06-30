@@ -77,6 +77,24 @@
 - **ReCall.md:** This entry
 - **Next:** Create v2.0.0 release on GitHub
 
+### 2026-06-30 (Late) — Route restructuring + README reboot + screenshot cleanup
+
+- **Route restructure:**
+  - `/vader-experience` promoted to new default `/` route (main site)
+  - Original homepage moved to `/archive` for reference
+  - `/vader-experience-v2` created as safe fallback copy for experiments
+  - `/vader-experience` now redirects to `/`
+  - Subtle `°` archive link in top nav
+- **README revamp:** Replaced with JonBeatz-Command-Center style layout:
+  - Badges with `logo=` icons (Platform, Version, Release, Repo, Next.js, Three.js, Cursor)
+  - Hero screenshot at top, source of truth banner, numbered sections
+  - Status table with emojis, comparison table, architecture diagram
+- **New skill:** `GitHub-README-Template` — documents the canonical README format with reference to `D:\Hermes\projects\JonBeatz\README.md`
+- **SKILL-INDEX.md:** Added GitHub-README-Template entry
+- **Screenshot fix:** Disabled `devIndicators` in `next.config.mjs` to remove Next.js DevTools badge from screenshots
+- **Hydration fix:** Replaced callback refs (`ref={el => dotRefs.current[i] = el}`) with className-based selectors to eliminate hydration mismatch errors
+- **v2.0.0 release:** Tagged and released on GitHub with full release notes
+
 ---
 
 *Last Entry: 2026-06-30*

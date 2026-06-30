@@ -21,6 +21,8 @@ Searchable catalog of all portable skills available in `shared-profile-content/s
 | WebGL-UI | 3d, webgl, shader, effects, post-processing | Shader effects, post-processing, interactive 3D UI components | JonBeatz |
 | 3D-Modeling | 3d, gltf, glb, optimization, animation | GLTF/GLB loading, optimization, animation for web | JonBeatz |
 | 3D-Scroll | 3d, scroll, parallax, gsap, transitions | Scroll-triggered 3D transitions, parallax effects, GSAP-style motion | JonBeatz |
+| GLB-Asset-Sourcing | 3d, assets, sourcing, licensing, glb, hdr, environment | Finding, downloading, validating free GLB models + HDR environment maps — sources, licenses, file validation | VaderLabz |
+| R3F-Gotchas | 3d, r3f, troubleshooting, bugs, workarounds, threejs | Known React Three Fiber issues — EffectComposer crash, Float deadlock, GLB rendering, Canvas positioning | VaderLabz |
 
 ## Git & DevOps
 
@@ -47,6 +49,7 @@ Searchable catalog of all portable skills available in `shared-profile-content/s
 | UI-Generator | ui, components, shadcn, ai-sdk, nextjs | Expert UI component generator — Cult UI, AI SDK patterns, Next.js 16 + Tailwind v4 | Node-Launcher-v2 |
 | Git-Commit | git, commit, conventional, format | Conventional commits format (`type(scope): subject`) skill | Node-Launcher-v2 |
 | imported/CURATED-INDEX | reference, index, whitelist | Curated whitelist of 15 approved external skill categories for manual sourcing | MSC |
+| Nextjs-Tailwind-Bootstrap | nextjs, tailwind, bootstrap, setup, postcss, css | Tailwind CSS setup checklist for skeleton-bootstrapped projects — install, config, verification, troubleshooting | VaderLabz |
 
 ## Automation & Integration
 

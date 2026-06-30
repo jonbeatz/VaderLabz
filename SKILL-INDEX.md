@@ -58,6 +58,13 @@ Searchable catalog of all portable skills available in `shared-profile-content/s
 |-------|------|---------|--------|
 | Google-Workspace | google, gmail, calendar, drive, automation | Google automation via Hermes — Gmail, Calendar, Drive operations | JonBeatz |
 | Image-Workflow | image, hf, comfyui, genai, upscale, video | HF cloud generation + ComfyUI local edit/upscale/video pipeline | JonBeatz |
+| Background-Removal | image, processing, rembg, u2net, python | AI background removal with rembg + U^2-Net — transparent PNG pipeline, CLI tool | VaderLabz |
+
+## GitHub & Docs
+
+| Skill | Tags | Purpose | Source |
+|-------|------|---------|--------|
+| GitHub-README-Template | github, readme, badges, template, docs | Standard GitHub README template with shields.io badges, status table, comparison table, screenshots | VaderLabz |
 
 ---
 

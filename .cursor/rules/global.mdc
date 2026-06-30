@@ -1,25 +1,20 @@
-# global.mdc - Global shortcuts — JonBeatz personal profile
+# global.mdc - Global shortcuts for VaderLabz
 
-| Jon says | Agent action |
-|----------|--------------|
+| Operator says | Agent action |
+|---------------|--------------|
 | **Start Project**, **Start Session**, **Cold Start** | `npm run session:start -- -Full` + [Start-Project.md](../prompts/Start-Project.md) |
 | **End Project**, **End Session** | [End-Project.md](../prompts/End-Project.md) + `npm run session:stop` |
 | **update docs** | [Update-Docs.md](../prompts/Update-Docs.md) + `npm run docs:sync` |
-| **update docs and mem0** | Update-Docs Phase 5b + Mem0 add |
+| **update docs and mem0** | Update-Docs Phase 5b + `npm run mem0:add` |
 | **backup profile**, **backup**, **backup quick** | `npm run backup:quick` |
 | **backup project** | `npm run backup:project` |
-| **backup full** | `npm run backup:quick:full` |
-| **hostinger reference** | Read `HOSTINGER-REFERENCE.md` + `Hostinger-Ops` skill |
-| **push it live** / **deploy msc** | `Hostinger-MSC.md` → switch to MSC repo |
-| **sync hostinger mcp** | `npm run sync:mcp-env` |
-| **Update Project** / **Sync Project** | [Update-Project.md](../prompts/Update-Project.md) |
-| **dev recover** / **fix playground** | `npm run dev:recover` |
+| **backup full** | `npm run backup:full` |
+| **deepseek test** | `npm run deepseek:test` |
+| **deepseek ngrok** | `npm run deepseek:ngrok` (force-restarts proxy with ngrok for Cursor Agent) |
 | **sync mcp** | `npm run sync:mcp-env` |
 | **log session** | `npm run log:session -- "summary"` |
 | **log fix** | `npm run log:fix` |
-| **google doctor** | `npm run google:doctor` |
-| **postflight personal** | `npm run doctor` |
 
-**Local commands** always run from the project root.
+**Local commands** always run from the project root (`D:\Hermes\projects\VaderLabz`).
 
-For a full phrase list, check `.cursor/docs/Custom-Prompts.md` if it exists (project-specific), or see the prompts in `.cursor/prompts/`.
+For a full phrase list, check `.cursor/docs/MASTER-COMMANDS.md`, or see the prompts in `.cursor/prompts/`.

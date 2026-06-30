@@ -1,26 +1,26 @@
 ---
-description: Session workflow triggers for JonBeatz personal profile
+description: Session workflow triggers for VaderLabz
 alwaysApply: true
 ---
 
-# Workflow Session Rules — JonBeatz
+# Workflow Session Rules - VaderLabz
 
 ## Start Project
 
-When user says **Start Project**, **Begin Project**, **Start Session**, **Cold Start**, or **Personal Start**:
+When user says **Start Project**, **Begin Project**, **Start Session**, or **Cold Start**:
 
 - Execute [`.cursor/prompts/Start-Project.md`](../prompts/Start-Project.md)
-- Run **`npm run session:start -- -Full`** from `D:\Hermes\projects\JonBeatz`
-- Read `TRUTH.md`, `START-HERE.md`, `ReCall.md`
-- Do **not** auto-start MSC Next.js dev or Hostinger deploy flows
+- Run **`npm run session:start -- -Full`** from the VaderLabz profile root (`D:\Hermes\projects\VaderLabz`)
+- Read `TRUTH.md`, `.cursor/docs/START-HERE.md`, `.cursor/docs/ReCall.md`
+- Do **not** auto-start long-running dev servers unless the operator explicitly asks
 
 ## End Project
 
 When user says **End Project**, **End Session**, **Close Session**, or **Session Closeout**:
 
 - Execute [`.cursor/prompts/End-Project.md`](../prompts/End-Project.md)
-- Update `ReCall.md` and `project-log.md`
-- Run **`npm run session:stop`**
+- Update `.cursor/docs/ReCall.md` and `.cursor/docs/project-log.md`
+- Run **`npm run session:stop`** (add `-- -StopDeepSeek` to also stop LiteLLM + ngrok)
 
 ## Update Docs
 
@@ -40,19 +40,15 @@ When user says **release version**, **publish release**, or after a version bump
 
 ## Branch Cut
 
-When user says **branch cut**, **cut JonBeatz-Project-vN**, **cut new development branch**, or **Lets Cut New Branch**:
+When user says **branch cut**, **cut VaderLabz-Project-vN**, **cut new development branch**:
 
 - Execute [`.cursor/prompts/Branch-Cut.md`](../prompts/Branch-Cut.md)
-- Full ritual: backup → freeze previous branch @ SHA → create `JonBeatz-Project-v{N}` → bump **`N.0.0`** → update Checkpoint + Restore-Points → **`npm run release`**
+- Full ritual: backup -> freeze previous branch @ SHA -> create `VaderLabz-Project-v{N}` -> bump **`N.0.0`** -> update Restore-Points -> **`npm run release`**
 - Do **not** stop at `git checkout -b` alone
-- Leave **`main`** untouched unless Jon explicitly requests a merge
+- Leave **`main`** untouched unless the operator explicitly requests a merge
 
 ## Backup
 
 When user says **backup profile** or **backup**:
 
-- Run **`npm run backup:profile`** from profile root (non-interactive)
-
-## Context switch
-
-If Jon asks about **website**, **Payload**, **deploy**, or **MyStudioChannel** — confirm whether to open `D:\Cursor_Projectz\MyStudioChannel` instead of this profile.
+- Run **`npm run backup:quick`** from profile root (non-interactive)

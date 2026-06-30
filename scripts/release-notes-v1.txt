@@ -1,0 +1,19 @@
+## v1.0.0 — Initial Release
+
+VaderLabz is a personal dev playground and portfolio site showcasing full-stack AI experiments, open-source projects, and tools built across the VaderLabz ecosystem.
+
+### Features
+- Main homepage with 3D animated background
+- /vader-experience immersive scroll-driven 3D narrative with:
+  - 5 chapters (Genesis, Skeleton System, Draven, Command Center, Design System)
+  - Darth Vader lightsaber 3D model with scroll-driven camera orbit
+  - Glassmorphism content panels with blur effects
+  - Smooth scroll navigation with clickable progress bar
+  - Full-screen background image with dark overlay
+  - Back-to-top button
+- Vader Red (#ff2a36) design palette
+- AI integration with LiteLLM, LM Studio, Mem0
+- Draven co-pilot with cross-session memory
+
+### Tech Stack
+Next.js 16, TypeScript, Three.js/R3F, GSAP, Tailwind CSS, CSS Modules

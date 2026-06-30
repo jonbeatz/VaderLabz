@@ -46,6 +46,37 @@
 - **New skill created:** `Background-Removal` in shared skeleton — docs, CLI usage, Python script, best practices
 - **SKILL-INDEX.md** updated in both repos
 
+### 2026-06-30 (Early AM) — vader-experience immersion + polish + git push
+
+- **3D model swap:** DamagedHelmet.glb replaced with `darth_vader_lightsaber.glb` (copied over same filename)
+- **Saber positioning:** Adjusted scale (2.5x), Y position (0.6 starting, drops to -1.2 on scroll), camera orbit
+- **Background image:** Added `vaderBG-2.jpg` as full-screen background with `brightness(0.65)` + dark gradient overlay
+- **Smooth scroll navs:** Converted all nav links from `<a href="#id">` (instant jumps) to `<button>` + `window.scrollTo({ behavior: 'smooth' })`
+  - Top nav: `01`-`06` buttons, VADERLABZ logo scrolls to top
+  - Right progress bar: clickable dots now scroll to sections, highlighted on scroll position
+  - Main homepage: STORY, PHILOSOPHY, PROJECTS, PROOF, CONNECT labels now smooth scroll
+- **Right nav 06:** Added to both top nav and progress bar — scrolls to page bottom
+- **Back-to-top button:** Bottom-right, fades in after 50% viewport scroll, glass pill with up arrow
+- **New motto:** "Build, break, and learn. Forged in the dark." — VaderLabz (replaced Genghis Khan quote)
+- **Loading screen:** Changed from logo image back to text "VADERLABZ", now shows white VADER + red LABZ
+- **Top nav logo:** Same VADER (white) + LABZ (red) split
+- **Glass glow effects:** All 4 glass panels (hero strip, chapter panels, closing quote, footer) now have soft red `radial-gradient` glow behind them
+- **Glass rendering fix:** Added `will-change-[backdrop-filter]` and `opacity: 0.99` to force GPU compositing on first paint (removes 1-2 frame blur pop-in)
+- **Hydration fix:** Added `suppressHydrationWarning` on `dangerouslySetInnerHTML` elements
+- **Scroll prompt fade:** "SCROLL TO START EXPERIENCE" fades out as user scrolls
+- **Git:** Committed and pushed to origin/main
+
+### 2026-06-30 (Later) — v2.0 release cycle
+
+- **README:** Added homepage + experience page screenshots, expanded project docs
+- **v1.0.0 release:** Tagged `v1.0.0`, pushed to GitHub, created release with release notes
+- **Branch cut:** Created `VaderLabz-Project-v2` branch from `main`
+- **Version bump:** Updated `package.json`, `TRUTH.md`, `README.md` to 2.0.0
+- **CHANGELOG.md:** Created with full version history (v1.0.0 + v2.0.0 entries)
+- **project-log.md:** Added v2.0 release entry
+- **ReCall.md:** This entry
+- **Next:** Create v2.0.0 release on GitHub
+
 ---
 
-*Last Entry: 2026-06-29*
+*Last Entry: 2026-06-30*

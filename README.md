@@ -2,7 +2,7 @@
 
 **Building, breaking, and learning. Full-stack AI experiments, personal projects, and new ideas forged in the dark.**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)]()
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)]()
 [![Status](https://img.shields.io/badge/status-active-brightgreen)]()
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![Three.js](https://img.shields.io/badge/Three.js-R3F-gold)](https://docs.pmnd.rs/react-three-fiber)

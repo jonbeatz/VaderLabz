@@ -136,24 +136,24 @@ function HelmetModel({ progressRef }: { progressRef: React.MutableRefObject<numb
     if (!g) return
     const p = progressRef.current
 
-    // Slow rotation
-    g.rotation.y += delta * 0.15
-    g.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.05 + p * 0.08
+    // Slow rotation — saber spins like a display
+    g.rotation.y += delta * 0.2
+    g.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.03 + p * 0.08
 
     // Mouse-follow parallax
-    g.rotation.z += (mouseRef.current.x * 0.02 - g.rotation.z) * 0.03
+    g.rotation.z += (mouseRef.current.x * 0.03 - g.rotation.z) * 0.03
 
-    // Scale
-    g.scale.setScalar(1.2 + p * 0.4)
+    // Scale — prominent and visible, grows with scroll
+    g.scale.setScalar(2.5 + p * 0.8)
 
-    // Position
-    g.position.y = -0.3 + p * -1.5
+    // Position — peeking above blur bar, lowers as user scrolls down
+    g.position.y = 0.6 + p * -1.8
 
-    // Camera orbit
+    // Camera orbit — zooms out slightly on scroll
     const orbitAngle = p * Math.PI * 2
-    camera.position.x = Math.sin(orbitAngle) * 4
-    camera.position.z = Math.cos(orbitAngle) * 4
-    camera.position.y = 1.2 - p * 1.5
+    camera.position.x = Math.sin(orbitAngle) * 5
+    camera.position.z = Math.cos(orbitAngle) * 5
+    camera.position.y = 1.0 - p * 0.5
     camera.lookAt(0, 0, 0)
   })
 
@@ -197,9 +197,9 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div id="vader-loading" className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black">
-      <svg viewBox="0 0 256 40" className="h-8 mb-12" fill="none">
-        <text x="0" y="28" fill={ACCENT} fontFamily="'Space Mono',monospace" fontSize="24" fontWeight="700" letterSpacing="8">VADERLABZ</text>
-      </svg>
+      <div className="font-mono text-sm font-bold tracking-[0.25em] mb-12">
+        <span style={{ color: '#f0f0f0' }}>VADER</span><span style={{ color: '#ff2a36' }}>LABZ</span>
+      </div>
       <div className="w-[200px] md:w-[280px] h-[3px] bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
         <div ref={barRef} className="h-full bg-[#ff2a36] rounded-full transition-all duration-150" style={{ width: `${progress}%` }} />
       </div>
@@ -252,7 +252,7 @@ function ArticleOverlay({ chapter, onClose }: { chapter: (typeof CHAPTERS)[0]; o
         >✕</button>
 
         <div className="font-mono text-xs tracking-[0.15em] text-[#ff2a36] mb-3">{chapter.marker}</div>
-        <h2 className="font-serif text-3xl md:text-4xl font-semibold leading-tight mb-6"
+          <h2 className="font-sans text-3xl md:text-4xl font-semibold leading-tight mb-6"
           style={{ color: TEXT_PRIMARY }}
           dangerouslySetInnerHTML={{ __html: chapter.title }}
         />
@@ -295,17 +295,21 @@ function ChapterSection({ chapter, onReadMore }: { chapter: (typeof CHAPTERS)[0]
     <section id={chapter.id} ref={sectionRef} className="relative min-h-screen flex items-center py-16 md:py-24">
       <div className="w-full">
         {/* Content panel with glass effect */}
-        <div
-          ref={panelRef}
-          className="max-w-[440px] ml-[6%] md:ml-[15%] p-6 md:p-8 rounded-xl md:rounded-2xl"
-          style={{
-            background: 'rgba(0,0,0,0.55)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.04)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-          }}
-        >
+        <div className="relative">
+          {/* Soft glow behind glass */}
+          <div className="absolute -inset-4 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
+          <div
+            ref={panelRef}
+            className="relative max-w-[440px] ml-[6%] md:ml-[15%] p-6 md:p-8 rounded-xl md:rounded-2xl will-change-[backdrop-filter]"
+            style={{
+              background: 'rgba(0,0,0,0.55)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.04)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              opacity: 0.99,
+            }}
+          >
           {/* Marker */}
           <div className="flex items-center gap-2 mb-4">
             <span className="font-mono text-[0.6rem] tracking-[0.2em] text-[#ff2a36]">{chapter.marker}</span>
@@ -313,8 +317,9 @@ function ChapterSection({ chapter, onReadMore }: { chapter: (typeof CHAPTERS)[0]
           </div>
 
           <h2
-            className="font-serif text-3xl md:text-4xl font-semibold leading-[1.1] mb-1"
+            className="font-sans text-3xl md:text-4xl font-semibold leading-[1.1] mb-1"
             style={{ color: TEXT_PRIMARY }}
+            suppressHydrationWarning
             dangerouslySetInnerHTML={{ __html: chapter.title }}
           />
           <div className="font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-5" style={{ color: TEXT_DIM }}>
@@ -338,6 +343,7 @@ function ChapterSection({ chapter, onReadMore }: { chapter: (typeof CHAPTERS)[0]
             </svg>
           </button>
         </div>
+      </div>
       </div>
     </section>
   )
@@ -367,7 +373,7 @@ function StatsStrip() {
         {STATS.map((s, i) => (
           <div key={s.label} className="flex items-center gap-4 md:gap-12">
             <div className="stat-item flex flex-col items-center gap-1">
-              <span className="font-serif text-3xl md:text-5xl font-bold leading-none" style={{ color: ACCENT }}>{s.num}</span>
+              <span className="font-sans text-3xl md:text-5xl font-bold leading-none" style={{ color: ACCENT }}>{s.num}</span>
               <span className="font-mono text-[0.55rem] tracking-[0.2em]" style={{ color: TEXT_DIM }}>{s.label}</span>
             </div>
             {i < STATS.length - 1 && (
@@ -401,19 +407,39 @@ function ClosingQuote() {
   return (
     <section ref={ref} className="min-h-[60vh] flex items-center justify-center py-24">
       <div className="text-center max-w-[650px] px-6">
-        <div className="font-serif text-3xl md:text-5xl italic leading-tight mb-6" style={{ color: TEXT_PRIMARY }}>
-          <span className="text-5xl" style={{ color: ACCENT }}>&ldquo;</span>I am the punishment of God...<span className="text-5xl" style={{ color: ACCENT }}>&rdquo;</span>
-        </div>
-        <div className="font-mono text-xs tracking-[0.15em] uppercase" style={{ color: TEXT_DIM }}>
-          &mdash; Genghis Khan
-        </div>
+        {/* Glass backdrop with glow */}
+        <div className="relative">
+          <div className="absolute -inset-6 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
+          <div
+            className="relative p-8 md:p-12 rounded-2xl will-change-[backdrop-filter]"
+          style={{
+            background: 'rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.04)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            opacity: 0.99,
+          }}
+        >
+          <div className="font-sans text-3xl md:text-5xl italic leading-tight mb-3" style={{ color: TEXT_PRIMARY }}>
+            <span className="text-5xl" style={{ color: ACCENT }}>&ldquo;</span>Build, break, and learn. Forged in the dark.<span className="text-5xl" style={{ color: ACCENT }}>&rdquo;</span>
+          </div>
+          <div className="font-mono text-xs tracking-[0.15em] uppercase" style={{ color: TEXT_DIM }}>
+            &mdash; VaderLabz
+          </div>
 
-        {/* Bottom section */}
-        <div className="mt-20">
-          <div className="font-serif text-2xl italic" style={{ color: ACCENT }}>Vader Protocol v1.0</div>
+          {/* Decorative divider */}
+          <div className="flex items-center justify-center gap-3 mt-8 mb-6">
+            <svg width="40" height="1"><line x1="0" y1="0.5" x2="40" y2="0.5" stroke="rgba(255,42,54,0.3)" strokeWidth="1" /></svg>
+            <svg width="4" height="4" viewBox="0 0 4 4"><circle cx="2" cy="2" r="2" fill="#ff2a36" /></svg>
+            <svg width="40" height="1"><line x1="0" y1="0.5" x2="40" y2="0.5" stroke="rgba(255,42,54,0.15)" strokeWidth="1" /></svg>
+          </div>
+
+          <div className="font-sans text-2xl italic" style={{ color: ACCENT }}>Vader Protocol v1.0</div>
           <div className="mt-2 font-mono text-[0.55rem] tracking-[0.3em] uppercase" style={{ color: TEXT_DIM }}>
             Experience Made With VaderLabz
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -422,8 +448,24 @@ function ClosingQuote() {
 
 // ─── Scroll Prompt ──────────────────────────────────────────────────────────
 function ScrollPrompt() {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const update = () => {
+      const scrolled = window.scrollY
+      const maxScroll = window.innerHeight * 0.3 // fade out after 30% of viewport
+      const opacity = Math.max(0, 1 - scrolled / maxScroll)
+      el.style.opacity = String(opacity)
+      if (opacity <= 0) el.style.pointerEvents = 'none'
+    }
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
+
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none">
+    <div ref={ref} className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 pointer-events-none" style={{ transition: 'opacity 0.2s ease' }}>
       <div className="flex flex-col items-center gap-2">
         <span className="font-mono text-[0.55rem] tracking-[0.2em]" style={{ color: TEXT_DIM }}>SCROLL</span>
         <svg width="14" height="14" viewBox="0 0 14 14" className="animate-bounce" style={{ animationDuration: '2s' }}>
@@ -436,23 +478,95 @@ function ScrollPrompt() {
   )
 }
 
-// ─── Progress ───────────────────────────────────────────────────────────────
-function ProgressBar() {
-  const barRef = useRef<HTMLDivElement>(null)
+// ─── Back to Top ─────────────────────────────────────────────────────────────
+function BackToTop() {
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const bar = barRef.current
-    if (!bar) return
-    const update = () => { bar.style.transform = `scaleY(${getScrollProgress()})` }
+    const update = () => setVisible(window.scrollY > window.innerHeight * 0.5)
     window.addEventListener('scroll', update, { passive: true })
     return () => window.removeEventListener('scroll', update)
   }, [])
 
   return (
-    <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 pointer-events-none hidden md:block">
-      <div className="w-[2px] h-[120px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)' }}>
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className="fixed bottom-6 right-5 z-[100] transition-all duration-500 ease-out"
+      style={{
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? 'auto' : 'none',
+        transform: visible ? 'translateY(0)' : 'translateY(16px)',
+      }}
+    >
+      <div
+        className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+        style={{
+          background: 'rgba(0,0,0,0.65)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255,42,54,0.2)',
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 13V3M8 3L4 7M8 3L12 7" stroke="#ff2a36" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+    </button>
+  )
+}
+
+// ─── Progress ───────────────────────────────────────────────────────────────
+function ProgressBar() {
+  const barRef = useRef<HTMLDivElement>(null)
+  const dotRefs = useRef<(HTMLButtonElement | null)[]>([])
+
+  useEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+    const update = () => {
+      const p = getScrollProgress()
+      bar.style.transform = `scaleY(${p})`
+      // Highlight active dot
+      const idx = Math.min(Math.floor(p * CHAPTERS.length), CHAPTERS.length - 1)
+      dotRefs.current.forEach((dot, i) => {
+        if (dot) dot.style.opacity = i === idx ? '1' : '0.25'
+      })
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 80 // offset for fixed header
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+  }
+
+  return (
+    <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[100] hidden md:flex flex-col items-center gap-3">
+      <div className="w-[2px] h-[120px] rounded-full overflow-hidden mb-1" style={{ background: 'rgba(255,255,255,0.04)' }}>
         <div ref={barRef} className="w-full origin-top" style={{ background: ACCENT, transform: 'scaleY(0)', height: '100%' }} />
       </div>
+      {CHAPTERS.map((ch, i) => (
+        <button
+          key={ch.id}
+          ref={el => { dotRefs.current[i] = el }}
+          onClick={() => scrollToSection(ch.id)}
+          className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-100"
+          style={{ color: ACCENT, opacity: 0.25 }}
+          title={ch.title.replace(/<[^>]*>/g, '')}
+        >
+          {ch.marker}
+        </button>
+      ))}
+      <button onClick={() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })}
+        className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-all duration-300 hover:opacity-100"
+        style={{ color: ACCENT, opacity: 0.25 }}
+        title="Bottom"
+      >06</button>
     </div>
   )
 }
@@ -468,14 +582,31 @@ function TopNav() {
       }}
     >
       <nav className="flex items-center justify-between">
-        <span className="font-mono text-sm font-bold tracking-[0.25em]" style={{ color: ACCENT }}>VADERLABZ</span>
+        <button onClick={() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+          className="font-mono text-sm font-bold tracking-[0.25em] transition-colors duration-300 hover:opacity-80"
+          style={{ color: TEXT_PRIMARY }}
+        >
+          <span style={{ color: TEXT_PRIMARY }}>VADER</span><span style={{ color: ACCENT }}>LABZ</span>
+        </button>
         <div className="flex gap-5 md:gap-8">
           {CHAPTERS.map((ch) => (
-            <a key={ch.id} href={`#${ch.id}`}
+            <button key={ch.id} onClick={() => {
+              const el = document.getElementById(ch.id)
+              if (el) {
+                const top = el.getBoundingClientRect().top + window.scrollY - 80
+                window.scrollTo({ top, behavior: 'smooth' })
+              }
+            }}
               className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#ff2a36]"
               style={{ color: TEXT_DIM }}
-            >{ch.marker}</a>
+            >{ch.marker}</button>
           ))}
+          <button onClick={() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })}
+            className="font-mono text-[0.55rem] tracking-[0.15em] uppercase transition-colors duration-300 hover:text-[#ff2a36]"
+            style={{ color: TEXT_DIM }}
+          >06</button>
         </div>
       </nav>
     </header>
@@ -486,6 +617,19 @@ function TopNav() {
 function BgOverlay({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
+      {/* Full-screen background image — behind 3D canvas */}
+      <div className="fixed inset-0 z-[-1]">
+        <img
+          src="/media/vaderBG-2.jpg"
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ filter: 'brightness(0.65) saturate(0.9)' }}
+        />
+        {/* Dark overlay for additional dimming */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.75) 100%)'
+        }} />
+      </div>
       {/* Vignette effect */}
       <div className="fixed inset-0 z-20 pointer-events-none"
         style={{
@@ -574,14 +718,17 @@ export default function VaderExperiencePage() {
           <section className="relative min-h-screen flex items-center justify-center">
             <div className="w-full px-6 pt-20">
               {/* Full-width glass strip so text isn't squeezed */}
-              <div
-                className="w-full py-10 md:py-14 text-center"
+              <div className="relative">
+                <div className="absolute -inset-6 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
+                <div
+                  className="relative w-full py-10 md:py-14 text-center will-change-[backdrop-filter]"
                 style={{
                   background: 'linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%)',
                   backdropFilter: 'blur(16px)',
                   WebkitBackdropFilter: 'blur(16px)',
                   borderTop: '1px solid rgba(255,255,255,0.04)',
                   borderBottom: '1px solid rgba(255,255,255,0.04)',
+                  opacity: 0.99,
                 }}
               >
                 <HeroAnimation>
@@ -595,10 +742,15 @@ export default function VaderExperiencePage() {
                 </HeroAnimation>
 
                 <HeroAnimation>
-                  <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-bold tracking-[0.02em] leading-none mb-3" style={{ color: TEXT_PRIMARY }}>
-                    {'VADERLABZ'.split('').map((ch, i) => (
+                  <h1 className="font-sans text-6xl md:text-8xl lg:text-9xl font-bold tracking-[0.02em] leading-none mb-3">
+                    {'VADER'.split('').map((ch, i) => (
                       <span key={i} data-hero-letter className="inline-block overflow-hidden">
-                        <span className="inline-block">{ch}</span>
+                        <span className="inline-block" style={{ color: TEXT_PRIMARY }}>{ch}</span>
+                      </span>
+                    ))}
+                    {'LABZ'.split('').map((ch, i) => (
+                      <span key={`r${i}`} data-hero-letter className="inline-block overflow-hidden">
+                        <span className="inline-block" style={{ color: '#ff2a36' }}>{ch}</span>
                       </span>
                     ))}
                   </h1>
@@ -625,6 +777,7 @@ export default function VaderExperiencePage() {
                     onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >GITHUB ↗</a>
                 </div>
+              </div>
               </div>
             </div>
           </section>
@@ -654,19 +807,34 @@ export default function VaderExperiencePage() {
 
           <ClosingQuote />
 
-          <footer className="text-center py-8 font-mono text-[0.5rem] tracking-[0.15em]" style={{ color: TEXT_DIM, borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-            VADERLABZ // VADER_PROTOCOL v1.0 &mdash; 2026
+          <footer className="text-center py-6 font-mono text-[0.5rem] tracking-[0.15em]" style={{ color: TEXT_DIM }}>
+            <div className="relative inline-block">
+              <div className="absolute -inset-4 rounded-xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
+              <div className="relative px-6 py-3 rounded-xl will-change-[backdrop-filter]" style={{
+              background: 'rgba(0,0,0,0.55)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255,255,255,0.04)',
+              opacity: 0.99,
+            }}>
+              VADERLABZ // VADER_PROTOCOL v1.0 &mdash; 2026
+            </div>
+            </div>
           </footer>
         </div>
       </BgOverlay>
 
       <ProgressBar />
+      <BackToTop />
 
       {activeArticle !== null && (
         <ArticleOverlay chapter={CHAPTERS[activeArticle]} onClose={() => setActiveArticle(null)} />
       )}
 
       <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+        }
         body {
           background: #000000;
           cursor: default;

@@ -19,13 +19,13 @@ export default function HomePage() {
         {/* ---- Nav ---- */}
         <header className={styles.header}>
           <nav className={styles.nav}>
-            <span className={styles.logo}>VADERLABZ</span>
+            <img src="/media/VaderLabz-Logo.png" alt="VaderLabz" className={styles.logo} />
             <div className={styles.navLinks}>
-              <a href="#story">STORY</a>
-              <a href="#philosophy">PHILOSOPHY</a>
-              <a href="#projects">PROJECTS</a>
-              <a href="#proof">PROOF</a>
-              <a href="#connect">CONNECT</a>
+              <button onClick={() => { const el = document.getElementById('story'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({ top, behavior: 'smooth' }) } }} className={styles.linkBtn}>STORY</button>
+              <button onClick={() => { const el = document.getElementById('philosophy'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({ top, behavior: 'smooth' }) } }} className={styles.linkBtn}>PHILOSOPHY</button>
+              <button onClick={() => { const el = document.getElementById('projects'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({ top, behavior: 'smooth' }) } }} className={styles.linkBtn}>PROJECTS</button>
+              <button onClick={() => { const el = document.getElementById('proof'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({ top, behavior: 'smooth' }) } }} className={styles.linkBtn}>PROOF</button>
+              <button onClick={() => { const el = document.querySelector('.section-panel:last-of-type'); if (el) { const top = el.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({ top, behavior: 'smooth' }) } }} className={styles.linkBtn}>CONNECT</button>
             </div>
           </nav>
         </header>

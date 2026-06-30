@@ -23,7 +23,7 @@
   --text-muted: #888899;
   --text-dim: #555566;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-space-mono), 'Space Mono', 'Courier New', monospace;
   --ease-vader: cubic-bezier(0.22, 1, 0.36, 1);
   --rail-width: 42px;

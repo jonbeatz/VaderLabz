@@ -1,0 +1,423 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 5604,
+      "max": [
+        2.2604739665985107,
+        14.0,
+        3.1191303730010986
+      ],
+      "min": [
+        -4.2281341552734375,
+        -15.871927261352539,
+        -2.934438467025757
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 67248,
+      "componentType": 5126,
+      "count": 5604,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 5604,
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 5604,
+      "max": [
+        1.0001888275146484,
+        0.996015727519989
+      ],
+      "min": [
+        0.012408144772052765,
+        0.003304794430732727
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 44832,
+      "componentType": 5126,
+      "count": 5604,
+      "max": [
+        1.0001888275146484,
+        0.996015727519989
+      ],
+      "min": [
+        0.012408144772052765,
+        0.003304794430732727
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 89664,
+      "componentType": 5126,
+      "count": 5604,
+      "max": [
+        1.0001888275146484,
+        0.996015727519989
+      ],
+      "min": [
+        0.012408144772052765,
+        0.003304794430732727
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 19152,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 134496,
+      "componentType": 5126,
+      "count": 249,
+      "max": [
+        1.1372334957122803,
+        106.05134582519531,
+        1.1372350454330444
+      ],
+      "min": [
+        -1.1372312307357788,
+        8.67728042602539,
+        -1.1372313499450684
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 137484,
+      "componentType": 5126,
+      "count": 249,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        0.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 134496,
+      "componentType": 5126,
+      "count": 249,
+      "max": [
+        1.000000238418579,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.5
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 76608,
+      "componentType": 5125,
+      "count": 1224,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Quiznos323 (https://sketchfab.com/quiznos323)",
+      "license": "CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/skywalker-lightsaber-star-wars-441eebdbeb924da49ac2325c2a634756",
+      "title": "Skywalker Lightsaber - Star Wars"
+    },
+    "generator": "Sketchfab-16.12.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 81504,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 136488,
+      "byteOffset": 81504,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 140472,
+      "byteOffset": 217992,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 89664,
+      "byteOffset": 358464,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 448128,
+      "uri": "scene.bin"
+    }
+  ],
+  "extensionsUsed": [
+    "KHR_materials_emissive_strength",
+    "KHR_materials_specular"
+  ],
+  "images": [
+    {
+      "uri": "textures/AnakinsLightsaber_baseColor.png"
+    },
+    {
+      "uri": "textures/AnakinsLightsaber_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/AnakinsLightsaber_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "AnakinsLightsaber",
+      "normalTexture": {
+        "index": 2,
+        "scale": 0.75
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        },
+        "roughnessFactor": 0.5185247675853808
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.0012365473948007016,
+        0.0,
+        0.1717234471995979
+      ],
+      "extensions": {
+        "KHR_materials_emissive_strength": {
+          "emissiveStrength": 10.0
+        },
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 1.0
+        }
+      },
+      "name": "LightsaberBlade_Blue",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5684522089150542,
+          0.7761313362259259,
+          1.0,
+          1.0
+        ],
+        "metallicFactor": 0.0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Hilt_AnakinsLightsaber_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Blade_LightsaberBlade_Blue_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 8,
+            "POSITION": 7,
+            "TEXCOORD_0": 9
+          },
+          "indices": 10,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        -4.440892098500626e-16,
+        0.7642095685005187,
+        0.6449680328369143,
+        0.0,
+        -5.551115123125783e-17,
+        -0.6449680328369143,
+        0.7642095685005187,
+        0.0,
+        1.0,
+        3.885780586188047e-16,
+        3.885780586188049e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "anakins_lightsaber__epIII.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4,
+        6
+      ],
+      "name": "Lightsaber_Anakin_EpIII"
+    },
+    {
+      "children": [
+        5
+      ],
+      "name": "Hilt"
+    },
+    {
+      "mesh": 0,
+      "name": "Hilt_AnakinsLightsaber_0"
+    },
+    {
+      "children": [
+        7
+      ],
+      "name": "Blade"
+    },
+    {
+      "mesh": 1,
+      "name": "Blade_LightsaberBlade_Blue_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

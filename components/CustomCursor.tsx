@@ -28,6 +28,9 @@ export function CustomCursor() {
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
     if (isTouch) return
 
+    // Hide default OS cursor while custom dot is active
+    document.body.style.cursor = 'none'
+
     setState((s) => ({ ...s, isVisible: true }))
 
     const onMove = (e: MouseEvent) => {
@@ -58,6 +61,8 @@ export function CustomCursor() {
       window.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseover', onOver)
       document.removeEventListener('mouseout', onOut)
+      // Restore default OS cursor on cleanup
+      document.body.style.cursor = ''
     }
   }, [cursorEnabled])
 

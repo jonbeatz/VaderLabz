@@ -66,6 +66,7 @@ export interface ExperienceConfig {
   showCameraControls?: boolean
   showMouseControls?: boolean
   showArchiveLink?: boolean
+  showContactShadows?: boolean
   archiveLinkUrl?: string
   archiveLinkTitle?: string
 

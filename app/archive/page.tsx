@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <>
-      <ThreeBackground accent="#ff2a36" secondary="#ff0033" bgColor="#000000" bloom />
+      <ThreeBackground accent="#ff2a36" secondary="#ff0033" bgColor="#000000" />
 
       <main className={styles.main}>
         {/* ---- Nav ---- */}

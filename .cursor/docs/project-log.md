@@ -15,5 +15,8 @@
 
 || 2026-06-30 | CVE-2026-41305 fix + redeploy + 503 resolved | postcss@8.4.31 → 8.5.16. Redeployed. hPanel restart fixed 503. v2.3.1. |
 || 2026-06-30 | **Experience Engine Refactor** | 4 route files (~5,000 lines) consolidated into config-driven `lib/experience-engine/engine.tsx`. 12 UI + 2 scene components extracted. Route files reduced to ~30-line config wrappers. Orphan layouts/dead code cleaned. New branch `VaderLabz-Project-v3`. Tagged `refactor/v2.3.1-base`. |
+|| 2026-07-01 | **session-start.ps1 parser fix** | Fixed PowerShell parser bug on line 88 (`($($wait * 5)s)` — bare char after nested subexpression). Normalized CRLF, replaced remaining em-dashes for PS5 safety. Session stack verified clean. |
+
+||| 2026-07-01 | **Post-refactor behavioral fixes (Session 9)** | After Experience Engine Refactor (Session 7), 3 routes had broken models, glow, scroll interaction, UI layout, HdrPicker, cursor, back-to-top, and FX controls. 14+ fixes applied across 15 files. Root cause: structural refactor without per-route behavioral audit. See ReCall.md for full fix list. Added migration lesson to docs. v2.4.0. |
 
 *Created: 2026-06-28*

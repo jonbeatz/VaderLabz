@@ -49,7 +49,7 @@ const CHAPTERS = [
     title: 'The <i>Design</i> System',
     subtitle: 'From Gold to Red — A Visual Language',
     summary: 'VaderLabz Red (#ff2a36) is the signature accent — aggressive, confident, unmistakable across every surface.',
-    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the Skywalker lightsaber GLB model.',
+    detail: 'The VaderLabz visual system draws from Zera Studio\'s scroll-driven luxury, NovaMira\'s bento grid discipline, and raw industrial red borrowed from sci-fi interfaces.\n\nThe stack: Lenis smooth scroll, GSAP + ScrollTrigger for hero letter animations, @react-three/postprocessing bloom, and the Skywalker lightsaber GLB model bathed in neon_photostudio HDR.',
     camera: { x: -1.2, y: 0, z: 3.8 },
     target: { x: 0, y: 0, z: 0 },
   },
@@ -64,16 +64,23 @@ const STATS = [
 
 const config: ExperienceConfig = {
   id: 'main',
-  modelPath: '/media/skywalker_lightsaber.glb',
-  defaultScale: 0.18,
-  scaleScrollFactor: 0.06,
-  defaultY: 0.6,
+  modelPath: '/media/darth_vader_lightsaber.glb',
+  defaultScale: 2.1,
+  scaleScrollFactor: 0.6,
+  defaultY: 0.8,
   yScrollFactor: -1.8,
   chapters: CHAPTERS,
   stats: STATS,
-  chapterDetailText: 'the Skywalker lightsaber GLB model',
+  chapterDetailText: 'the Darth Vader lightsaber GLB model',
   archiveLinkUrl: '/',
   archiveLinkTitle: 'Go to main experience',
+  // Defaults: HDR Neon (0), Bloom Med (2), Rotation Slow (1), Camera Full (2), Saber Red (0)
+  defaultHdrIndex: 0,
+  defaultBloomIndex: 2,
+  defaultRotationIndex: 1,
+  defaultCameraIndex: 2,
+  defaultSaberColorIndex: 0,
+  defaultMouseEnabled: true,
 }
 
 export default createVaderExperience(config)

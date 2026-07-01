@@ -1,9 +1,14 @@
 'use client'
 
-import { useMemo, useRef, useEffect } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { useMemo, useRef, useEffect, useState } from 'react'
+import { useGLTF, useProgress } from '@react-three/drei'
+import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { SaberColorPreset, RotationPreset, CameraPreset } from '../types'
+
+useGLTF.preload('/media/skywalker_lightsaber.glb')
+useGLTF.preload('/media/darth_vader_lightsaber.glb')
+useGLTF.preload('/media/harlons_lightsaber.glb')
 
 interface SaberModelProps {
   modelPath: string
@@ -14,84 +19,135 @@ interface SaberModelProps {
   saberColor: SaberColorPreset
   rotationSpeed: RotationPreset
   cameraMode: CameraPreset
+  mouseEnabled: boolean
   sabers: { bladeMat: THREE.MeshStandardMaterial | null }
 }
 
 export function SaberModel({
   modelPath, defaultScale, scaleScrollFactor, defaultY, yScrollFactor,
-  saberColor, rotationSpeed, sabers,
+  saberColor, rotationSpeed, cameraMode, mouseEnabled, sabers,
 }: SaberModelProps) {
   const { scene } = useGLTF(modelPath)
-  const groupRef = useRef<THREE.Group>(null)
+  const groupRef = useRef<THREE.Group>(null!)
+  const { camera } = useThree()
+  const mouseRef = useRef({ x: 0, y: 0 })
+  const [error, setError] = useState(false)
+  const progressRef = useRef(0)
 
-  const sceneClone = useMemo(() => {
-    const clone = scene.clone(true)
-    clone.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh
-        mesh.frustumCulled = false
-      }
-    })
-    return clone
-  }, [scene])
-
-  // Blade material reference — populate once
+  // Track scroll progress
   useEffect(() => {
-    sceneClone.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh
-        const mat = mesh.material
-        if (mat instanceof THREE.MeshStandardMaterial || mat instanceof THREE.MeshPhysicalMaterial) {
-          mat.envMapIntensity = 0.4
-          mat.roughness = 0.6
-          mat.metalness = 0.3
-          if (mesh.name.toLowerCase().includes('blade')) {
-            mat.toneMapped = false
-            sabers.bladeMat = mat
-          }
-        }
-      }
-    })
-  }, [sceneClone, sabers])
-
-  // Apply saber color directly via ref
-  useEffect(() => {
-    if (sabers.bladeMat) {
-      sabers.bladeMat.emissive = new THREE.Color(...saberColor.color)
-      sabers.bladeMat.emissiveIntensity = 15
-    }
-  }, [saberColor, sabers])
-
-  // Scroll-driven scaling and Y
-  useEffect(() => {
-    if (!groupRef.current) return
     const update = () => {
-      const p = typeof window !== 'undefined'
-        ? Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight), 1)
-        : 0
-      groupRef.current!.scale.setScalar(defaultScale + p * scaleScrollFactor)
-      groupRef.current!.position.y = defaultY + p * yScrollFactor
+      if (typeof window === 'undefined') return
+      const total = document.documentElement.scrollHeight - window.innerHeight
+      progressRef.current = total > 0 ? window.scrollY / total : 0
     }
-    update()
     window.addEventListener('scroll', update, { passive: true })
     return () => window.removeEventListener('scroll', update)
-  }, [defaultScale, scaleScrollFactor, defaultY, yScrollFactor])
+  }, [])
 
-  // Rotation animation
+  // Mouse parallax
   useEffect(() => {
-    if (!groupRef.current || rotationSpeed.speed === 0) return
-    let raf: number
-    const animate = () => {
-      if (groupRef.current) groupRef.current.rotation.y += rotationSpeed.speed * 0.01
-      raf = requestAnimationFrame(animate)
+    const onMouse = (e: MouseEvent) => {
+      mouseRef.current.x = (e.clientX / window.innerWidth - 0.5) * 2
+      mouseRef.current.y = (e.clientY / window.innerHeight - 0.5) * 2
     }
-    raf = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(raf)
-  }, [rotationSpeed])
+    window.addEventListener('mousemove', onMouse, { passive: true })
+    return () => window.removeEventListener('mousemove', onMouse)
+  }, [])
 
-  return (
-    <group ref={groupRef}>
-      <primitive object={sceneClone} />
-    </group>
-  )
+  // Blade material ref
+  const bladeMatRef = useRef<THREE.MeshStandardMaterial | null>(null)
+
+  // Clone scene and apply materials
+  const sceneClone = useMemo(() => {
+    try {
+      const clone = scene.clone()
+      clone.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.frustumCulled = false
+          child.castShadow = true
+          child.receiveShadow = true
+        }
+        // Only apply emissive to blade meshes — NOT the hilt or handle
+        if (child instanceof THREE.Mesh && child.name && child.name.toLowerCase().includes('blade')) {
+          const mat = child.material
+          if (mat) {
+            if (Array.isArray(mat)) {
+              mat.forEach(m => {
+                if (m instanceof THREE.MeshStandardMaterial || m instanceof THREE.MeshPhysicalMaterial) {
+                  m.toneMapped = false
+                  m.emissive = new THREE.Color(...saberColor.color)
+                  m.emissiveIntensity = 15
+                }
+              })
+            } else if (mat instanceof THREE.MeshStandardMaterial || mat instanceof THREE.MeshPhysicalMaterial) {
+              mat.toneMapped = false
+              mat.emissive = new THREE.Color(...saberColor.color)
+              mat.emissiveIntensity = 15
+              bladeMatRef.current = mat as THREE.MeshStandardMaterial
+              sabers.bladeMat = mat as THREE.MeshStandardMaterial
+            }
+          }
+        }
+      })
+      return clone
+    } catch (e) {
+      console.error('[SaberModel] clone error:', e)
+      setError(true)
+      return null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene, modelPath])
+
+  // Update blade emissive when color changes
+  useEffect(() => {
+    if (bladeMatRef.current) {
+      bladeMatRef.current.emissive = new THREE.Color(...saberColor.color)
+      bladeMatRef.current.emissiveIntensity = 15
+    }
+  }, [saberColor])
+
+  // useFrame — handles rotation, position, scale, camera, mouse parallax
+  useFrame((state, delta) => {
+    const g = groupRef.current
+    if (!g) return
+    const p = progressRef.current
+
+    // Rotation
+    g.rotation.y += delta * rotationSpeed.speed
+    g.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.03 + p * 0.08
+
+    // Mouse-follow parallax
+    if (mouseEnabled) {
+      g.rotation.z += (mouseRef.current.x * 0.03 - g.rotation.z) * 0.03
+    }
+
+    // Scale and Y position from config
+    g.scale.setScalar(defaultScale + p * scaleScrollFactor)
+    g.position.y = defaultY + p * yScrollFactor
+
+    // Camera orbit
+    if (cameraMode.mode === 'full') {
+      const orbitAngle = p * Math.PI * 2
+      camera.position.x = Math.sin(orbitAngle) * 5
+      camera.position.z = Math.cos(orbitAngle) * 5
+      camera.position.y = 1.0 - p * 0.5
+      camera.lookAt(0, 0, 0)
+    } else if (cameraMode.mode === 'slow') {
+      const orbitAngle = p * Math.PI
+      camera.position.x = Math.sin(orbitAngle) * 4
+      camera.position.z = Math.cos(orbitAngle) * 4
+      camera.position.y = 0.8
+      camera.lookAt(0, 0, 0)
+    } else {
+      camera.position.x = 0
+      camera.position.z = 5
+      camera.position.y = 0.5
+      camera.lookAt(0, 0, 0)
+    }
+  })
+
+  if (error || !sceneClone) return null
+
+  return <primitive ref={groupRef} object={sceneClone} />
 }

@@ -65,15 +65,22 @@ const STATS = [
 const config: ExperienceConfig = {
   id: 'vader-experience',
   modelPath: '/media/darth_vader_lightsaber.glb',
-  defaultScale: 0.18,
-  scaleScrollFactor: 0.06,
-  defaultY: 0.6,
+  defaultScale: 2.1,
+  scaleScrollFactor: 0.6,
+  defaultY: 0.8,
   yScrollFactor: -1.8,
   chapters: CHAPTERS,
   stats: STATS,
   chapterDetailText: 'the Darth Vader lightsaber GLB model',
   archiveLinkUrl: '/vader-experience',
   archiveLinkTitle: 'Go to vader experience',
+  // Defaults: HDR Neon (0), Bloom Med (2), Rotation Slow (1), Camera Full (2), Saber Red (0)
+  defaultHdrIndex: 0,
+  defaultBloomIndex: 2,
+  defaultRotationIndex: 1,
+  defaultCameraIndex: 2,
+  defaultSaberColorIndex: 0,
+  defaultMouseEnabled: true,
 }
 
 export default createVaderExperience(config)

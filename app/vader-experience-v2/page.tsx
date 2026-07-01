@@ -72,21 +72,23 @@ const config: ExperienceConfig = {
   chapters: CHAPTERS,
   stats: STATS,
   chapterDetailText: 'the Skywalker lightsaber GLB model',
-  // v2 has no HdrPicker — all hardcoded
-  showHdrPicker: false,
-  showBloomControls: false,
-  showSaberControls: false,
-  showCameraControls: false,
-  showMouseControls: false,
+  // v2 original had no HdrPicker but user wants FX controls
+  showHdrPicker: true,
+  showBloomControls: true,
+  showSaberControls: true,
+  showCameraControls: true,
+  showMouseControls: true,
+  // v2 original had contact shadows beneath the model
+  showContactShadows: true,
   // No archive link in v2
   archiveLinkUrl: undefined,
   archiveLinkTitle: undefined,
-  // Hardcoded defaults
+  // Hardcoded defaults — v2 original used full camera, high bloom, blue blade
   defaultHdrIndex: 0,
-  defaultBloomIndex: 1,
-  defaultRotationIndex: 0,
-  defaultCameraIndex: 0,
-  defaultSaberColorIndex: 0,
+  defaultBloomIndex: 3,
+  defaultRotationIndex: 1,
+  defaultCameraIndex: 2,
+  defaultSaberColorIndex: 1,
   defaultMouseEnabled: true,
   defaultCursorEnabled: true,
 }

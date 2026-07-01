@@ -3,7 +3,6 @@
 import React, { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Points, PointMaterial } from '@react-three/drei'
-import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
 // ============================================================================
@@ -195,7 +194,6 @@ export interface ThreeBackgroundProps {
   accent?: string
   secondary?: string
   bgColor?: string
-  bloom?: boolean
   children?: React.ReactNode
 }
 
@@ -203,15 +201,8 @@ export function ThreeBackground({
   accent = '#F5B841',
   secondary = '#ff0033',
   bgColor = '#000000',
-  bloom = false,
   children,
 }: ThreeBackgroundProps) {
-  // Disable bloom on touch/mobile for perf
-  const isMobile =
-    typeof window !== 'undefined' &&
-    ('ontouchstart' in window || navigator.maxTouchPoints > 0)
-  const enableBloom = bloom && !isMobile
-
   return (
     <div
       className="fixed inset-0 w-full h-full"
@@ -235,17 +226,6 @@ export function ThreeBackground({
         <DynamicLights accentColor={accent} />
         <ParticleFlyThrough accentColor={accent} />
         <HeroCore accentColor={accent} secondaryColor={secondary} />
-
-        {enableBloom && (
-          <EffectComposer>
-            <Bloom
-              intensity={0.3}
-              luminanceThreshold={0.2}
-              luminanceSmoothing={0.9}
-              mipmapBlur
-            />
-          </EffectComposer>
-        )}
       </Canvas>
     </div>
   )

@@ -74,6 +74,13 @@ const config: ExperienceConfig = {
   chapterDetailText: 'the Skywalker lightsaber GLB model',
   archiveLinkUrl: '/',
   archiveLinkTitle: 'Go to main experience',
+  // Defaults: HDR Neon (0), Bloom Med (2), Rotation Slow (1), Camera Full (2), Saber Red (0)
+  defaultHdrIndex: 0,
+  defaultBloomIndex: 2,
+  defaultRotationIndex: 1,
+  defaultCameraIndex: 2,
+  defaultSaberColorIndex: 0,
+  defaultMouseEnabled: true,
 }
 
 export default createVaderExperience(config)

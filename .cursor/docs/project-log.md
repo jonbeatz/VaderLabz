@@ -14,5 +14,6 @@
 | 2026-06-30 | v3 revamped + blade color fix + GLB tools | Rebuilt /vader-experience-v3 as exact copy of main / page with Skywalker saber. Fixed blade-only emissive. Added 4 GLB optimization tools to skills. v2.2.0. |
 
 || 2026-06-30 | CVE-2026-41305 fix + redeploy + 503 resolved | postcss@8.4.31 → 8.5.16. Redeployed. hPanel restart fixed 503. v2.3.1. |
+|| 2026-06-30 | **Experience Engine Refactor** | 4 route files (~5,000 lines) consolidated into config-driven `lib/experience-engine/engine.tsx`. 12 UI + 2 scene components extracted. Route files reduced to ~30-line config wrappers. Orphan layouts/dead code cleaned. New branch `VaderLabz-Project-v3`. Tagged `refactor/v2.3.1-base`. |
 
 *Created: 2026-06-28*

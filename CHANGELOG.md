@@ -1,5 +1,31 @@
 # Changelog — VaderLabz
 
+## 2.4.0 - 2026-06-30
+
+### Added
+- **Experience Engine refactor** — Consolidated ~5,000 lines of duplicated code across 4 route files into a single config-driven engine at `lib/experience-engine/`
+- **`createVaderExperience(config)` factory** — Routes now ~30 lines each: import config + call factory
+- **12 reusable UI components** extracted: TopNav, ProgressBar, ChapterSection, ArticleOverlay, LoadingScreen, ScrollPrompt, BackToTop, StatsStrip, ClosingQuote, HeroAnimation, BgOverlay, HdrPicker, AccordionSection
+- **2 reusable 3D components** extracted: SaberModel, Scene3D
+- **ExperienceConfig TypeScript interface** — Fully typed config object specifying model path, scaling, chapters, stats, feature toggles, and hardcoded overrides per variant
+- **New branch: `VaderLabz-Project-v3`** — All refactor work isolated from v2
+
+### Fixed
+- **Orphaned `app/vader-experience-v3/layout.tsx` deleted** — v3 now uses root layout
+- **Orphaned `media/` root directory deleted** — duplicate of `public/media/`
+- **Orphaned `globals.css`, `page.module.css`, and fossil subdirs** in v3 route cleaned
+- **Unused `cursorEnabled` state, `scrollTo` handler, and dead `ContactShadows` import** removed
+
+### Changed
+- Route files reduced from ~1,200 lines each to ~30 lines
+- `/vader-experience-v2` now hardcodes all controls (no HdrPicker feature)
+- `/vader-experience` uses Darth Vader saber model with full controls
+
+### Internal
+- Git tag `refactor/v2.3.1-base` set before any changes
+- Full project backup at `vaderlabz-project-v1-i`
+- Plan saved at `.cursor/plans/2026-06-30-experience-engine-refactor.plan.md`
+
 ## 2.3.1 - 2026-06-30
 
 ### Fixed

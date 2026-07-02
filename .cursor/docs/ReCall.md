@@ -175,4 +175,23 @@ Project-level MCP config in Cursor uses the same `mcpServers` format as the glob
 
 ---
 
-*Last Entry: 2026-07-01 (Session 10)*
+### 2026-07-01 (Session 11 — Custom cursor: removed body cursor override)
+
+#### What happened
+- User reported mouse cursor invisible on all routes again after Session 10 MCP fix
+- Root cause: `CustomCursor.tsx` was setting `document.body.style.cursor = 'none'` when cursor dot was enabled, hiding the OS cursor entirely
+- Toggling cursor dot off had inconsistent restoration of the OS cursor
+
+#### Fix applied
+- Removed all `document.body.style.cursor` manipulation from `CustomCursor.tsx`
+- The red dot is now purely an **additive overlay** — it renders on top of the normal OS cursor
+- When cursor dot is **On**: red dot appears alongside the normal cursor
+- When cursor dot is **Off**: normal cursor remains, no red dot
+- Never hides or replaces the OS cursor
+
+#### Key lesson
+The custom red dot should be a visual enhancement layered on top of the OS cursor, not a replacement. Never use `body { cursor: none }` or `document.body.style.cursor = 'none'` for a decorative overlay.
+
+---
+
+*Last Entry: 2026-07-01 (Session 11)*

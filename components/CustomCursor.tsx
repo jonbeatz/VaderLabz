@@ -20,16 +20,18 @@ export function CustomCursor() {
   })
 
   useEffect(() => {
-    if (!cursorEnabled) return
+    // Show or hide the red dot overlay based on cursorEnabled
+    if (!cursorEnabled) {
+      setState((s) => ({ ...s, isVisible: false }))
+      return
+    }
+
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
     // Detect touch device
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
     if (isTouch) return
-
-    // Hide default OS cursor while custom dot is active
-    document.body.style.cursor = 'none'
 
     setState((s) => ({ ...s, isVisible: true }))
 
@@ -61,8 +63,6 @@ export function CustomCursor() {
       window.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseover', onOver)
       document.removeEventListener('mouseout', onOut)
-      // Restore default OS cursor on cleanup
-      document.body.style.cursor = ''
     }
   }, [cursorEnabled])
 

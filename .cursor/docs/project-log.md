@@ -18,5 +18,6 @@
 || 2026-07-01 | **session-start.ps1 parser fix** | Fixed PowerShell parser bug on line 88 (`($($wait * 5)s)` — bare char after nested subexpression). Normalized CRLF, replaced remaining em-dashes for PS5 safety. Session stack verified clean. |
 
 ||| 2026-07-01 | **Post-refactor behavioral fixes (Session 9)** | After Experience Engine Refactor (Session 7), 3 routes had broken models, glow, scroll interaction, UI layout, HdrPicker, cursor, back-to-top, and FX controls. 14+ fixes applied across 15 files. Root cause: structural refactor without per-route behavioral audit. See ReCall.md for full fix list. Added migration lesson to docs. v2.4.0. |
+|| 2026-07-01 | **MCP config format fix (Session 10)** | Project `.cursor/mcp.json` used VS Code format (`project_mcp_servers` + `type` fields) instead of Cursor's `mcpServers` format. Fixed. Also fixed global terminal-controller Python path. |
 
 *Created: 2026-06-28*

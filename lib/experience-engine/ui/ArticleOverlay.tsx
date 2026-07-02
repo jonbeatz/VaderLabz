@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TEXT_PRIMARY, TEXT_MUTED } from '../types'
 import type { ChapterData } from '../types'
 
@@ -59,7 +59,7 @@ export function ArticleOverlay({ chapter, onClose }: { chapter: ChapterData; onC
         </div>
 
         <div className="text-sm md:text-base leading-[1.9] space-y-4" style={{ color: TEXT_MUTED }}>
-          {chapter.detail.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
+          {chapter.detail.split('\n\n').filter(Boolean).map((p, i) => <p key={i}>{p}</p>)}
         </div>
       </div>
     </div>

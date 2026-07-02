@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ACCENT, TEXT_DIM } from '../types'
 import { AccordionSection } from './AccordionSection'
 import { HDR_PRESETS, BLOOM_PRESETS, ROTATION_PRESETS, CAMERA_PRESETS, SABER_COLORS } from '../config'

@@ -1,88 +1,86 @@
 {
-  "project_mcp_servers": {
+  "mcpServers": {
     "filesystem": {
-      "type": "filesystem",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
       "description": "Read, write, and manage local files and directories — file reads, writes, renames, deletions, search, and directory listings.",
       "enabled": true
     },
     "github": {
-      "type": "github",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
       "description": "GitHub API integration — search repos, read issues/PRs, check CI, create releases, and manage repos.",
       "enabled": true,
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "must be set in .env.local"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
     "tavily": {
-      "type": "tavily",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-tavily"],
       "description": "Web search for up-to-date information — documentation, news, tutorials, and technical answers.",
       "enabled": true,
       "env": {
-        "TAVILY_API_KEY": "must be set in .env.local"
+        "TAVILY_API_KEY": "${env:TAVILY_API_KEY}"
       }
     },
     "hostinger-dns": {
-      "type": "hostinger-dns",
+      "command": "npx",
+      "args": ["-y", "@hostinger/mcp-dns"],
       "description": "Hostinger DNS management — create, update, and delete DNS records for domains.",
       "enabled": true,
       "env": {
-        "HOSTINGER_API_TOKEN": "must be set in .env.local"
+        "HOSTINGER_API_TOKEN": "${env:HOSTINGER_API_TOKEN}"
       }
     },
     "hostinger-hosting": {
-      "type": "hostinger-hosting",
+      "command": "npx",
+      "args": ["-y", "@hostinger/mcp-hosting"],
       "description": "Hostinger web hosting management — manage hosting plans, websites, and server resources.",
       "enabled": true,
       "env": {
-        "HOSTINGER_API_TOKEN": "must be set in .env.local"
+        "HOSTINGER_API_TOKEN": "${env:HOSTINGER_API_TOKEN}"
       }
     },
     "hostinger-vps": {
-      "type": "hostinger-vps",
+      "command": "npx",
+      "args": ["-y", "@hostinger/mcp-vps"],
       "description": "Hostinger VPS management — create, manage, and monitor virtual private servers.",
       "enabled": true,
       "env": {
-        "HOSTINGER_API_TOKEN": "must be set in .env.local"
+        "HOSTINGER_API_TOKEN": "${env:HOSTINGER_API_TOKEN}"
       }
     },
     "hostinger-domains": {
-      "type": "hostinger-domains",
+      "command": "npx",
+      "args": ["-y", "@hostinger/mcp-domains"],
       "description": "Hostinger domain management — search, register, transfer, and manage domain names.",
       "enabled": true,
       "env": {
-        "HOSTINGER_API_TOKEN": "must be set in .env.local"
+        "HOSTINGER_API_TOKEN": "${env:HOSTINGER_API_TOKEN}"
       }
     },
     "sequential-thinking": {
-      "type": "sequential-thinking",
+      "command": "npx",
+      "args": ["-y", "@anthropic/sequential-thinking"],
       "description": "Multi-step reasoning for complex planning — break down problems, evaluate approaches, and document trade-offs.",
       "enabled": true
     },
-    "stripe": {
-      "type": "stripe",
-      "description": "Stripe payment processing — create products, prices, checkout sessions, manage subscriptions, and query payment data.",
-      "enabled": false,
-      "env": {
-        "STRIPE_API_KEY": "sk if using server mode; pk if using client mode"
-      }
-    },
-    "firebase": {
-      "type": "firebase",
-      "description": "Firebase project management — authentication, Firestore, storage, hosting, and analytics configuration.",
-      "enabled": false
-    },
     "fetch": {
-      "type": "fetch",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
       "description": "HTTP fetch tool — retrieve content from URLs for documentation, APIs, and web resources.",
       "enabled": true
     },
     "playwright": {
-      "type": "playwright",
+      "command": "npx",
+      "args": ["-y", "@anthropic/playwright"],
       "description": "Browser automation — test web apps, take screenshots, fill forms, and verify UI behavior.",
       "enabled": true
     },
     "desktop-commander": {
-      "type": "desktop-commander",
+      "command": "npx",
+      "args": ["-y", "@anthropic/desktop-commander"],
       "description": "Desktop command execution — run terminal commands, manage processes, and control the development environment.",
       "enabled": true
     }

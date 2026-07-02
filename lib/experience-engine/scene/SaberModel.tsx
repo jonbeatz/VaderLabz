@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useRef, useEffect, useState } from 'react'
-import { useGLTF, useProgress } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { SaberColorPreset, RotationPreset, CameraPreset } from '../types'

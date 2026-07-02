@@ -40,3 +40,6 @@ next-env.d.ts
 # Project-specific media backups
 .cursor/3D/
 .cursor/images/
+
+# MCP config with embedded API tokens (tokens synced from .env.local)
+.cursor/mcp.json

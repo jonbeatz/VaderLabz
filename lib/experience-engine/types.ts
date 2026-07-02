@@ -56,8 +56,6 @@ export interface ExperienceConfig {
   chapters: ChapterData[]
   /** Stats data */
   stats: StatData[]
-  /** Chapter detail text mentioning the model name */
-  chapterDetailText: string
 
   // Feature toggles
   showHdrPicker?: boolean
@@ -65,12 +63,11 @@ export interface ExperienceConfig {
   showSaberControls?: boolean
   showCameraControls?: boolean
   showMouseControls?: boolean
-  showArchiveLink?: boolean
   showContactShadows?: boolean
   archiveLinkUrl?: string
   archiveLinkTitle?: string
 
-  // Default UI state
+  // Default UI state — initial indices for HdrPicker controls
   defaultHdrIndex?: number
   defaultBloomIndex?: number
   defaultRotationIndex?: number
@@ -78,12 +75,6 @@ export interface ExperienceConfig {
   defaultSaberColorIndex?: number
   defaultMouseEnabled?: boolean
   defaultCursorEnabled?: boolean
-
-  // Hardcoded overrides (for versions without HdrPicker)
-  hardcodeEmissive?: [number, number, number]
-  hardcodeEmissiveIntensity?: number
-  hardcodeRotationSpeed?: number
-  hardcodeCameraMode?: 'static' | 'slow' | 'full'
 }
 
 export const EASE = 'power3.inOut'

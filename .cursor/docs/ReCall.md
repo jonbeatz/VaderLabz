@@ -155,4 +155,24 @@ Structural refactors (extracting shared code) must include a **behavioral audit*
 
 ---
 
-*Last Entry: 2026-07-01 (Session 9)*
+### 2026-07-01 (Session 10 — MCP config fix: project_mcp_servers → mcpServers)
+
+#### What happened
+- After Session 9 fixes, Cursor still showed red MCP errors for `terminal-controller` and "invalid config: mcpServers must be an object"
+- Root cause 1: Project `.cursor/mcp.json` used `project_mcp_servers` key (VS Code format) instead of `mcpServers` (Cursor format)
+- Root cause 2: Entries had a `type` field (also VS Code format) — Cursor expects `command`/`args` for stdio servers or `url` for remote servers
+- Root cause 3 (terminal-controller): Global `~/.cursor/mcp.json` used `python` which resolved to Hermes venv (no `terminal_controller` module). Changed to absolute path to Python 3.12 where package was already installed
+
+#### Fix applied
+- Renamed `project_mcp_servers` → `mcpServers` in `.cursor/mcp.json`
+- Removed `type` fields from all server entries
+- Added proper `command`/`args` with `npx -y` for each plugin package
+- Updated `~/.cursor/mcp.json` terminal-controller `command` to `"C:/Users/JONBEATZ/AppData/Local/Programs/Python/Python312/python.exe"`
+- Kept `.cursor/mcp.json` in `.gitignore` since it contains embedded API tokens
+
+#### Key lesson
+Project-level MCP config in Cursor uses the same `mcpServers` format as the global config. VS Code's `project_mcp_servers` + `type` fields do not work. When troubleshooting MCP errors, check both the project `.cursor/mcp.json` and the global `~/.cursor/mcp.json` for format correctness.
+
+---
+
+*Last Entry: 2026-07-01 (Session 10)*

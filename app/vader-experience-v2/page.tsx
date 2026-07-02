@@ -71,8 +71,7 @@ const config: ExperienceConfig = {
   yScrollFactor: -1.8,
   chapters: CHAPTERS,
   stats: STATS,
-  chapterDetailText: 'the Skywalker lightsaber GLB model',
-  // v2 original had no HdrPicker but user wants FX controls
+  // No archive link in v2
   showHdrPicker: true,
   showBloomControls: true,
   showSaberControls: true,

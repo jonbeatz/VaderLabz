@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { ACCENT, TEXT_DIM } from '../types'
 import type { StatData } from '../types'
 import gsap from 'gsap'

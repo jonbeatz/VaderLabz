@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
+import { ReactNode } from 'react'
 
-export function BgOverlay({ children }: { children: React.ReactNode }) {
+export function BgOverlay({ children }: { children: ReactNode }) {
   return (
     <div className="relative">
       <div className="fixed inset-0 z-[-1]">

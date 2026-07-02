@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { EASE, TEXT_PRIMARY, TEXT_DIM, ACCENT } from '../types'
+import { TEXT_PRIMARY, TEXT_DIM, ACCENT } from '../types'
 
 gsap.registerPlugin(ScrollTrigger)
 

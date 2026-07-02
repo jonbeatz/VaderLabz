@@ -4,6 +4,24 @@ Append-only log of verified fixes. Newest first.
 
 ---
 
+## 2026-07-01 — MCP config format mismatch (project_mcp_servers → mcpServers)
+
+**Symptom:** After populating API tokens in `.cursor/mcp.json`, Cursor still showed red errors: `invalid config: mcpServers must be an object` and `terminal-controller` connection closed.
+
+**Root cause 1:** Project `.cursor/mcp.json` used `project_mcp_servers` as the top-level key with `type` fields per entry — this is VS Code's `.vscode/mcp.json` format. Cursor requires a single `mcpServers` object with `command`/`args` for stdio servers or `url` for remote servers.
+
+**Root cause 2 (terminal-controller):** Global `~/.cursor/mcp.json` set `command: "python"`, which resolved to the Hermes agent virtual environment (`C:\Users\JONBEATZ\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe`) that did not have `terminal_controller` installed. The package was installed under Python 3.12.
+
+**Verified fix:**
+1. Renamed `project_mcp_servers` → `mcpServers` in `.cursor/mcp.json`
+2. Removed `type` fields from all server entries
+3. Added proper `command`/`args` with `npx -y` for each plugin package
+4. Changed global `terminal-controller` command to absolute Python 3.12 path: `"C:/Users/JONBEATZ/AppData/Local/Programs/Python/Python312/python.exe"`
+
+**Files:** `.cursor/mcp.json`, `~/.cursor/mcp.json`
+
+---
+
 ## 2026-07-01 — Post-refactor behavioral regressions (14+ broken features after Experience Engine Refactor)
 
 **Symptom:** Three routes (`/`, `/vader-experience-v2`, `/vader-experience-v3`) had multiple broken features after the config-driven engine was extracted from the original standalone route files. Problems included: invisible 3D models, full-model red glow (not blade-only), broken scroll-driven animations, missing/incorrect hero layout, HdrPicker positioned wrong and missing cursor dot toggle, invisible cursor when toggling dot off, missing back-to-top button, missing ContactShadows, wrong per-route defaults, and v2 FX controls hidden.

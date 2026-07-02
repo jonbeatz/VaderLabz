@@ -71,8 +71,7 @@ const config: ExperienceConfig = {
   yScrollFactor: -1.8,
   chapters: CHAPTERS,
   stats: STATS,
-  chapterDetailText: 'the Darth Vader lightsaber GLB model',
-  archiveLinkUrl: '/vader-experience',
+    archiveLinkUrl: '/vader-experience',
   archiveLinkTitle: 'Go to vader experience',
   // Defaults: HDR Neon (0), Bloom Med (2), Rotation Slow (1), Camera Full (2), Saber Red (0)
   defaultHdrIndex: 0,

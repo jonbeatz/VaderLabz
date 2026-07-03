@@ -106,8 +106,8 @@ Full PC boot — **fast path first** so the Telegram confirmation + Hermes never
 
 1. **Telegram gateway** — `Start-Telegram-Gateway.ps1 -SkipLiteLLM -EnsureLoginTask -NoNotify` (sync + register login Scheduled Task)
 2. **Early partial ping** — `telegram-notify.mjs --startup --partial` ("warming up", 8× network retry)
-3. **Hermes Desktop** — minimized to taskbar
-4. **DeepSeek + ngrok** — started **in the background** (non-blocking `Start-Process`); a stall here no longer eats the Telegram ping or Hermes launch
+3. **Hermes Desktop** — **skipped at PC login** (`-SkipDesktop` in `Master-Startup-Hidden.vbs`). Open manually: `npm run hermes:desktop-ready` when you need off-Cursor browser/desktop control.
+4. **DeepSeek + ngrok** — started **in the background** (non-blocking `Start-Process`); a stall here no longer eats the Telegram ping
 5. **Full ONLINE ping** — `scripts/boot-ready-notify.ps1` polls `:4000` (up to 120s) then sends the full ONLINE message
 
 **Why two pings:** PC boot fires before LiteLLM is ready and often before the NIC is up. The partial ping confirms boot immediately; the ONLINE ping confirms the paid stack once `:4000` answers.
@@ -123,11 +123,11 @@ npm run boot:setup
 # or: powershell -File D:\Hermes\projects\_core-scripts\create-master-startup-shortcut.ps1
 ```
 
-**Single boot entry:** Only `Startup\Master-Startup.lnk` (→ wscript + VBS) — **not** `Master-Startup-Relay.vbs` (removed by `boot:setup`).
+**Single boot entry:** Only `Startup\Master-Startup.lnk` (→ wscript + VBS) — **not** `Master-Startup-Relay.vbs` or `Hermes_Gateway_jonbeatz.cmd` in Startup (removed by `boot:setup`; gateway uses scheduled task + Master-Startup PHASE 1).
 
 **Visible debug:** `powershell -File D:\Hermes\projects\_core-scripts\Master-Startup.ps1 -ShowWindows` (also the target of the manual `D:\Hermes\Master-Startup.lnk`).
 
-Params: `-LocalOnly` (no ngrok), `-SkipDesktop`, `-SkipNotify`, `-ShowWindows` (visible windows)
+Params: `-LocalOnly` (no ngrok), `-SkipDesktop` (**default at PC login** via VBS), `-SkipNotify`, `-ShowWindows` (visible windows; omit `-SkipDesktop` to also launch Desktop)
 
 **Session start** (`npm run session:start -- -Full`) — Mem0 + DeepSeek + ngrok + gateway ensure (**Start Project** ritual).
 
@@ -240,7 +240,7 @@ Look for: `Connected to Telegram (polling mode)` or `No messaging platforms enab
 | `scripts/telegram-doctor.ps1` | Full stack audit |
 | `_core-scripts/telegram-gateway/Start-Telegram-Gateway.ps1` | One-click reconnect |
 | `D:\Hermes\Start Telegram Gateway.lnk` | Shortcut in Hermes folder |
-| `_core-scripts/Master-Startup.ps1` | Full boot (DeepSeek + ngrok + gateway + Desktop) |
+| `_core-scripts/Master-Startup.ps1` | PC boot: Telegram gateway + LiteLLM + ngrok (`-SkipDesktop` default; Desktop on demand) |
 | `D:\Hermes\My-DeepSeek-API.lnk` | Paid cloud only (no Desktop/Telegram orchestration) |
 
 **Best practices:** Telegram text via Node only (never PowerShell argv emoji). Creds in `.env.local`, synced via `sync-telegram-env.mjs`. One poller per bot token.

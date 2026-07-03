@@ -5,7 +5,9 @@
   "scripts": {
     "desktop": "powershell -ExecutionPolicy Bypass -File scripts/start-hermes-desktop.ps1",
     "start": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\start-deepseek.ps1",
-    "deepseek:status": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\status-deepseek.ps1",
+    "deepseek:status": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\stack-status.ps1",
+    "stack:status": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\stack-status.ps1",
+    "deepseek:ngrok:handoff": "node D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\write-ngrok-handoff.mjs",
     "deepseek:test": "node D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\litellm-verify.mjs",
     "session:start": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\session-start.ps1",
     "session:start:full": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\session-start.ps1 -Full",
@@ -13,7 +15,8 @@
     "deepseek:on": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\start-deepseek.ps1",
     "deepseek:off": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\stop-deepseek.ps1",
     "deepseek:ngrok": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\deepseek-api\\scripts\\start-deepseek.ps1 -Ngrok -NoPause",
-    "boot:doctor": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\check-shared-version.ps1",
+    "boot:doctor": "powershell -File D:\\Hermes\\projects\\JonBeatz\\scripts\\boot-doctor.ps1",
+    "boot:setup": "powershell -File D:\\Hermes\\projects\\JonBeatz\\scripts\\boot-setup.ps1",
     "mem0:preflight": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\mem0-preflight.ps1",
     "mem0:add": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\mem0-chat.ps1 -Action add -Text",
     "mem0:search": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\mem0-chat.ps1 -Action search -Query",
@@ -55,9 +58,10 @@
     "gsap": "^3.15.0",
     "lenis": "^1.3.25",
     "motion": "^12.42.0",
-    "next": "^16.2.9",
+    "next": "^16.2.10",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "split-type": "^0.3.4",
     "three": "^0.185.0"
   },
   "devDependencies": {

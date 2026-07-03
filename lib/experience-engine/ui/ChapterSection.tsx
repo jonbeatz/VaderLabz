@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import SplitType from 'split-type'
 import { EASE, TEXT_PRIMARY, TEXT_DIM } from '../types'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -13,18 +14,37 @@ export function ChapterSection({ chapter, onReadMore }: {
 }) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const titleContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const el = panelRef.current
-    if (!el) return
+    const panel = panelRef.current
+    if (!panel) return
+
     const ctx = gsap.context(() => {
-      gsap.fromTo(el,
-        { x: 120, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: EASE,
-          scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 35%', toggleActions: 'play none none reverse' },
+      // Panel fade-in
+      gsap.fromTo(panel,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: panel, start: 'top 88%', end: 'top 60%', toggleActions: 'play none none reverse' },
         },
       )
-    }, el)
+
+      // SplitType line reveal on the title
+      const titleEl = panel.querySelector<HTMLElement>('[data-chapter-title]')
+      if (titleEl) {
+        const st = new SplitType(titleEl, { types: 'lines' })
+        const lines = st.lines
+        if (lines) {
+          gsap.fromTo(lines,
+            { y: 40, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: EASE,
+              scrollTrigger: { trigger: panel, start: 'top 85%', end: 'top 45%', toggleActions: 'play none none reverse' },
+            },
+          )
+        }
+      }
+    }, panel)
+
     return () => ctx.revert()
   }, [])
 
@@ -32,7 +52,7 @@ export function ChapterSection({ chapter, onReadMore }: {
     <section id={chapter.id} ref={sectionRef} className="relative min-h-screen flex items-center py-16 md:py-24">
       <div className="w-full">
         <div className="relative">
-          {/* Soft glow behind glass — matched to original */}
+          {/* Soft glow behind glass */}
           <div className="absolute -inset-4 rounded-2xl opacity-30 blur-xl" style={{ background: 'radial-gradient(ellipse at center, rgba(255,42,54,0.15) 0%, transparent 70%)' }} />
           <div
             ref={panelRef}
@@ -51,12 +71,15 @@ export function ChapterSection({ chapter, onReadMore }: {
               <svg width="40" height="1"><line x1="0" y1="0.5" x2="40" y2="0.5" stroke="rgba(255,42,54,0.15)" strokeWidth="1" /></svg>
             </div>
 
-            <h2
-              className="font-sans text-3xl md:text-4xl font-semibold leading-[1.1] mb-1"
-              style={{ color: TEXT_PRIMARY }}
-              suppressHydrationWarning
-              dangerouslySetInnerHTML={{ __html: chapter.title }}
-            />
+            <div ref={titleContainerRef}>
+              <h2
+                data-chapter-title
+                className="font-sans text-3xl md:text-4xl font-semibold leading-[1.1] mb-1"
+                style={{ color: TEXT_PRIMARY }}
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{ __html: chapter.title }}
+              />
+            </div>
             <div className="font-mono text-[0.6rem] tracking-[0.2em] uppercase mb-5" style={{ color: TEXT_DIM }}>
               {chapter.subtitle}
             </div>

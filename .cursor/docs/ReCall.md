@@ -1,6 +1,7 @@
 # ReCall.md — VaderLabz Memory
 
 ## Current Focus
+- [2026-07-03] **Skill library v1.14.0 + sync workflow** — shared library is the single source of truth; edit skills there, never per-project. New interactive-web skills (Scroll-Motion, Scroll-Video-Sequence, Component-Registries, View-Transitions, Motion-Accessibility) + vendored frontend-design. `npm run sync:skills` refreshes `.cursor/skills` (auto-runs at Start Project); `npm run sync:docs` previews doc drift (`-- -Write` applies).
 - [2026-06-30] **Experience Engine Refactor** — 4 route files consolidated into config-driven engine.
 
 ## Session Log

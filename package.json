@@ -23,6 +23,7 @@
     "sync:hermes-skills": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\JonBeatz\\scripts\\sync-hermes-skills.ps1",
     "sync:skills": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\sync-skills.ps1",
     "sync:docs": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\sync-docs.ps1",
+    "vault:log": "powershell -ExecutionPolicy Bypass -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\vault-log.ps1",
     "mem0:preflight": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\mem0-preflight.ps1",
     "mem0:add": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\mem0-chat.ps1 -Action add -Text",
     "mem0:search": "powershell -File D:\\Hermes\\projects\\_core-scripts\\shared-profile-content\\scripts\\mem0-chat.ps1 -Action search -Query",

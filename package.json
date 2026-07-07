@@ -58,8 +58,7 @@
     "build": "next build",
     "web:build": "next build",
     "web:start": "next start",
-    "web:lint": "next lint",
-    "web:static": "node scripts/build-static-site.mjs"
+    "web:lint": "next lint"
   },
   "author": "VaderLabz",
   "license": "MIT",

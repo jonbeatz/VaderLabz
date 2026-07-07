@@ -28,7 +28,7 @@ npm run lmstudio:audit
 ## Decision tree
 
 - **Fast still, VRAM tight, LM Studio up** → HF cloud `image:gen`
-- **Local GPU / edit / inpaint / upscale / video** → start ComfyUI, use profile commands
+- **Local GPU / edit / inpaint / upscale / video** → start ComfyUI, use profile commands or **comfyui MCP** (JonBeatz `.cursor/mcp.json`)
 - **Done with ComfyUI** → `comfy:stop`
 
 ## Outputs

@@ -133,6 +133,116 @@ useGSAP(() => {
 }
 ```
 
+## Parallax playbook (Vev · WWF · Palmdream patterns)
+
+Use the **cheapest tool that works**. Full reference: [Chrome scroll-driven animations](https://developer.chrome.com/docs/css-ui/scroll-driven-animations) · [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/) · template `ParallaxStack.tsx`.
+
+### Picker — which parallax?
+
+| Effect | Best tool | Example ref |
+|--------|-----------|-------------|
+| Scroll progress bar / reading indicator | **CSS `scroll()`** | Vev presentations · Chrome docs |
+| Element fades/slides in when entering viewport | **CSS `view()`** + `animation-range: entry` | WWF infographic panels |
+| Multi-layer depth (bg moves slower than fg) | **GSAP scrub** `yPercent` per layer | [Vev multi-layer parallax](https://www.vev.design/blog/underrated-vev-features/) · WWF PTM |
+| Scroll zoom (element scales up while scrolling) | **GSAP scrub** `scale` | Vev scroll-zoom add-on |
+| Pinned section + layers move at different rates | **GSAP timeline** + `pin: true` | Palmdream · climbwales.co.uk |
+| Horizontal infographic break inside vertical story | **GSAP horizontal** pin | [WWF Priority Threat Management](https://wwf.ca/prioritythreatmanagement/) |
+| 3D product spin / bottle | **`<model-viewer>`** + sticky section | palmdream.com |
+| WebGL depth parallax | **R3F** reads `scrollY` | 3D-Website-Fusion |
+
+### 5. Multi-layer parallax (GSAP — Vev/WWF style)
+
+Foreground moves faster than background. **Never animate the pinned wrapper** — only children inside.
+
+```tsx
+useGSAP(() => {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".parallax-section",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+    },
+  });
+  tl.to(".layer-bg",   { yPercent: 15, ease: "none" }, 0)
+    .to(".layer-mid",  { yPercent: 35, ease: "none" }, 0)
+    .to(".layer-fg",   { yPercent: 55, ease: "none" }, 0);
+}, { scope });
+```
+
+**Template:** `templates/components/ParallaxStack.tsx` — pass `layers: { className, speed }[]`.
+
+For **photographic** multi-layer (cutout fg/bg in Photoshop), duplicate layers as absolutely stacked `<img>` elements with increasing `speed` (0.15 → 0.45 → 0.75).
+
+### 6. CSS view-timeline reveal (0 JS — infographic panels)
+
+```css
+@supports (animation-timeline: view()) {
+  .panel {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 25% cover 40%;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(2rem); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+```
+
+Pair with `@media (prefers-reduced-motion: reduce)` → `animation: none; opacity: 1`.
+
+### 7. Scroll zoom section (Vev scroll-zoom)
+
+```tsx
+gsap.fromTo(".zoom-target",
+  { scale: 1 },
+  {
+    scale: 1.25,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".zoom-section",
+      start: "top bottom",
+      end: "center center",
+      scrub: true,
+    },
+  }
+);
+```
+
+Use `overflow: hidden` on the section so zoom doesn't cause horizontal scroll.
+
+### 9. Visual noise / film grain (oncorps.ai — CSS only)
+
+Premium B2B sites add subtle **film grain** over the whole viewport — cheap depth, hides banding on dark gradients. No JS; respect reduced motion (grain can stay — it's not motion, but offer `opacity: 0` if Jon prefers cleaner a11y).
+
+```css
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+```
+
+Pair with **animated SVG diagrams** (oncorps): GSAP stroke reveal on scroll for B2B explainer panels — use `stroke-dashoffset` or Club GSAP `DrawSVGPlugin` when licensed.
+
+### 8. ScrollTrigger pro tips (from official docs)
+
+| Option | When |
+|--------|------|
+| `scrub: 1` | Soft catch-up (not 1:1) — feels premium |
+| `anticipatePin: 1` | Large pinned panels — avoids 1-frame unpinned flash |
+| `fastScrollEnd: true` | Fast flick scroll — finish scrubbed tween |
+| `invalidateOnRefresh: true` | Horizontal tracks + resize |
+| `end: "clamp(bottom top)"` | Triggers near page bottom |
+| `pinSpacing: true` (default) | Let GSAP add spacer — don't hand-roll height |
+
+**Lenis + ScrollTrigger:** always use `SmoothScrollProvider` bridge — never double rAF.
+
 ## Anti-Slop
 - **Hook Lenis into `gsap.ticker` exactly once** — never call both `lenis.raf` in your own rAF *and* the ticker.
 - **Always `invalidateOnRefresh: true`** on pinned/horizontal triggers so resize recalculates.

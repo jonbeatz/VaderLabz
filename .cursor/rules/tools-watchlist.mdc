@@ -1,0 +1,38 @@
+---
+description: Tool review workflow — grades, setup status, additive arsenal policy
+alwaysApply: true
+---
+
+# Tools Watchlist — Agent Rules
+
+When Jon pastes a **GitHub/repo URL**, says **review tool**, **evaluate tool**, or **add to watchlist**:
+
+## Canonical docs (Hermes-wide)
+
+| Doc | Path |
+|-----|------|
+| Watchlist + grades | `D:\Hermes\projects\_core-scripts\shared-profile-content\docs\TOOLS-WATCHLIST.md` |
+| Setup status (READY vs keys) | `...\docs\TOOLS-SETUP-STATUS.md` |
+| Full research | `...\docs\TOOLS-REFERENCE.md` |
+
+Execute [`.cursor/prompts/Review-Tool.md`](../prompts/Review-Tool.md) when a full review is requested.
+
+## Policy (Jon 2026-07-04)
+
+1. **Additive only** — never disable or replace working stack (Mem0, DeepSeek, ComfyUI, MCPs).
+2. **Overlap OK** — strong alternatives on deck still earn ADOPT / IN USE.
+3. **OSS/free first** — minimal paid OK when ROI is high.
+4. **Install gate** — IN USE only after Jon approves (or says "run install now").
+
+## Required outputs per review
+
+1. Letter grade (A+→F) + score /100 + one-line summary
+2. Verdict: IN USE | ADOPT | WATCH | SKIP
+3. Setup status: READY | PARTIAL | NEEDS_KEY | NEEDS_LOGIN | NOT_INSTALLED
+4. Update **shared canonical** docs (not JonBeatz-only copies unless syncing)
+5. After install → run doctor/preflight → flip Setup to READY in TOOLS-SETUP-STATUS.md
+6. Optional: `npm run draven:add -- "Tool X: grade, verdict, one line"`
+
+## Quick status
+
+Run `npm run tools:status` from any profile for config queue + counts.

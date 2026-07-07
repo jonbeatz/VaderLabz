@@ -50,8 +50,34 @@ const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 <ReactLenis root options={{ smoothWheel: !reduce, lerp: reduce ? 1 : 0.1 }} />
 ```
 
+**Desktop-only Lenis** (day1-run · jeskojets · Awwwards cluster): many award sites disable smooth scroll on mobile — touch devices get native momentum scroll, which feels better and avoids jank with address-bar resize.
+
+```tsx
+const [useLenis, setUseLenis] = useState(false);
+useEffect(() => {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const desktop = window.matchMedia("(min-width: 768px)").matches;
+  setUseLenis(desktop && !reduce);
+}, []);
+// Pass enabled={useLenis} to SmoothScrollProvider or skip ReactLenis wrapper on mobile
+```
+
 ### Scroll-video-sequence
 Show a single hero still instead of scrubbing (see `Scroll-Video-Sequence`).
+
+### WebGL / 3D town sites (SBS Town pattern)
+Not everyone can run WebGL. Ship a **parallel flat route** (`/flat` or conventional marketing layout) with the same content IA — link prominently in footer/settings. Detect WebGL failure at runtime and offer redirect:
+
+```ts
+function webglAvailable() {
+  try {
+    const c = document.createElement("canvas")
+    return !!(c.getContext("webgl2") || c.getContext("webgl"))
+  } catch { return false }
+}
+```
+
+Reference: [SBS Town](https://open-sbs.brig.ht/city) (Bright/brig.ht) — see SCROLL-3D award-site checklist.
 
 ## 2. Performance budget (immersive pages)
 | Metric | Target | Killers to watch |

@@ -385,6 +385,65 @@ function getScrollProgress(): number {
 7. **`prefers-reduced-motion`** — Disable active rotations and portal animations, fall back to a static gradient
 8. **Scroll progress is NaN-safe** — Always guard `scrollHeight - innerHeight` to avoid divide-by-zero
 
+## Multi-chapter WebGL (Cartier / Montfort pattern)
+
+When scroll crosses **distinct 3D worlds** (alcoves, planets, districts) — not one continuous backdrop:
+
+1. **One active scene at a time** — mount/unmount or hide inactive chapters; never keep six full GLB scenes in GPU memory.
+2. **Dispose on exit** — when scroll progress leaves a chapter band, run cleanup:
+
+```ts
+function disposeChapter(scene: THREE.Object3D) {
+  scene.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) {
+      obj.geometry?.dispose()
+      const mats = Array.isArray(obj.material) ? obj.material : [obj.material]
+      mats.forEach((m) => {
+        m.dispose()
+        Object.values(m).forEach((v) => {
+          if (v instanceof THREE.Texture) v.dispose()
+        })
+      })
+    }
+  })
+}
+```
+
+3. **Preload next chapter** — start fetching the next GLB when user hits ~80% of current chapter (Cartier pattern).
+4. **Hash sync** — `history.replaceState` when chapter changes; deep-link scroll on load (see `Scroll-Video-Sequence` Step 6).
+5. **Reduced motion** — static hero still per chapter (first frame or poster GLB snapshot); skip camera flights.
+6. **Flat fallback route** — mirror IA on `/flat` or static HTML for no-WebGL (SBS Town pattern) — see `Motion-Accessibility`.
+
+For DOM-aligned meshes (HTML card tracks a 3D object), evaluate **`@14islands/r3f-scroll-rig`** (WATCH in SCROLL-3D-REFERENCES) vs sibling-backdrop Fusion.
+
+## Persistent canvas across routes (day1-run / Codrops pattern)
+
+Webflow award sites (day1-run, nudot, schmitt) use **Barba.js** to swap HTML while a **singleton Three.js `Experience`** keeps rendering. In **Next.js App Router**, do not install Barba — use:
+
+1. **Fixed `<Canvas>` in root `layout.tsx`** — position `fixed inset-0 -z-10`, outside `{children}` page slot.
+2. **One R3F scene manager** — reads `pathname` or a Zustand chapter id; cross-fade or dispose props on route change (lighter than full scene swap).
+3. **View Transitions API** — morph DOM between routes (`View-Transitions` skill); WebGL canvas never unmounts.
+4. **Scroll reset** — on navigation, `lenis.scrollTo(0, { immediate: true })` + kill stale ScrollTriggers in `useGSAP` cleanup.
+5. **Mobile** — consider disabling Lenis on touch (see `Motion-Accessibility`); persistent canvas still runs but reduce particle count.
+
+```tsx
+// app/layout.tsx — sketch
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <SmoothScrollProvider>
+          <PersistentFusionCanvas /> {/* fixed, never unmounts */}
+          <ViewTransition>{children}</ViewTransition>
+        </SmoothScrollProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+Reference: [FUTURE THREE — day1-run](https://www.futurethree.studio/project/day-one-run) · Codrops Webflow+GSAP+Three+Barba tutorials.
+
 ## Related Skills
 
 | Skill | When to read |

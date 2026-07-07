@@ -355,7 +355,7 @@
 24|| **MyStudioChannel** | `D:\Cursor_Projectz\MyStudioChannel` | [jonbeatz/MyStudioChannel](https://github.com/jonbeatz/MyStudioChannel) |
 25|| **Profile Jedi** | `D:\Hermes\apps\profile-jedi` | [jonbeatz/profile-jedi](https://github.com/jonbeatz/profile-jedi) |
 26|| **Hermes switcher** | `D:\Hermes\projects\_core-scripts\profile-switcher\` | (local scripts) |
-27|| **Google API stack** | `D:\Hermes\projects\_core-scripts\google-api\` | (local scripts) |
+27|| **LiteLLM / DeepSeek stack** | `D:\Hermes\projects\_core-scripts\deepseek-api\` | (local scripts; legacy `google-api` retired to `_archive/`) |
 28|| **Core scripts README** | `D:\Hermes\projects\_core-scripts\README.md` | audit + layout |
 28|
 29|**Rule:** Open the repo that matches the task. Personal Mem0 + rituals = **JonBeatz**. Website deploy = **MSC**. Profile UI = **Profile Jedi**.
@@ -408,7 +408,7 @@
 76|| Google OAuth token | Shared | `%LOCALAPPDATA%\hermes\google_token.json` |
 77|| Mem0 store | **Isolated** | `%USERPROFILE%\.mem0\qdrant_personal` |
 78|| Active Hermes profile | Per session | `%APPDATA%\Hermes\active-profile.json` |
-79|| LiteLLM master key | Shared stack | `D:\Hermes\projects\_core-scripts\google-api\.env.local` |
+79|| LiteLLM master key | Shared stack | `D:\Hermes\projects\_core-scripts\deepseek-api\.env.local` |
 80|| ComfyUI engine | **Shared** | `H:\AI_Models\ComfyUI` (port 8188) |
 81|| HF_TOKEN / image env | **JonBeatz** | `D:\Hermes\projects\JonBeatz\.env.local` |
 82|| Image outputs (personal) | **JonBeatz** | `D:\Hermes\assets\media\JonBeatz` |

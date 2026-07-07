@@ -15,7 +15,7 @@ This checks that templates, skills, prompts, rules, docs, MCP config, and script
 
 ---
 
-## What the skeleton provides (shared-profile-content v1.12.0)
+## What the skeleton provides (shared-profile-content v1.13.0)
 
 ### 1. Session rituals
 | Ritual | Prompt | When |
@@ -33,7 +33,7 @@ This checks that templates, skills, prompts, rules, docs, MCP config, and script
 | `mem0-lmstudio.mdc` | Per-project isolated Mem0 + Draven cross-session memory |
 | `workflow.mdc` | Start/End Project sessions, branch cut, backup |
 | `docs-checkpoint-governance.mdc` | Doc source-of-truth order, drift audits |
-| `global.mdc` | Command shortcuts (Start Project, update docs, backup, etc.) |
+| **tools-watchlist.mdc** | Tool review workflow (grades, setup status, install gate) |
 
 ### 3. Domain skills (`.cursor/skills/`)
 See `SKILL-INDEX.md` for the full catalog — design, 3D, git, deploy, automation, workflow.
@@ -50,7 +50,9 @@ See `SKILL-INDEX.md` for the full catalog — design, 3D, git, deploy, automatio
 | `ENGINEERING.md` | MCP setup, ComfyUI, VRAM |
 | `INFRASTRUCTURE.md` | Hostinger, Google Workspace, Hermes |
 | `3D-WEBSITE-TASTE-CATALOG.md` | 6 design palettes for 3D sites |
-| `BACKPORT-CANDIDATES.md` | Skeleton improvement queue |
+| `3D-WEB-WORKFLOWS.md` | Hermes workflow vault hub (`D:\Hermes\assets\3d-web-workflows\`) |
+| `SCROLL-3D-REFERENCES.md` | Scroll/3D skill map + motion baseline |
+| `TOOLS-WATCHLIST.md` / `TOOLS-SETUP-STATUS.md` | Hermes-wide tool grades + setup checklist |
 
 ### 5. Environment variables
 | Variable set | Purpose |
@@ -83,6 +85,12 @@ Draven's own memory (`draven_memories`) is **shared across all projects** — no
 | 12 | GitHub docs present (web projects) | `.cursor/docs/GITHUB-SETUP.md`, optional `.github/workflows/` |
 | 13 | `.env.local` ecosystem keys | JonBeatz credentials merged; Mem0 isolated to project slug |
 | 14 | Docs alignment | `npm run encoding:check` passes, `npm run docs:sync` passes |
+| 15 | Tools watchlist docs | `.cursor/docs/TOOLS-WATCHLIST.md`, `TOOLS-SETUP-STATUS.md` present (or `npm run sync:docs -- -Write -AddMissing`) |
+| 16 | Tools config queue | `npm run tools:status` — optional keys only (Groq, Firecrawl) |
+| 17 | tools-watchlist rule | `.cursor/rules/tools-watchlist.mdc` present |
+| 18 | 3D workflow vault docs | `.cursor/docs/3D-WEB-WORKFLOWS.md` + `npm run workflows:3d:status` |
+| 19 | Scroll/motion baseline | `npm run scroll:motion:status` + `3d-scroll-website` skill (`npm run sync:skills`) |
+| 20 | Command Center fleet (JonBeatz hub) | `npm run fleet:status` + `.cursor/docs/COMMAND-CENTER.md` |
 
 **If any check fails**, the best fix is usually:
 1. Re-bootstrap shared artifacts: copy missing files from `_core-scripts\shared-profile-content\`
@@ -115,4 +123,4 @@ Draven's own memory (`draven_memories`) is **shared across all projects** — no
 
 ---
 
-*Last updated: 2026-07-03 · shared-profile-content v1.12.0*
+*Last updated: 2026-07-03 · shared-profile-content v1.13.0*

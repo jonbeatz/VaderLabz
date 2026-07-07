@@ -1,6 +1,6 @@
 # Draven Voice Workflow — OmniVoice + Edge Ryan
 
-**Last updated:** 2026-06-28  
+**Last updated:** 2026-07-04  
 **Operator:** Jon Beatz  
 **Status:** **Ritual-only** — OmniVoice primary, Ryan backup, no auto-read replies
 
@@ -132,6 +132,19 @@ Allowed speak request
 | Voice when not wanted | Check `DRAVEN_VOICE_POLICY=ritual`; Mem0 no longer speaks on search/add |
 | Slow first speak | Pre-warm `draven:omni-daemon` at Start Project |
 | Free RAM | `session:stop` or `draven:omni-daemon -- -Stop` |
+
+---
+
+## Voice dictation (inbound STT — on deck)
+
+**Not installed yet** (Jon 2026-07-04). Separate from Draven **speak-out** (OmniVoice).
+
+| Tool | Verdict | Notes |
+|------|---------|-------|
+| [OpenWhispr](https://github.com/OpenWhispr/openwhispr) | WATCH — try first | Local Parakeet/Whisper; Ctrl+Win; optional LM Studio `:1234` cleanup |
+| [Calliop](https://github.com/Lappom/Calliop) | WATCH — alt | Windows Wispr-style; Alt+Space; bundled Qwen cleanup |
+
+Details: [TOOLS-WATCHLIST.md](./TOOLS-WATCHLIST.md) · [TOOLS-REFERENCE.md](./TOOLS-REFERENCE.md)
 
 ---
 

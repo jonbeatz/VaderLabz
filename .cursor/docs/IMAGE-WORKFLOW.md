@@ -51,7 +51,7 @@ Required in **`.env.local`:**
 | Cloud image + open viewer | `npm run image:gen:open -- "prompt"` | HF + default photo app |
 | **Paid bonus** cloud image | `npm run image:fal -- "prompt"` | fal.ai API (prepaid credits) |
 | **Paid bonus** + open | `npm run image:fal:open -- "prompt"` | fal.ai + viewer |
-| fal premium model | `npm run image:fal -- "prompt" -- --model fal-ai/nano-banana` | fal.ai |
+| **Kling scroll clip** (start + end stills) | `npm run video:fal -- -StartImage a.png -EndImage b.png` | fal.ai queue |
 | Start ComfyUI | `npm run comfy:start` | Local GPU :8188 |
 | Stop ComfyUI (keep LM Studio) | `npm run comfy:stop` | Local |
 | ComfyUI status JSON | `npm run comfy:status` | Local |
@@ -109,6 +109,8 @@ Output default: `D:\Hermes\assets\media\JonBeatz\generated-YYYYMMDD-HHMMSS.png`
 
 Pay-per-use prepaid wallet — use when HF is capped or Jon wants premium models. Docs: [fal.ai pricing](https://fal.ai/pricing).
 
+**GUI alt (WATCH):** [Open Generative AI](https://github.com/Anil-matcha/Open-Generative-AI) + [muapi](https://muapi.ai) — OSS studio for 200+ cloud models (image/video/lip sync/cinema) + optional local **sd.cpp** (incl. Z-Image). Not default over HF/fal; see `TOOLS-REFERENCE.md` § Open Generative AI.
+
 Architecture:
 
 ```
@@ -136,6 +138,18 @@ powershell -File scripts/gen-image-fal.ps1 "portrait" -Model "fal-ai/nano-banana
 ```
 
 **Policy:** Daily stills → `image:gen` (HF). fal = bonus only when Jon asks or agent needs premium model.
+
+### Scroll transition video (`npm run video:fal`)
+
+Kling I2V for assembled → exploded product clips. See vault `ai-scroll-product-workflow/WORKFLOW.md`.
+
+```powershell
+npm run video:fal -- -StartImage assembled.png -EndImage exploded.png
+```
+
+Check balance: [fal.ai/dashboard](https://fal.ai/dashboard).
+
+**fal credits exhausted?** Local fallback (manual install): **LongCat-Video** → **HunyuanVideo** → ComfyUI `generate-video` → **LTX Desktop** (GUI NLE — Jon download later). Same FFmpeg → WebP → `ScrollFrameHero`. Details: `TOOLS-REFERENCE.md` § LongCat / HunyuanVideo / LTX Desktop · `SCROLL-VIDEO-RESEARCH.md` tool matrix.
 
 ---
 
@@ -168,6 +182,36 @@ http://127.0.0.1:8188 — drag workflow PNGs to load graphs; debug node executio
 ### Edit / inpaint / upscale / video
 
 Requires ComfyUI running. Use profile `edit-image`, `inpaint-image`, `upscale-image`, `generate-video`, `animate-image` — see cheat sheet above.
+
+### Cursor MCP — local ComfyUI (`comfyui-mcp`)
+
+**JonBeatz project MCP** — agent-native control of your **local** ComfyUI instance (not Comfy Cloud). Package: [`comfyui-mcp`](https://www.npmjs.com/package/comfyui-mcp) (community, local-first).
+
+| Item | Value |
+|------|-------|
+| **Config** | `.cursor/mcp.json` → server `comfyui` |
+| **Package** | `npx -y comfyui-mcp` (stdio MCP) |
+| **Target** | `COMFYUI_URL=http://127.0.0.1:8188` (from `COMFYUI_HOST`/`PORT` in `.env.local`) |
+| **Data path** | `COMFYUI_PATH` = `COMFYUI_ROOT` (e.g. `H:\AI_Models\ComfyUI`) |
+| **Safety** | `COMFYUI_ALWAYS_RESTART=false` — MCP does **not** auto-launch ComfyUI |
+
+**Setup (once):**
+
+```powershell
+cd D:\Hermes\projects\JonBeatz
+# Copy .cursor/mcp.json.example → .cursor/mcp.json if missing; comfyui block is included
+npm run sync:mcp-env    # writes COMFYUI_URL + COMFYUI_PATH from .env.local
+```
+
+Then **Cursor Settings → MCP → enable `comfyui`** and refresh servers.
+
+**Agent workflow with MCP:**
+
+1. Jon asks for local GPU work → run **`npm run comfy:start`** first (VRAM pre-flight).
+2. Use **comfyui MCP tools** for workflow authoring, execution, model/node ops in natural language.
+3. When done → **`npm run comfy:stop`** to free VRAM for LM Studio / Mem0.
+
+**VRAM rules still apply:** MCP does not replace `comfy:start`/`comfy:stop` guards. Never start ComfyUI via MCP auto-restart unless Jon explicitly opts in. Cloud Comfy MCP (`cloud.comfy.org`) is **not** used in this stack.
 
 ---
 
@@ -240,4 +284,4 @@ See **[COMFYUI-MODELS.md](./COMFYUI-MODELS.md)** for full model matrix.
 
 ---
 
-*Last updated: 2026-06-19 · JonBeatz v1.2 image workflow layer*
+*Last updated: 2026-07-04 · JonBeatz v1.2 image workflow + comfyui-mcp*

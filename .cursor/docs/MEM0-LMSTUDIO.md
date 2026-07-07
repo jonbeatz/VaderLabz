@@ -43,9 +43,9 @@ MSC uses a **separate** store — never mix slugs or user IDs.
 npm run mem0:preflight
 ```
 
-Preflight **does not swap models**. If an LLM is already loaded (e.g. Hermes `qwen3-4b-instruct-2507`), Mem0 uses it. If nothing is loaded, it loads **`qwen3-4b-instruct-2507`** @ **81920** context, **parallel 2** (or `HERMES_LM_*` / `LMSTUDIO_*` from `.env.local`). Tuned for the RTX 5060 Ti 16 GB (~8 GiB GPU, ~41K tokens per conversation). `session-start.ps1`, `mem0-preflight.ps1`, and `boot-doctor.ps1` now source `load-env.ps1` so `.env.local` values are authoritative.
+Preflight **does not swap models**. If an LLM is already loaded (e.g. Hermes `qwen3-4b-instruct-2507`), Mem0 uses it. If nothing is loaded, it loads **`qwen3-4b-instruct-2507`** @ **16384** context, **parallel 1** (or `HERMES_LM_*` / `LMSTUDIO_*` from `.env.local`). Tuned for the RTX 5060 Ti 16 GB (~3.5 GiB GPU for qwen3-4b). **Do not use 81920/parallel 2** — KV cache can balloon a 4B model to ~14 GB VRAM. `session-start.ps1`, `mem0-preflight.ps1`, and `boot-doctor.ps1` source `load-env.ps1` so `.env.local` values are authoritative.
 
-**Per-model defaults:** `npm run lmstudio:tune` (`scripts/tune-lmstudio-models.py`) sets VRAM-safe context lengths on each installed chat/coding model's LM Studio default config (validated via `lms load --estimate-only`). Re-run after installing new models. Note: `contextLength` is the TOTAL KV pool split across `parallel` slots — at parallel 2, a single conversation caps at `context / 2`.
+**Per-model defaults:** `npm run lmstudio:tune` (`scripts/tune-lmstudio-models.py`) sets VRAM-safe context + parallel 1 on each chat/coding model's LM Studio config (validated via `lms load --estimate-only`). Re-run after installing new models. `contextLength` is the TOTAL KV pool split across `parallel` slots.
 
 **LM Studio UI (one-time):** Settings → Hardware → **CPU threads** = your physical core count. Scripts tune model/context/parallel via `lms load`; CPU threads stay in the app.
 
@@ -88,7 +88,7 @@ python scripts/mem0_integration.py --action search --query "Profile Jedi"
 | Mode | Command | When | Notes |
 |------|---------|------|-------|
 | **infer=False** (default) | `mem0:add` | Session takeaways, docs sync | Direct storage; reliable with 13+ memories |
-| **infer=True** | `mem0:add:infer` | Short natural notes | LLM extracts facts; needs LM Studio @ 32K ctx |
+| **infer=True** | `mem0:add:infer` | Short natural notes | LLM extracts facts; needs LM Studio @ 16384 ctx |
 
 `mem0:add` defaults to **infer=False** since v1.3.1 to prevent silent failures when the memory bank exceeds the LM Studio context window.
 
@@ -113,9 +113,14 @@ Draven (the AI assistant) has his own isolated Mem0 collection, shared across **
 | **user_id** | `draven` |
 | **collection** | `draven_memories` |
 | **qdrant path** | `%USERPROFILE%\.mem0\qdrant_draven` |
-| **In VaderLabz** | `npm run draven:add -- "text"` / `npm run draven:search -- "query"` |
+| **In JonBeatz** | `npm run draven:add -- "text"` / `npm run draven:search -- "query"` |
+| **In other projects** | Same commands — `draven-mem0.ps1` wrapper sets Draven env vars automatically |
 
-This uses the same `mem0_integration.py` infrastructure. It's **project-independent** — Draven remembers context from all projects he works on.
+This uses the same `mem0_integration.py` infrastructure, just with Draven-specific env vars. It's **project-independent** — Draven remembers context from all projects he works on.
+
+### Draven memory = not per-project
+
+Unlike `mem0:add` which targets each project's own Qdrant collection, `draven:add` always writes to `draven_memories`. This means Draven can recall context about JonBeatz when working in VaderLabz, and vice versa.
 
 ---
 
@@ -134,7 +139,7 @@ This uses the same `mem0_integration.py` infrastructure. It's **project-independ
 ## Agent checklist (memory tasks)
 
 1. `npm run mem0:preflight`
-2. `npm run mem0:search -- "<topic>"` before planning (VaderLabz memory)
+2. `npm run mem0:search -- "<topic>"` before planning (project memory)
 3. `npm run draven:search -- "<topic>"` — check Draven's cross-session memory (shared across all projects)
 4. `npm run mem0:add -- "<takeaway>"` at end of significant work
 5. `npm run draven:add -- "<takeaway>"` — also store in Draven's memory so he recalls next session

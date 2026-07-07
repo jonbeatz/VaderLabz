@@ -32,11 +32,11 @@ Central registry of all environment variables used across JonBeatz, MyStudioChan
 | LMSTUDIO_HOST | No | JonBeatz | 127.0.0.1 | `.env.local` | LM Studio host |
 | LMSTUDIO_PORT | No | JonBeatz | 1234 | `.env.local` | LM Studio port |
 | LMSTUDIO_MODEL | No | JonBeatz | qwen3-4b-instruct-2507 | `.env.local` | Default LM Studio model |
-| LMSTUDIO_CONTEXT_LENGTH | No | JonBeatz | 81920 | `.env.local` | LM Studio context window |
+| LMSTUDIO_CONTEXT_LENGTH | No | JonBeatz | 16384 | `.env.local` | LM Studio context window (VRAM-safe on 16 GB) |
 | HERMES_LM_MODEL | No | JonBeatz | qwen3-4b-instruct-2507 | `.env.local` | Hermes local model override |
-| HERMES_LM_CONTEXT | No | JonBeatz | 81920 | `.env.local` | Hermes local context length |
-| HERMES_LM_PARALLEL | No | JonBeatz | 2 | `.env.local` | Parallel LM requests |
-| HERMES_LOCAL_CONTEXT_LENGTH | No | JonBeatz | 81920 | `.env.local` | Local mode context (unused if DeepSeek active) |
+| HERMES_LM_CONTEXT | No | JonBeatz | 16384 | `.env.local` | Hermes local context length |
+| HERMES_LM_PARALLEL | No | JonBeatz | 1 | `.env.local` | Parallel LM slots (1 = single-user) |
+| HERMES_LOCAL_CONTEXT_LENGTH | No | JonBeatz | 16384 | `.env.local` | Local mode context (unused if DeepSeek active) |
 | HERMES_DEEPSEEK_CONTEXT_LENGTH | No | JonBeatz | 1000000 | `.env.local` | DeepSeek mode context (1M tokens) |
 
 ## Hermes Desktop / Agent

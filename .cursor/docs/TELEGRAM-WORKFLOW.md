@@ -199,7 +199,7 @@ Test ping: `npm run telegram:test` — time line shows `PDT`/`PST` and timezone 
 | Gateway up, still silent | Profile `.env` missing `TELEGRAM_*` | `npm run sync:telegram-env` then restart gateway |
 | Garbled emoji `ðŸ°` | Emoji passed via PowerShell argv | Use `--startup` or `TELEGRAM_MESSAGE` env var |
 | Weird `**n**` in replies | Markdown on AI text | Fixed: AI replies use plain text |
-| Proxy errors | LiteLLM `:4000` down | `npm run deepseek:on` (not `google-api:start` for daily use) |
+| Proxy errors | LiteLLM `:4000` down | `npm run deepseek:on` (the legacy `google-api` stack is retired) |
 | "Model provider failed after retries" | LiteLLM offline mid-session | `npm run deepseek:on`; avoid "diagnose" prompts that run terminal tool loops |
 | Wrong / stale reply content | Old Telegram session history | Send **`/new`** before test messages |
 | Gateway shutdown mid-chat | `deepseek:on` recycled proxy (fixed) | Now uses `--keep-gateway`; gateway stays up |

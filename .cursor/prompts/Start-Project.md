@@ -1,7 +1,9 @@
 # Start Project - VaderLabz Initialization
 
 ## Trigger
-**Start Project**, **Begin Project**, **Start Session**, **Cold Start**
+**Start Project**, **Begin Project**, **Cold Start**
+
+> **Open Project** / **Resume Session** → [Open-Project.md](./Open-Project.md) (light resume, no `-Full` stack boot).
 
 ---
 
@@ -31,7 +33,7 @@ npm run session:start -- -Full
 **Voice greeting (Start Project only):**
 
 ```powershell
-npm run draven:speak -- "Command Center online Jon. Draven standing by. The Matrix is ready, lets begin."
+npm run draven:speak -- "VaderLabz online Jon. Draven standing by. Ready when you are."
 ```
 
 OmniVoice lazy-starts the daemon on first speak (~15s first load). **Do NOT** speak ordinary session summaries aloud.
@@ -49,14 +51,14 @@ npm run mem0:preflight
 The `session:start` script now attempts to **auto-launch** LM Studio if it's not running (finds it at `C:\Program Files\LM Studio\LM Studio.exe`).
 
 - If **offline** (exit code 1): **Alert the operator** that LM Studio couldn't start. Prompt them to launch it manually from the Start Menu or `C:\Program Files\LM Studio\LM Studio.exe` and load `qwen3-4b-instruct-2507`.
-- If **online** (exit code 0): Run a **Mem0 smoke test** to confirm the model is actually loaded and responding to inference:
+- If **online** (exit code 0): Run a **Mem0 smoke test** to confirm the model is loaded and responding to inference:
 
 ```powershell
 npm run mem0:search -- "test"
 ```
 
-- Returns results → Mem0 is fully operational, model is active
-- Fails/times out → model is registered in the API but not the active loaded model. Alert the operator to select `qwen3-4b-instruct-2507` in the LM Studio GUI's model dropdown, then retry.
+- Returns results (or "No results" with no error) → Mem0 operational, model active
+- Fails/times out → model registered in API but not the active loaded model. Alert operator to select `qwen3-4b-instruct-2507` in LM Studio GUI's model dropdown, then retry.
 
 ---
 
@@ -65,7 +67,7 @@ npm run mem0:search -- "test"
 Read with the editor before running shells or claiming repo state:
 
 1. **`TRUTH.md`** - profile constitution (wins over all other docs).
-2. **`.cursor/docs/START-HERE.md`** - daily ritual and source-of-truth order.
+2. **`START-HERE.md`** - daily ritual and source-of-truth order.
 3. **`.cursor/docs/ReCall.md`** - recent session history / current focus.
 4. **`.cursor/docs/project-log.md`** - last session outcomes.
 5. **`.cursor/docs/MASTER-COMMANDS.md`** - command reference (apply known fixes silently).
@@ -73,6 +75,8 @@ Read with the editor before running shells or claiming repo state:
 ---
 
 ## Step 4: Mem0 & Context Recall
+
+Run Mem0 search to load context:
 
 ```powershell
 npm run mem0:search -- "current priorities"
@@ -85,7 +89,7 @@ If LM Studio was offline in Step 2, Mem0 search will fail — fall back to **`Re
 ## Step 5: Environment Handshake (print in chat)
 
 ```
-Ok Jon - VaderLabz Command Center is ONLINE.
+Ok Jon - VaderLabz is ONLINE.
 
 SERVICE STATUS
   LM Studio (1234)       [online/offline]  - free local / Mem0
@@ -100,17 +104,17 @@ RECALL FOCUS
 What's the mission for today, Operator?
 ```
 
-**Silent pitfall rule:** If the status card shows LM Studio `[offline]`, the agent must inform the operator before proceeding, and either prompt them to start it or skip Mem0 operations. Do not silently proceed without Mem0.
-
 ---
 
-## Step 6: Paid cloud decision
+## Step 5: Paid cloud decision
 
 | Operator needs | Agent action |
 |----------------|--------------|
 | Free Mem0 / local only | `npm run deepseek:off` if :4000 was left on |
 | Hermes / Telegram / Cursor Ask | Already running if **Start Project** (`-Full`) completed |
 | Cursor Agent (tools) | Included in **`-Full`** (ngrok). Cursor Override = ngrok HTTPS URL + `/v1` |
+
+**Silent pitfall rule:** If the status card shows LM Studio `[offline]`, the agent must inform the operator before proceeding, and either prompt them to start it or skip Mem0 operations. Do not silently proceed without Mem0.
 
 **Silent pitfall rule:** If ReCall / project-log documents a known fix, apply it without re-asking.
 

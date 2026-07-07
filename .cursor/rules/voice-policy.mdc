@@ -16,13 +16,15 @@ alwaysApply: true
 
 | Trigger | Action |
 |---------|--------|
-| **Start Project** ritual | `npm run draven:speak -- "..."` once (greeting) |
-| **End Project** ritual | `npm run draven:speak -- "..."` once (short farewell) |
+| **Start Project** ritual (cold boot) | `npm run draven:speak -- "..."` once (greeting) |
+| **End Project** ritual (day-end) | `npm run draven:speak -- "..."` once (short farewell) |
 | Jon says **speak**, **say**, **talk this**, **read aloud** | `npm run draven:speak -- "<exact text>"` |
 | Critical **Mem0 / stack errors** | Only if `DRAVEN_VOICE_ERRORS=1` (default on) |
 
 ## When NOT to speak
 
+- **Open Project** / **Resume Session** — silent resume.
+- **Close Project** / **Close Session** — silent handoff.
 - **Never** read ordinary chat replies or summaries aloud.
 - **Never** speak after `mem0:add`, `mem0:search`, or successful Mem0 recall.
 - **Never** auto-speak Hermes Desktop / Telegram agent responses (`auto_tts: false` in Hermes config).

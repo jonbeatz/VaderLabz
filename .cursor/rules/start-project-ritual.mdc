@@ -5,7 +5,9 @@ alwaysApply: true
 
 # Start Project ritual
 
-Treat the operator message as a **Start Project** ritual when they say **Start Project**, **start project**, **cold session**, **full bootstrap**, or clearly want the session ritual.
+Treat the operator message as a **Start Project** ritual when they say **Start Project**, **start project**, **cold start**, **cold session**, **full bootstrap**, or clearly want the **cold boot** ritual.
+
+**Not** Open Project / Resume Session — those use [Open-Project.md](../prompts/Open-Project.md).
 
 **Canonical procedure:** follow **`.cursor/prompts/Start-Project.md`** step-for-step. Do not skip the **mandatory document reads** there.
 

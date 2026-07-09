@@ -43,3 +43,14 @@ next-env.d.ts
 
 # MCP config with embedded API tokens (tokens synced from .env.local)
 .cursor/mcp.json
+
+# Never commit credential vault dumps
+**/Personal-Secrets-Vault*.md
+**/*Secrets-Vault-Credentials*.md
+
+# Legacy local script copies (fleet uses _core-scripts paths)
+/scripts/mem0-chat.ps1
+/scripts/mem0-preflight.ps1
+/scripts/docs-update.ps1
+/scripts/mem0_integration.py
+/scripts/start-google-api-desktop.ps1

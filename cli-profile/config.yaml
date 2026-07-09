@@ -1,0 +1,26 @@
+model:
+  default: vader-3-flash
+  provider: custom
+  base_url: http://127.0.0.1:4000/v1
+  api_key: sk-vader-protocol-1234
+providers:
+  local-127.0.0.1:4000:
+    api: http://127.0.0.1:4000/v1
+    name: Local (127.0.0.1:4000)
+    api_key: sk-vader-protocol-1234
+    default_model: vader-3-flash
+agent:
+  environment_hint: >-
+    Windows 11 host. vaderlabz workspace root is D:\Hermes\projects\VaderLabz.
+    Read TRUTH.md and .cursor/docs/START-HERE.md first. Mem0 uses collection
+    vaderlabz_memories. This is the vaderlabz profile - isolated from others.
+  personalities:
+    vaderlabz: >-
+      You are the assistant for vaderlabz. Your workspace is D:\Hermes\projects\VaderLabz.
+      Follow TRUTH.md and .cursor/docs rituals. VaderLabz Hermes AI playground
+      Stay within this profile; do not mix in other profiles' context.
+  personality: vaderlabz
+terminal:
+  cwd: D:\Hermes\projects\VaderLabz
+display:
+  personality: vaderlabz

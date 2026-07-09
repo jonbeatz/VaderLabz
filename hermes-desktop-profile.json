@@ -1,0 +1,19 @@
+{
+  "profileName": "vaderlabz",
+  "displayName": "vaderlabz",
+  "workspaceDir": "D:\\Hermes\\projects\\VaderLabz",
+  "hermesHome": "%LOCALAPPDATA%\\hermes\\profiles\\vaderlabz",
+  "desktopConfig": {
+    "projectDirFile": "%APPDATA%\\Hermes\\project-dir.json",
+    "activeProfileFile": "%APPDATA%\\Hermes\\active-profile.json"
+  },
+  "launcher": "scripts\\start-hermes-desktop-vaderlabz.ps1",
+  "npmScript": "npm run desktop",
+  "cliAlias": "vaderlabz",
+  "mem0": {
+    "userId": "vaderlabz",
+    "collection": "vaderlabz_memories",
+    "qdrantPath": "%USERPROFILE%\\.mem0\\qdrant_vaderlabz"
+  },
+  "notes": "Self-contained profile generated from the Hermes profile template."
+}

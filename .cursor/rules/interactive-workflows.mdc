@@ -5,14 +5,32 @@ alwaysApply: true
 
 # Interactive workflow UI (Composer) — JonBeatz
 
-When running **multi-step rituals** (backup project, go-live gates, restore points, etc.):
+When running **multi-step rituals** (End Project, backup project, go-live gates, restore points, etc.):
 
 ## Required
 
 1. **Use the `AskQuestion` tool** — present **clickable options** (buttons) for each step.
 2. **One step per `AskQuestion` call** — wait for the operator's selection before the next step.
-3. **Label options clearly** — e.g. "Standard backup", not "1".
-4. **Default path first** — put the recommended choice first (Standard backup, default `G:\Hermes_Project_BackUpz\JonBeatz`, suggested folder name, Confirm Yes).
+3. **Label options clearly** — e.g. "Stop LiteLLM + ngrok (recommended)", not "1".
+4. **Default path first** — put the recommended choice first.
+
+### AskQuestion payload shape
+
+```json
+{
+  "title": "Short gate title",
+  "questions": [
+    {
+      "id": "gate_id",
+      "prompt": "Clear question for the operator",
+      "options": [
+        { "id": "recommended", "label": "Recommended action (recommended)" },
+        { "id": "alt", "label": "Alternate action" }
+      ]
+    }
+  ]
+}
+```
 
 ## Avoid
 
@@ -24,6 +42,8 @@ When running **multi-step rituals** (backup project, go-live gates, restore poin
 
 | Trigger | Behavior |
 |---------|----------|
+| **End Project** / **End Session** | **Required** AskQuestion for git (if dirty), `:3000` (if up), and StopDeepSeek — see `end-project-ritual.mdc` |
+| **Close Project** | AskQuestion for git when dirty |
 | **backup project** | Interactive — `npm run backup:project` with AskQuestion gates |
 | **backup quick**, **backup profile**, **backup full** | **Non-interactive** — run `backup:quick` / `backup:quick:full` immediately |
 | **restore point** / milestone backup | AskQuestion for note + confirm before `backup:quick` |

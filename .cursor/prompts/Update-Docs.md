@@ -1,8 +1,23 @@
-# Update Docs — JonBeatz Personal
+# Update Docs — Hermes Fleet + Profile
 
 **Triggers:** `update docs`, `Update Docs`, `sync docs`
 
 **With Mem0:** `update docs and mem0` (includes Phase 5b)
+
+> **Fleet first:** Universal docs and **all tool reviews** live in `_core-scripts/shared-profile-content/docs/`. Edit canonical files there, then `npm run docs:sync`. JonBeatz is often the open workspace — not the source of truth. See [FLEET-TOOLS-KNOWLEDGE.md](../docs/FLEET-TOOLS-KNOWLEDGE.md).
+
+---
+
+## Phase 0: Canonical vs profile-local
+
+| Edit here first (fleet) | Edit in profile only |
+|-------------------------|----------------------|
+| `shared-profile-content/docs/TOOLS-*.md` | `TRUTH.md`, `ReCall.md`, `project-log.md` |
+| `TOOL-CHEST-INDEX`, `DESIGN-REFERENCES`, `MASTER-COMMANDS` (shared) | `CHANGELOG.md`, `Checkpoint.md` |
+| `shared-profile-content/skills/`, `scripts/`, `rules/`, `prompts/` | Site deploy runbooks, profile-specific plans |
+
+After shared edits: `npm run docs:sync -- -Write` from current profile.  
+After skills/scripts/rules: `npm run fleet:sync` from **JonBeatz hub**.
 
 ---
 
@@ -16,12 +31,13 @@ Read and cross-check:
 | `package.json` | Version matches TRUTH |
 | `.cursor/docs/START-HERE.md` | Doc order, rituals |
 | `.cursor/docs/MASTER-COMMANDS.md` | All npm scripts listed |
-| `.cursor/docs/Custom-Prompts.md` | Chat triggers |
-| `.cursor/docs/CHANGELOG.md` | Recent releases |
-| `.cursor/docs/Checkpoint.md` | Milestones |
+| `.cursor/docs/Custom-Prompts.md` | Chat triggers (project-specific — may not exist in all projects) |
+| `.cursor/docs/CHANGELOG.md` | Recent releases (project-specific — may not exist) |
+| `.cursor/docs/Checkpoint.md` | Milestones (project-specific — may not exist) |
 | `.cursor/docs/ReCall.md` | Current focus |
+| `.cursor/docs/FITNESS-CHECK.md` | Skeleton fitness audit (if project has it) |
 | `.cursor/docs/IMAGE-WORKFLOW.md` | Image pipeline |
-| `.cursor/docs/GOOGLE-WORKSPACE.md` | Google automation |
+| `.cursor/docs/GOOGLE-WORKSPACE.md` | Google automation (project-specific — may not exist) |
 | `.cursor/rules/*.mdc` | Workflow rules |
 | `AGENTS.md`, `README.md`, `HERMES.md` | Entry points |
 
@@ -89,9 +105,32 @@ End with: **"Ready to commit when you say so."**
 ```powershell
 npm run mem0:preflight
 npm run mem0:add -- "Docs sync [date]: [one-line summary of doc changes]"
+# Also update Draven's cross-session memory
+npm run draven:add -- "Docs sync [date]: [one-line summary of doc changes]"
 ```
 
-Skip if LM Studio offline — note in project-log.
+This updates **both** the project's own memory and Draven's cross-session memory. Draven stores it so he has context of what was synced across sessions. Skip if LM Studio offline — note in project-log.
+
+Also triggers **Phase 6** — skeleton backport review.
+
+---
+
+## Phase 6 — Skeleton backport review (check after significant work)
+
+During `update docs and mem0`, also check if anything created this session belongs in the shared skeleton:
+
+1. Read `D:\Hermes\projects\_core-scripts\shared-profile-content\docs\FITNESS-CHECK.md` — this lists everything the skeleton provides
+2. Compare with what the current project has — note any gaps
+3. Open `D:\Hermes\projects\_core-scripts\shared-profile-content\docs\BACKPORT-CANDIDATES.md`
+4. Log any candidates: new scripts, rules, skills, prompts, env vars, or fixes that are project-agnostic
+3. If found, ask Jon: **"I noticed X is worth backporting to the shared skeleton. Shall I do that?"**
+4. If yes, follow `CONTRIBUTING.md` workflow: copy → strip paths → update indexes → bump version → commit
+
+**Examples of backport-worthy:**
+- New `.ps1` / `.py` / `.mjs` script that other projects could use
+- Bug fix in a shared script (`mem0-chat.ps1`, `bootstrap-new-project.ps1`, etc.)
+- New rule/skill that is project-agnostic (like Draven Mem0, Hostinger-Ops)
+- New env var worth documenting in `ENV-VARS-REFERENCE.md`
 
 ---
 

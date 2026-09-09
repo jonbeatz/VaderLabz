@@ -62,8 +62,11 @@ Available domain skills (see `SKILL-INDEX.md` for full list with tags):
 - **Mem0:** Uses `vaderlabz_memories` collection in `%USERPROFILE%\.mem0\qdrant_vaderlabz` — **isolated** from JonBeatz, MSC, and all other profiles. Configured in `.env.local`. Never switch or share collections.
 - **Boundaries:** Stay within this profile. Do not mix other profiles' context.
 - **Recovery:** Run recovery commands yourself — don't only tell the operator.
-- **Backup root:** `G:\Hermes_Project_BackUpz\VaderLabz\`
+- **Backup root:** `G:\\Hermes_Project_BackUpz\\VaderLabz\\`
+- **Vader_Vault:** Project hub at `H:\\Vader_Vault\\01_Projects\\VaderLabz.md`. Log major sessions using vault auto-log skill.
 
 ---
 
 *Created: 2026-06-28*
+
+- **Versioned backup:** Before any file edit, backup to `_backups/YYYY-MM-DD_v{version}.ext`. See `tnims-book-review` skill for protocol.

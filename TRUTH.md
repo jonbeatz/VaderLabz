@@ -20,7 +20,7 @@
 
 ## Core Rules
 
-- **Voice:** OmniVoice primary for ritual speaks (Start/End Project, explicit `draven:speak`). Edge TTS backup only if Omni fails. Ritual-only — never auto-read chat replies or Mem0 recall.
+- **Voice:** **Edge Liam** (`en-CA-LiamNeural`, same as Hermes) primary for all allowed speaks (Start/End Project, explicit `draven:speak`). **OmniVoice** optional restore / Edge-failure fallback. Ritual-only — never auto-read chat replies or Mem0 recall. See `.cursor/docs/VOICE-WORKFLOW.md`.
 - **Pathing:** All global scripts reside in `D:\Hermes\projects\_core-scripts\`. Profile switcher registry must use workspace paths (git repo roots).
 - **JSON Security:** Never use PowerShell to write JSON (BOM issues). Use Python or write_file.
 - **UTF-8 / Markdown:** Never rewrite .md / .mdc with PowerShell Get-Content / Set-Content without -Encoding UTF8. Prefer Python scripts for version badge updates. Run encoding checks before doc commits.
